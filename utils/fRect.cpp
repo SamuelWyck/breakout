@@ -1,6 +1,7 @@
 #include <utility>
 #include <iostream>
 #include <exception>
+#include <SDL3/SDL_rect.h>
 #include "./fRect.h"
 
 

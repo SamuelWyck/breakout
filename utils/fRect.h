@@ -4,7 +4,7 @@
 
 #include <utility>
 #include <iostream>
-#include <SDL3/SDL.h>
+#include <SDL3/SDL_rect.h>
 
 
 class FRect {
