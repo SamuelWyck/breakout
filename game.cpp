@@ -2,6 +2,7 @@
 #include <SDL3_image/SDL_image.h>
 #include "./game.h"
 #include "./framework/framework.h"
+#include "./utils/fRect.h"
 
 
 
@@ -26,7 +27,8 @@ void Game::gameLoop() {
         SDL_Log(SDL_GetError());
     }
 
-    SDL_FRect srcRect{Framework::display.canvasWidth() / 2.0f - 20, Framework::display.canvasHeight() / 2.0f - 20, 40, 40};
+    FRect realRect{-20, 0, 40, 40};
+
 
     while (running) {
         SDL_Event event;
@@ -43,7 +45,7 @@ void Game::gameLoop() {
 
         SDL_SetRenderDrawColor(Framework::display.renderer(), 0, 0, 0, 255);
         SDL_RenderClear(Framework::display.renderer());
-        SDL_RenderTexture(Framework::display.renderer(), img, nullptr, &srcRect);
+        SDL_RenderTexture(Framework::display.renderer(), img, nullptr, &realRect.getSDLFRect());
         // SDL_RenderTextureRotated(Framework::display.renderer(), img, nullptr, &srcRect, angle, nullptr, SDL_FLIP_NONE);
         SDL_RenderPresent(Framework::display.renderer());
     }
