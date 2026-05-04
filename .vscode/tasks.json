@@ -21,8 +21,8 @@
                 "-g",
                 // "${fileDirname}${pathSeparator}${fileBasename}", // target cpp file
                 "${fileDirname}\\framework\\*.cpp",
+                "${fileDirname}\\utils\\*.cpp",
                 "${fileDirname}\\*.cpp", // all cpp files in curr dir
-                // "${workspaceFolder}/test/*.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
                 // start sdl stuff
