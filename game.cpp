@@ -3,6 +3,7 @@
 #include "./game.h"
 #include "./framework/framework.h"
 #include "./utils/fRect.h"
+#include "./utils/clock.h"
 
 
 
@@ -29,8 +30,12 @@ void Game::gameLoop() {
 
     FRect realRect{-20, 0, 40, 40};
 
+    Clock clock{};
+
 
     while (running) {
+        double deltaTime {clock.getNormalizedDeltaTime()};
+
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_EVENT_QUIT) {
@@ -42,6 +47,8 @@ void Game::gameLoop() {
             }
         }
 
+
+        realRect.setX(realRect.x() + deltaTime);
 
         SDL_SetRenderDrawColor(Framework::display.renderer(), 0, 0, 0, 255);
         SDL_RenderClear(Framework::display.renderer());
