@@ -2,7 +2,7 @@
 #define DISPLAY_H
 
 
-#include <SDL3/SDL.h>
+#include <SDL3/SDL_render.h>
 
 
 class Display {
@@ -18,7 +18,11 @@ class Display {
 
 
 public:
-    Display(int canvasWidth, int canvasHeight);
+    Display(
+        int canvasWidth, 
+        int canvasHeight, 
+        SDL_RendererLogicalPresentation rendererPresentationFlag=SDL_LOGICAL_PRESENTATION_DISABLED
+    );
 
     ~Display();
 
