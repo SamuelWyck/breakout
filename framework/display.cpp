@@ -1,13 +1,20 @@
 #include <stdexcept>
 #include <SDL3/SDL_render.h>
+#include <SDL3/SDL_video.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_log.h>
 #include "./display.h"
 
 
 
-Display::Display(int canvasWidth, int canvasHeight, SDL_RendererLogicalPresentation rendererPresentationFlag) 
-    : m_canvasWidth{canvasWidth}, m_canvasHeight{canvasHeight} {
+Display::Display(
+    int screenWidth,
+    int screenHeight,
+    int canvasWidth, 
+    int canvasHeight, 
+    SDL_WindowFlags windowFlags,
+    SDL_RendererLogicalPresentation rendererPresentationFlag
+) : m_screenWidth{screenWidth}, m_screenHeight{screenHeight}, m_canvasWidth{canvasWidth}, m_canvasHeight{canvasHeight} {
     if (created) {
         SDL_Log("Display already initialized\n");
         throw std::runtime_error("Display already initialized\n");
@@ -21,7 +28,7 @@ Display::Display(int canvasWidth, int canvasHeight, SDL_RendererLogicalPresentat
     }
 
 
-    m_screen = SDL_CreateWindow("Breakout", 0, 0, SDL_WINDOW_FULLSCREEN);
+    m_screen = SDL_CreateWindow("Breakout", m_screenWidth, m_screenHeight, windowFlags);
     if (!m_screen) {
         SDL_Log("Unable to create window: %s", SDL_GetError());
         SDL_Quit();
@@ -58,4 +65,17 @@ int Display::canvasWidth() {
 
 int Display::canvasHeight() {
     return m_canvasHeight;
+};
+
+
+SDL_Window* Display::screen() {
+    return m_screen;
+};
+
+int Display::screenWidth() {
+    return m_screenWidth;
+};
+
+int Display::screenHeight() {
+    return m_screenHeight;
 };

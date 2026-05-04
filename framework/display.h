@@ -3,6 +3,7 @@
 
 
 #include <SDL3/SDL_render.h>
+#include <SDL3/SDL_video.h>
 
 
 class Display {
@@ -19,8 +20,11 @@ class Display {
 
 public:
     Display(
+        int screenWidth, 
+        int screenHeight,
         int canvasWidth, 
         int canvasHeight, 
+        SDL_WindowFlags windowFlags=0,
         SDL_RendererLogicalPresentation rendererPresentationFlag=SDL_LOGICAL_PRESENTATION_DISABLED
     );
 
@@ -38,6 +42,13 @@ public:
     int canvasWidth();
 
     int canvasHeight();
+
+
+    SDL_Window* screen();
+
+    int screenWidth();
+
+    int screenHeight();
 };
 
 
