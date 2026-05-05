@@ -41,7 +41,7 @@ public:
 
     bool hasCircleIntersection(const FCircle* circle) const;
     bool hasRectIntersection(const FRect* rect) const;
-    // bool hasRectIntersection(const )
+    bool hasRectIntersection(const SDL_FRect* rect) const;
 
     // pivot circle (angle) degrees clockwise about the given x y coord
     void pivot(float x, float y, double angle);

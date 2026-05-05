@@ -86,7 +86,7 @@ bool FCircle::hasCircleIntersection(const FCircle* circle) const {
     if (!circle) {
         return false;
     }
-    
+
     float xDistance {m_centerX - circle->m_centerX};
     float yDistance {m_centerY - circle->m_centerY};
     float distance {sqrtf((xDistance * xDistance) + (yDistance * yDistance))};
@@ -117,6 +117,16 @@ bool FCircle::hasRectIntersection(const FRect* rect) const {
     SDL_FPoint centerPoint{m_centerX, m_centerY};
 
     return SDL_PointInRectFloat(&edgePoint, &rect->getSDLFRect()) || SDL_PointInRectFloat(&centerPoint, &rect->getSDLFRect());
+};
+
+
+bool FCircle::hasRectIntersection(const SDL_FRect* rect) const {
+    if (!rect) {
+        return false;
+    }
+
+    FRect wrappedRect{*rect};
+    return hasRectIntersection(&wrappedRect);
 };
 
 
