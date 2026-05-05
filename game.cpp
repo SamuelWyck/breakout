@@ -49,7 +49,7 @@ void Game::gameLoop() {
 
 
         // realRect.setX(realRect.x() + deltaTime);
-        realRect.pivotRect(450, 450, deltaTime * 2);
+        realRect.pivot(450, 450, deltaTime * 2);
 
         SDL_SetRenderDrawColor(Framework::display.renderer(), 0, 0, 0, 255);
         SDL_RenderClear(Framework::display.renderer());

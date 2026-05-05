@@ -31,7 +31,7 @@ public:
     bool containsRect(const SDL_FRect* rect) const;
 
     // pivot rect (angle) degrees clockwise about the given x y coord
-    void pivotRect(float x, float y, double angle);
+    void pivot(float x, float y, double angle);
 
 
     // start wrappers for sdl rect functions

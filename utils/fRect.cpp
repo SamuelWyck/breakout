@@ -56,7 +56,7 @@ bool FRect::containsRect(const SDL_FRect* rect) const {
 
 
 // pivot rect (angle) degrees clockwise about the given x y coord
-void FRect::pivotRect(float x, float y, double angle) {
+void FRect::pivot(float x, float y, double angle) {
     float correctedCenterX {centerX() - x};
     float correctedCenterY {centerY() - y};
 
