@@ -82,11 +82,42 @@ public:
     void setTopleft(float x, float y);
 
 
+    std::pair<float, float> topRight() const;
+    void setTopRight(const std::pair<float, float>& topRight);
+    void setTopRight(float x, float y);
+
+
+    std::pair<float, float> bottomLeft() const;
+    void setBottomLeft(const std::pair<float, float>& bottomLeft);
+    void setBottomLeft(float x, float y);
+
+
+    std::pair<float, float> bottomRight() const;
+    void setBottomRight(const std::pair<float, float>& bottomRight);
+    void setBottomRight(float x, float y);
+
+
     float x() const;
     void setX(float x);
 
+
     float y() const;
     void setY(float y);
+
+
+    float left() const;
+    void setLeft(float left);
+
+
+    float right() const;
+    void setRight(float right);
+
+    float top() const;
+    void setTop(float top);
+
+
+    float bottom() const;
+    void setBottom(float bottom);
 
 
     std::pair<float, float> midTop() const;

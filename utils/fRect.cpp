@@ -179,6 +179,58 @@ void FRect::setTopleft(float x, float y) {
 };
 
 
+std::pair<float, float> FRect::topRight() const {
+    float rightX {m_sdlRect.x + m_sdlRect.w};
+    return std::pair<float, float>{rightX, m_sdlRect.y};  
+};
+
+void FRect::setTopRight(const std::pair<float, float>& topRight) {
+    auto [x, y] = topRight;
+    m_sdlRect.x = x - m_sdlRect.w;
+    m_sdlRect.y = y;
+};
+
+void FRect::setTopRight(float x, float y) {
+    m_sdlRect.x = x - m_sdlRect.w;
+    m_sdlRect.y = y;
+};
+
+
+std::pair<float, float> FRect::bottomLeft() const {
+    float bottomY {m_sdlRect.y + m_sdlRect.h};
+    return std::pair<float, float>{m_sdlRect.x, bottomY};
+};
+
+void FRect::setBottomLeft(const std::pair<float, float>& bottomLeft) {
+    auto [x, y] = bottomLeft;
+    m_sdlRect.x = x;
+    m_sdlRect.y = y - m_sdlRect.h;
+};
+
+void FRect::setBottomLeft(float x, float y) {
+    m_sdlRect.x = x;
+    m_sdlRect.y = y - m_sdlRect.h;
+};
+
+
+std::pair<float, float> FRect::bottomRight() const {
+    float rightX {m_sdlRect.x + m_sdlRect.w};
+    float bottomY {m_sdlRect.y + m_sdlRect.h};
+    return std::pair<float, float>{rightX, bottomY};
+};
+
+void FRect::setBottomRight(const std::pair<float, float>& bottomRight) {
+    auto [x, y] = bottomRight;
+    m_sdlRect.x = x - m_sdlRect.w;
+    m_sdlRect.y = y - m_sdlRect.h;
+};
+
+void FRect::setBottomRight(float x, float y) {
+    m_sdlRect.x = x - m_sdlRect.w;
+    m_sdlRect.y = y - m_sdlRect.h;
+};
+
+
 float FRect::x() const {
     return m_sdlRect.x;
 };
@@ -194,6 +246,42 @@ float FRect::y() const {
 
 void FRect::setY(float y) {
     m_sdlRect.y = y;
+};
+
+
+float FRect::left() const {
+    return m_sdlRect.x;
+};
+
+void FRect::setLeft(float left) {
+    m_sdlRect.x = left;
+};
+
+
+float FRect::right() const {
+    return m_sdlRect.x + m_sdlRect.w;
+};
+
+void FRect::setRight(float right) {
+    m_sdlRect.x = right - m_sdlRect.w;
+};
+
+
+float FRect::top() const {
+    return m_sdlRect.y;
+};
+
+void FRect::setTop(float top) {
+    m_sdlRect.y = top;
+};
+
+
+float FRect::bottom() const {
+    return m_sdlRect.y + m_sdlRect.h;
+};
+
+void FRect::setBottom(float bottom) {
+    m_sdlRect.y = bottom - m_sdlRect.h;
 };
 
 
