@@ -3,6 +3,7 @@
 #include <SDL3/SDL_rect.h>
 #include "./fCircle.h"
 #include "./fRect.h"
+#include "./math.h"
 
 
 
@@ -87,4 +88,39 @@ bool FCircle::hasCircleIntersection(const FCircle& circle) const {
     float distance {sqrtf((xDistance * xDistance) + (yDistance * yDistance))};
     distance += 1.0f;
     return distance <= (m_radius + circle.m_radius);
+};
+
+
+bool FCircle::hasRectIntersection(const FRect& rect) const {
+    auto [rectCenterX, rectCenterY] {rect.center()};
+    float oppositeDis {rectCenterY - m_centerY};
+    float adjacentDis {rectCenterX - m_centerX};
+
+    float angleToRect {atanf(oppositeDis / adjacentDis)};
+    // correct radian angle
+    if (adjacentDis < 0.0f) {
+        angleToRect += Math::Pif;
+    }
+
+    float xDisToCircleEdge {m_radius * cosf(angleToRect)};
+    float yDisToCircleEdge {m_radius * sinf(angleToRect)};
+
+    SDL_FPoint edgePoint{m_centerX + xDisToCircleEdge, m_centerY + yDisToCircleEdge};
+    SDL_FPoint centerPoint{m_centerX, m_centerY};
+
+    return SDL_PointInRectFloat(&edgePoint, &rect.getSDLFRect()) || SDL_PointInRectFloat(&centerPoint, &rect.getSDLFRect());
+};
+
+
+// pivot circle (angle) degrees clockwise about the given x y coord
+void FCircle::pivot(float x, float y, double angle) {
+    float correctedCenterX {m_centerX - x};
+    float correctedCenterY {m_centerY - y};
+
+    auto [radius, oldAngle] {Math::toPolarCoordsDeg(correctedCenterX, correctedCenterY)};
+    float newAngle {oldAngle + static_cast<float>(angle)};
+
+    auto [newCorrectedCenterX, newCorrectCenterY] {Math::toCartesianCoordsDeg(radius, newAngle)};
+    setCenterX(newCorrectedCenterX + x);
+    setCenterY(newCorrectCenterY + y);
 };
