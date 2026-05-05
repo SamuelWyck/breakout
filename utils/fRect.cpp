@@ -1,8 +1,10 @@
 #include <utility>
 #include <iostream>
 #include <exception>
+#include <cmath>
 #include <SDL3/SDL_rect.h>
 #include "./fRect.h"
+#include "./math.h"
 
 
 
@@ -50,6 +52,20 @@ bool FRect::containsRect(const SDL_FRect* rect) const {
     }
 
     return unionRect.x == x() && unionRect.y == y() && unionRect.w == width() && unionRect.h == height();
+};
+
+
+// pivot rect (angle) degrees clockwise about the given x y coord
+void FRect::pivotRect(float x, float y, double angle) {
+    float correctedCenterX {centerX() - x};
+    float correctedCenterY {centerY() - y};
+
+    auto [radius, oldAngle] {Math::toPolarCoordsDeg(correctedCenterX, correctedCenterY)};
+    float newAngle {oldAngle + static_cast<float>(angle)};
+
+    auto [newCorrectedCenterX, newCorrectCenterY] {Math::toCartesianCoordsDeg(radius, newAngle)};
+    setCenterX(newCorrectedCenterX + x);
+    setCenterY(newCorrectCenterY + y);
 };
 
 
