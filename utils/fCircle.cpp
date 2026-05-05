@@ -82,17 +82,25 @@ FCircle::operator FRect() const {
 };
 
 
-bool FCircle::hasCircleIntersection(const FCircle& circle) const {
-    float xDistance {m_centerX - circle.m_centerX};
-    float yDistance {m_centerY - circle.m_centerY};
+bool FCircle::hasCircleIntersection(const FCircle* circle) const {
+    if (!circle) {
+        return false;
+    }
+    
+    float xDistance {m_centerX - circle->m_centerX};
+    float yDistance {m_centerY - circle->m_centerY};
     float distance {sqrtf((xDistance * xDistance) + (yDistance * yDistance))};
     distance += 1.0f;
-    return distance <= (m_radius + circle.m_radius);
+    return distance <= (m_radius + circle->m_radius);
 };
 
 
-bool FCircle::hasRectIntersection(const FRect& rect) const {
-    auto [rectCenterX, rectCenterY] {rect.center()};
+bool FCircle::hasRectIntersection(const FRect* rect) const {
+    if (!rect) {
+        return false;
+    }
+
+    auto [rectCenterX, rectCenterY] {rect->center()};
     float oppositeDis {rectCenterY - m_centerY};
     float adjacentDis {rectCenterX - m_centerX};
 
@@ -108,7 +116,7 @@ bool FCircle::hasRectIntersection(const FRect& rect) const {
     SDL_FPoint edgePoint{m_centerX + xDisToCircleEdge, m_centerY + yDisToCircleEdge};
     SDL_FPoint centerPoint{m_centerX, m_centerY};
 
-    return SDL_PointInRectFloat(&edgePoint, &rect.getSDLFRect()) || SDL_PointInRectFloat(&centerPoint, &rect.getSDLFRect());
+    return SDL_PointInRectFloat(&edgePoint, &rect->getSDLFRect()) || SDL_PointInRectFloat(&centerPoint, &rect->getSDLFRect());
 };
 
 
