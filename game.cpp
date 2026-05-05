@@ -28,7 +28,7 @@ void Game::gameLoop() {
         SDL_Log(SDL_GetError());
     }
 
-    FRect realRect{-20, 0, 40, 40};
+    FRect realRect{500, 500, 40, 40};
 
     Clock clock{};
 
@@ -48,7 +48,8 @@ void Game::gameLoop() {
         }
 
 
-        realRect.setX(realRect.x() + deltaTime);
+        // realRect.setX(realRect.x() + deltaTime);
+        realRect.pivotRect(450, 450, deltaTime * 2);
 
         SDL_SetRenderDrawColor(Framework::display.renderer(), 0, 0, 0, 255);
         SDL_RenderClear(Framework::display.renderer());
