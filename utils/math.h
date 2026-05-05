@@ -10,6 +10,10 @@ namespace Math {
     constexpr double toRadians {Pi / 180.0};
     constexpr double toDegrees {180.0 / Pi};
 
+    constexpr float Pif {3.14159265358979323846264f};
+    constexpr float toRadiansf {Pif / 180.0f};
+    constexpr float toDegreesf {180.0f / Pif};
+
     // returns a pair containing the radius and angle in radians
     std::pair<float, float> toPolarCoordsRad(float x, float y);
 
