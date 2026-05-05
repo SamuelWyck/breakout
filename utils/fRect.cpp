@@ -1,6 +1,5 @@
 #include <utility>
 #include <iostream>
-#include <exception>
 #include <cmath>
 #include <SDL3/SDL_rect.h>
 #include "./fRect.h"
@@ -36,10 +35,12 @@ SDL_FRect& FRect::getSDLFRect() {
 
 
 bool FRect::containsRect(const FRect* rect) const {
-    FRect unionResult{};
-    if (!getRectUnion(rect, &unionResult)) {
-        throw std::runtime_error(SDL_GetError());
+    if (!rect) {
+        return false;
     }
+    
+    FRect unionResult{};
+    getRectUnion(rect, &unionResult);
 
     auto [unionX, unionY] = unionResult.topleft();
     auto [unionWidth, unionHeight] = unionResult.size();
@@ -47,16 +48,20 @@ bool FRect::containsRect(const FRect* rect) const {
 };
 
 bool FRect::containsRect(const SDL_FRect* rect) const {
-    SDL_FRect unionRect{};
-    if (!getRectUnion(rect, &unionRect)) {
-        throw std::runtime_error(SDL_GetError());
+    if (!rect) {
+        return false;
     }
 
+    SDL_FRect unionRect{};
+    getRectUnion(rect, &unionRect);
     return unionRect.x == x() && unionRect.y == y() && unionRect.w == width() && unionRect.h == height();
 };
 
-bool FRect::hasCircleIntersection(const FCircle& circle) const {
-    return circle.hasRectIntersection(*this);
+bool FRect::hasCircleIntersection(const FCircle* circle) const {
+    if (!circle) {
+        return false;
+    }
+    return circle->hasRectIntersection(this);
 };
 
 

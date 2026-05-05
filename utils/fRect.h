@@ -36,7 +36,7 @@ public:
     // pivot rect (angle) degrees clockwise about the given x y coord
     void pivot(float x, float y, double angle);
 
-    bool hasCircleIntersection(const FCircle& circle) const;
+    bool hasCircleIntersection(const FCircle* circle) const;
 
 
     // start wrappers for sdl rect functions
