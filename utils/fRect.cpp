@@ -5,6 +5,7 @@
 #include <SDL3/SDL_rect.h>
 #include "./fRect.h"
 #include "./math.h"
+#include "./fCircle.h"
 
 
 
@@ -52,6 +53,10 @@ bool FRect::containsRect(const SDL_FRect* rect) const {
     }
 
     return unionRect.x == x() && unionRect.y == y() && unionRect.w == width() && unionRect.h == height();
+};
+
+bool FRect::hasCircleIntersection(const FCircle& circle) const {
+    return circle.hasRectIntersection(*this);
 };
 
 

@@ -7,6 +7,9 @@
 #include <SDL3/SDL_rect.h>
 
 
+class FCircle;
+
+
 class FRect {
     SDL_FRect m_sdlRect{};
 
@@ -32,6 +35,8 @@ public:
 
     // pivot rect (angle) degrees clockwise about the given x y coord
     void pivot(float x, float y, double angle);
+
+    bool hasCircleIntersection(const FCircle& circle) const;
 
 
     // start wrappers for sdl rect functions
