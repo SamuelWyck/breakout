@@ -3,16 +3,30 @@
 #include "./game.h"
 #include "./framework/framework.h"
 #include "./utils/clock.h"
+#include "./entities/player.h"
 #include "./utils/fRect.h"
 #include "./utils/fCircle.h"
 
 
 
-Game::Game() {
+Game::Game() 
+: m_screenRect{
+    0, 0, 
+    static_cast<float>(Framework::display.canvasWidth()), 
+    static_cast<float>(Framework::display.canvasHeight())
+} {
+    int playerSpeed {1};
+
+    m_playerPtr = new Player{
+        Framework::display.canvasWidth() / 2.0f, 
+        Framework::display.canvasHeight() - 50.0f,
+        playerSpeed
+    };
 };
 
 
 Game::~Game() {
+    delete m_playerPtr;
 };
 
 
@@ -24,22 +38,20 @@ void Game::startGame() {
 void Game::gameLoop() {
     bool running {true};
     SDL_Texture* img {IMG_LoadTexture(Framework::display.renderer(), "C:\\Users\\samaw\\.vscode\\breakout\\wall2.png")};
-    SDL_Texture* circle {IMG_LoadTexture(Framework::display.renderer(), "C:\\Users\\samaw\\.vscode\\breakout\\circle.png")};
     SDL_SetTextureScaleMode(img, SDL_SCALEMODE_PIXELART);
-    SDL_SetTextureScaleMode(circle, SDL_SCALEMODE_PIXELART);
     if (!img) {
         SDL_Log(SDL_GetError());
     }
 
     FRect realRect{500, 500, 40, 40};
-    FRect r1{0, 0, 40, 40};
-    FCircle c1{0, 0, 20};
 
     Clock clock{};
 
+    bool aDown {false};
+    bool dDown {false};
 
     while (running) {
-        [[maybe_unused]] double deltaTime {clock.getNormalizedDeltaTime()};
+        double deltaTime {clock.getNormalizedDeltaTime()};
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -48,32 +60,35 @@ void Game::gameLoop() {
             } else if (event.type == SDL_EVENT_KEY_DOWN) {
                 if (event.key.scancode == SDL_SCANCODE_BACKSPACE) {
                     running = false;
+                } else if (event.key.scancode == SDL_SCANCODE_A) {
+                    aDown = true;
+                } else if (event.key.scancode == SDL_SCANCODE_D) {
+                    dDown = true;
+                }
+            } else if (event.type == SDL_EVENT_KEY_UP) {
+                if (event.key.scancode == SDL_SCANCODE_A) {
+                    aDown = false;
+                } else if (event.key.scancode == SDL_SCANCODE_D) {
+                    dDown = false;
                 }
             }
         }
 
-
-        // realRect.setX(realRect.x() + deltaTime);
-        // realRect.pivot(450, 450, deltaTime * 2);
-        float x {};
-        float y {};
-        SDL_GetGlobalMouseState(&x, &y);
-        r1.setCenter(x, y);
-        c1.setCenter(x, y);
-
-
-        int rCh {50};
-        if (c1.hasRectIntersection(&realRect.getSDLFRect())) {
-            rCh = 255;
+        if (aDown) {
+            m_playerPtr->moveLeft();
         }
+        if (dDown) {
+            m_playerPtr->moveRight();
+        }
+
+        realRect.pivot(450, 450, deltaTime * 2);
 
         SDL_SetRenderDrawColor(Framework::display.renderer(), 0, 0, 0, 255);
         SDL_RenderClear(Framework::display.renderer());
 
         SDL_RenderTexture(Framework::display.renderer(), img, nullptr, &realRect.getSDLFRect());
-        SDL_SetRenderDrawColor(Framework::display.renderer(), rCh, 0, 0, 255);
-        SDL_RenderTexture(Framework::display.renderer(), circle, nullptr, &r1.getSDLFRect());
-        SDL_RenderFillRect(Framework::display.renderer(), &realRect.getSDLFRect());
+
+        m_playerPtr->update(Framework::display.renderer(), deltaTime, m_screenRect);
         // SDL_RenderTextureRotated(Framework::display.renderer(), img, nullptr, &srcRect, angle, nullptr, SDL_FLIP_NONE);
         
         SDL_RenderPresent(Framework::display.renderer());

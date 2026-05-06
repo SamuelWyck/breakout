@@ -2,9 +2,14 @@
 #define GAME_H
 
 
+#include "./entities/player.h"
+#include "./utils/fRect.h"
+
 
 class Game {
-
+    Player* m_playerPtr {nullptr};
+    FRect m_screenRect {};
+    
 
 public:
     Game();
