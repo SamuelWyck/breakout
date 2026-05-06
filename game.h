@@ -4,12 +4,14 @@
 
 #include "./entities/player.h"
 #include "./utils/fRect.h"
+#include "./controller/playerController.h"
 
 
 class Game {
-    Player* m_playerPtr {nullptr};
     FRect m_screenRect {};
-    
+    PlayerController m_playerController{};
+    Player* m_playerPtr {nullptr};
+
 
 public:
     Game();

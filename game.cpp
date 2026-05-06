@@ -1,11 +1,15 @@
+#include <unordered_map>
+#include <unordered_set>
+#include <string>
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 #include "./game.h"
 #include "./framework/framework.h"
 #include "./utils/clock.h"
 #include "./entities/player.h"
+#include "./controller/playerController.h"
+#include "./controller/userInput.h"
 #include "./utils/fRect.h"
-#include "./utils/fCircle.h"
 
 
 
@@ -14,13 +18,18 @@ Game::Game()
     0, 0, 
     static_cast<float>(Framework::display.canvasWidth()), 
     static_cast<float>(Framework::display.canvasHeight())
+}, 
+m_playerController{
+    std::unordered_map<std::string, UserInput>{{"LEFT", UserInput{SDL_SCANCODE_A}}, {"RIGHT", UserInput{SDL_SCANCODE_D}}},
+    std::unordered_set<std::string>{"LEFT", "RIGHT"}
 } {
-    int playerSpeed {1};
 
+    int playerSpeed {5};
     m_playerPtr = new Player{
         Framework::display.canvasWidth() / 2.0f, 
         Framework::display.canvasHeight() - 50.0f,
-        playerSpeed
+        playerSpeed,
+        m_playerController
     };
 };
 
@@ -47,9 +56,6 @@ void Game::gameLoop() {
 
     Clock clock{};
 
-    bool aDown {false};
-    bool dDown {false};
-
     while (running) {
         double deltaTime {clock.getNormalizedDeltaTime()};
 
@@ -57,29 +63,26 @@ void Game::gameLoop() {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_EVENT_QUIT) {
                 running = false;
+
             } else if (event.type == SDL_EVENT_KEY_DOWN) {
                 if (event.key.scancode == SDL_SCANCODE_BACKSPACE) {
                     running = false;
-                } else if (event.key.scancode == SDL_SCANCODE_A) {
-                    aDown = true;
-                } else if (event.key.scancode == SDL_SCANCODE_D) {
-                    dDown = true;
+                } else {
+                    m_playerController.handleKeyDown(event.key.scancode);
                 }
+
             } else if (event.type == SDL_EVENT_KEY_UP) {
-                if (event.key.scancode == SDL_SCANCODE_A) {
-                    aDown = false;
-                } else if (event.key.scancode == SDL_SCANCODE_D) {
-                    dDown = false;
-                }
+                m_playerController.handleKeyUp(event.key.scancode);
+
+            } else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+                m_playerController.handleMouseDown(event.button.button);
+
+            } else if (event.type == SDL_EVENT_MOUSE_BUTTON_UP) {
+                m_playerController.handleMouseUp(event.button.button);
+
             }
         }
 
-        if (aDown) {
-            m_playerPtr->moveLeft();
-        }
-        if (dDown) {
-            m_playerPtr->moveRight();
-        }
 
         realRect.pivot(450, 450, deltaTime * 2);
 
@@ -92,5 +95,6 @@ void Game::gameLoop() {
         // SDL_RenderTextureRotated(Framework::display.renderer(), img, nullptr, &srcRect, angle, nullptr, SDL_FLIP_NONE);
         
         SDL_RenderPresent(Framework::display.renderer());
+        m_playerController.resetPressedInputs();
     }
 };
