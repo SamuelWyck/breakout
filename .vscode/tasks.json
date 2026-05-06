@@ -7,8 +7,8 @@
             "args": [
                 "-fdiagnostics-color=always",
                 // "-static",
-                // "-static-libstdc++",
-                // "-static-libgcc",
+                "-static-libstdc++",
+                "-static-libgcc",
                 "-pedantic-errors",
                 "-Wall",
                 "-Weffc++",
