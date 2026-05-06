@@ -1,9 +1,15 @@
 #include <string>
+#include <iostream>
+#include <functional>
 #include <SDL3/SDL_keyboard.h>
 #include <SDL3/SDL_scancode.h>
 #include "./userInput.h"
 
 
+
+UserInput::UserInput() 
+    : m_isMouseBtn{false}, m_inputCode{0} {
+};
 
 UserInput::UserInput(Uint8 mouseBtnCode) 
     : m_isMouseBtn{true}, m_inputCode{mouseBtnCode} {
@@ -19,6 +25,14 @@ std::string UserInput::getInputName() const {
         return std::string{'M' + std::to_string(m_inputCode)};
     }
     return std::string{SDL_GetScancodeName(static_cast<SDL_Scancode>(m_inputCode))};
+};
+
+bool UserInput::isMouseInput() const {
+    return m_isMouseBtn;
+};
+
+int UserInput::inputCode() const {
+    return m_inputCode;
 };
 
 
