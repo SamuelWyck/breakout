@@ -4,21 +4,20 @@
 
 #include <SDL3/SDL_render.h>
 #include "../utils/fRect.h"
+#include "../controller/playerController.h"
 
 
 class Player {
     FRect m_rect{};
     int m_speed {};
 
-    bool m_moveLeft {false};
-    bool m_moveRight {false};
-
-    bool m_movedLeft {false};
-    bool m_movedRight {false};
+    const PlayerController& m_controller{};
 
 
 public:
-    Player(float centerX, float centerY, int speed) : m_speed{speed} {
+    Player(float centerX, float centerY, int speed, const PlayerController& controller) 
+        : m_speed{speed}, m_controller{controller}
+    {
         m_rect.setCenter(centerX, centerY);
         m_rect.setWidth(200);
         m_rect.setHeight(30);
@@ -31,35 +30,25 @@ public:
         SDL_RenderFillRect(renderer, &m_rect.getSDLFRect());
     };
 
-    void moveLeft() {
-        m_moveLeft = true;
-    };
-
-    void moveRight() {
-        m_moveRight = true;
-    };
 
 
 private:
     void handleMovement(const FRect& screenRect, double deltaTime) {
-        if (m_moveLeft) {
+        auto pressedInputs {m_controller.getPressedInputs()};
+
+
+        if (pressedInputs["LEFT"]) {
             m_rect.setX(m_rect.x() - (m_speed * deltaTime));
-            m_moveLeft = false;
-            m_movedLeft = true;
         }
-        if (m_moveRight) {
+        if (pressedInputs["RIGHT"]) {
             m_rect.setX(m_rect.x() + (m_speed * deltaTime));
-            m_moveRight = false;
-            m_movedRight = true;
         }
 
         if (!screenRect.containsRect(&m_rect)) {
             if (m_rect.x() < 0.0f) {
                 m_rect.setX(0.0f);
-                m_movedLeft = false;
             } else if ((m_rect.x() + m_rect.width()) > screenRect.right()) {
                 m_rect.setRight(screenRect.right());
-                m_movedRight = false;
             }
         }
     };
