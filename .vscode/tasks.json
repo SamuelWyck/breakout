@@ -16,9 +16,9 @@
                 "-Werror",
                 "-std=c++23",
                 "-ggdb", // debug flag
+                "-g", // debug flag
                 // "-O2", // prod flag
                 // "-DNDEBUG", // prod flag
-                "-g",
                 // "${fileDirname}${pathSeparator}${fileBasename}", // target cpp file
                 "${fileDirname}\\framework\\*.cpp",
                 "${fileDirname}\\utils\\*.cpp",
