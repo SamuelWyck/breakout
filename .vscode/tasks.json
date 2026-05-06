@@ -23,6 +23,7 @@
                 "${fileDirname}\\framework\\*.cpp",
                 "${fileDirname}\\utils\\*.cpp",
                 "${fileDirname}\\entities\\*.cpp",
+                "${fileDirname}\\controller\\*.cpp",
                 "${fileDirname}\\*.cpp", // all cpp files in curr dir
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
