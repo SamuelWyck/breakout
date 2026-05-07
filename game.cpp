@@ -1,5 +1,6 @@
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 #include <string>
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
@@ -10,8 +11,10 @@
 #include "./controller/playerController.h"
 #include "./gameFramework/collisionManager.h"
 #include "./controller/userInput.h"
-#include "./utils/fRect.h"
 
+#include "./utils/fRect.h"
+#include "./entities/basicBlock.h"
+#include "./utils/color.h"
 
 
 Game::Game() 
@@ -72,6 +75,8 @@ void Game::gameLoop() {
     }
 
     FRect realRect{500, 500, 40, 40};
+    std::vector<BasicBlock*> blocks{};
+    blocks.push_back(new BasicBlock{700, 500, Color{0, 0, 255}, 1, 10});
 
     Clock clock{};
 
@@ -103,7 +108,7 @@ void Game::gameLoop() {
         }
 
 
-        m_collisionManagerPtr->handleCollisions(*m_playerPtr, *m_ballPtr);
+        m_collisionManagerPtr->handleCollisions(*m_playerPtr, *m_ballPtr, blocks);
 
         realRect.pivot(450, 450, deltaTime * 2);
 
@@ -112,11 +117,20 @@ void Game::gameLoop() {
 
         SDL_RenderTexture(Framework::display.renderer(), img, nullptr, &realRect.getSDLFRect());
 
+        for (auto ptr : blocks) {
+            ptr->update(Framework::display.renderer());
+        }
+
         m_playerPtr->update(Framework::display.renderer(), deltaTime, m_screenRect);
         m_ballPtr->update(Framework::display.renderer(), deltaTime);
         // SDL_RenderTextureRotated(Framework::display.renderer(), img, nullptr, &srcRect, angle, nullptr, SDL_FLIP_NONE);
         
         SDL_RenderPresent(Framework::display.renderer());
         m_playerController.resetPressedInputs();
+    }
+
+
+    for (BasicBlock* ptr : blocks) {
+        delete ptr;
     }
 };
