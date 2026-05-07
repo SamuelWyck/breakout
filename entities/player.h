@@ -9,7 +9,12 @@
 
 
 class Player {
+public:
     FRect m_rect{};
+
+
+private:
+    FRect m_bottomRect{};
 
     int m_speed {};
     bool m_movingLeft {false};
@@ -19,7 +24,8 @@ class Player {
 
     bool m_launchBall {false};
     Ball* m_ballPtr {nullptr};
-    float m_ballXSpeedDelta {3.0f};
+    float m_ballXSpeedDelta {2.0f};
+
 
 
 public:
@@ -28,6 +34,8 @@ public:
     void update(SDL_Renderer* renderer, double deltaTime, const FRect& screenRect);
 
     void loadBall(Ball* ballPtr);
+
+    void handleBallBounce(Ball& ball);
 
 
 private:

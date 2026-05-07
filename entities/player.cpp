@@ -1,5 +1,6 @@
 #include <SDL3/SDL_render.h>
 #include "../utils/fRect.h"
+#include "../utils/math.h"
 #include "./player.h"
 #include "./ball.h"
 #include "../controller/playerController.h"
@@ -12,6 +13,10 @@ Player::Player(float centerX, float centerY, int speed, const PlayerController& 
     m_rect.setCenter(centerX, centerY);
     m_rect.setWidth(200);
     m_rect.setHeight(30);
+
+    m_bottomRect.setWidth(200);
+    m_bottomRect.setHeight(15);
+    m_bottomRect.setMidBottom(m_rect.midBottom());
 };
 
 
@@ -25,6 +30,8 @@ void Player::update(SDL_Renderer* renderer, double deltaTime, const FRect& scree
 
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderFillRect(renderer, &m_rect.getSDLFRect());
+    // SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+    // SDL_RenderFillRect(renderer, &m_bottomRect.getSDLFRect());
 };
 
 
@@ -51,6 +58,37 @@ void Player::launchBall() {
     }
     m_ballPtr->launch(ballXSpeedDelta);
     m_ballPtr = nullptr;
+};
+
+
+void Player::handleBallBounce(Ball& ball) {
+    if (m_bottomRect.hasRectIntersection(&ball.m_rect)) {
+        float xDistance {ball.m_rect.centerX() - m_rect.centerX()};
+        if (xDistance < 0.0) {
+            float centerX {m_rect.left() - ball.m_hitbox.radius()};
+            ball.setCenter(centerX, ball.m_rect.centerY());
+            ball.setXSpeed(m_ballXSpeedDelta * -1);
+        } else {
+            float centerX {m_rect.right() + ball.m_hitbox.radius()};
+            ball.setCenter(centerX, ball.m_rect.centerY());
+            ball.setXSpeed(m_ballXSpeedDelta);
+        }
+
+        return;
+    }
+
+
+    float ballXSpeedDelta {0.0f};
+    if (m_movingLeft && !m_movingRight) {
+        ballXSpeedDelta -= m_ballXSpeedDelta;
+    } else if (m_movingRight && !m_movingLeft) {
+        ballXSpeedDelta += m_ballXSpeedDelta;
+    }
+
+    constexpr float ballYSpeedDelta {0.0f};
+    ball.bounceY(ballYSpeedDelta);
+    ball.changeXSpeed(ballXSpeedDelta);
+    ball.setCenter(ball.m_rect.centerX(), m_rect.top() - ball.m_hitbox.radius());
 };
 
 
@@ -82,6 +120,7 @@ void Player::handleInputs(const FRect& screenRect, double deltaTime) {
         }
     }
 
+    m_bottomRect.setMidBottom(m_rect.midBottom());
     if (m_ballPtr != nullptr) {
         positionBall();
     }
