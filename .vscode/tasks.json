@@ -7,8 +7,8 @@
             "args": [
                 "-fdiagnostics-color=always",
                 // "-static",
-                "-static-libstdc++",
-                "-static-libgcc",
+                "-static-libstdc++", // prod flag
+                "-static-libgcc",   // prod flag
                 "-pedantic-errors",
                 "-Wall",
                 "-Weffc++",
