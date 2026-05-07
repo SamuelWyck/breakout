@@ -71,11 +71,11 @@ void Player::handleBallBounce(Ball& ball) {
         if (xDistance < 0.0) {
             float centerX {m_rect.left() - ball.m_hitbox.radius()};
             ball.setCenter(centerX, ball.m_rect.centerY());
-            ball.setXSpeed(m_ballXSpeedDelta * -1);
+            ball.setXSpeed(m_ballXSpeedDelta * -2);
         } else {
             float centerX {m_rect.right() + ball.m_hitbox.radius()};
             ball.setCenter(centerX, ball.m_rect.centerY());
-            ball.setXSpeed(m_ballXSpeedDelta);
+            ball.setXSpeed(m_ballXSpeedDelta * 2);
         }
 
         return;
