@@ -47,6 +47,9 @@ public:
 
     void setCenter(float centerX, float centerY);
     void setCenter(const std::pair<float, float>& center);
+
+
+    void handleBlockCollision(const FRect& blockRect);
 };
 
 

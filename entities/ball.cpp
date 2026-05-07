@@ -122,3 +122,42 @@ void Ball::setCenter(const std::pair<float, float>& center) {
     m_rect.setCenter(centerX, centerY);
     m_hitbox.setCenter(centerX, centerY);
 };
+
+
+void Ball::handleBlockCollision(const FRect& blockRect) {
+    float leftSideDis {m_rect.left() - blockRect.right()};
+    leftSideDis = (leftSideDis < 0.0f) ? -1 * leftSideDis : leftSideDis;
+
+    float rightSideDis {m_rect.right() - blockRect.left()};
+    rightSideDis = (rightSideDis < 0.0f) ? -1 * rightSideDis : rightSideDis;
+
+    float bottomSideDis {m_rect.bottom() - blockRect.top()};
+    bottomSideDis = (bottomSideDis < 0.0f) ? -1 * bottomSideDis : bottomSideDis;
+
+    float topSideDis {m_rect.top() - blockRect.bottom()};
+    topSideDis = (topSideDis < 0.0f) ? -1 * topSideDis : topSideDis;
+
+    float minDistance {leftSideDis};
+    minDistance = (minDistance > rightSideDis) ? rightSideDis : minDistance;
+    minDistance = (minDistance > bottomSideDis) ? bottomSideDis : minDistance;
+    minDistance = (minDistance > topSideDis) ? topSideDis : minDistance;
+
+
+    constexpr float speedDelta {1.0f};
+    if (minDistance == leftSideDis) {
+        bounceX(speedDelta);
+        setCenter(blockRect.right() + m_hitbox.radius(), m_rect.centerY());
+
+    } else if (minDistance == rightSideDis) {
+        bounceX(speedDelta);
+        setCenter(blockRect.left() - m_hitbox.radius(), m_rect.centerY());
+
+    } else if (minDistance == bottomSideDis) {
+        bounceY(speedDelta);
+        setCenter(m_rect.centerX(), blockRect.top() - m_hitbox.radius());
+
+    } else if (minDistance == topSideDis) {
+        bounceY(speedDelta);
+        setCenter(m_rect.centerX(), blockRect.bottom() + m_hitbox.radius());
+    }
+};
