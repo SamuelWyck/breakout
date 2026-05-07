@@ -5,6 +5,7 @@
 #include <SDL3/SDL_render.h>
 #include "../utils/fRect.h"
 #include "../utils/color.h"
+#include "./ball.h"
 
 
 class BasicBlock {
@@ -25,6 +26,8 @@ public:
     bool isDead() const;
 
     void update(SDL_Renderer* renderer);
+
+    bool hasBallCollision(const Ball& ball);
 };
 
 
