@@ -20,22 +20,35 @@ Game::Game()
     static_cast<float>(Framework::display.canvasHeight())
 }, 
 m_playerController{
-    std::unordered_map<std::string, UserInput>{{"LEFT", UserInput{SDL_SCANCODE_A}}, {"RIGHT", UserInput{SDL_SCANCODE_D}}},
+    std::unordered_map<std::string, UserInput>{
+        {"LEFT", UserInput{SDL_SCANCODE_A}}, 
+        {"RIGHT", UserInput{SDL_SCANCODE_D}},
+        {"LAUNCH", UserInput{SDL_SCANCODE_SPACE}}
+    },
     std::unordered_set<std::string>{"LEFT", "RIGHT"}
 } {
 
-    int playerSpeed {5};
+    int playerSpeed {8};
     m_playerPtr = new Player{
         Framework::display.canvasWidth() / 2.0f, 
         Framework::display.canvasHeight() - 50.0f,
         playerSpeed,
         m_playerController
     };
+
+    float ballXSpeed {0};
+    float ballYSpeed {0};
+    float ballRadius {15};
+    float ballCenterCoord {0};
+    m_ballPtr = new Ball{ballCenterCoord, ballCenterCoord, ballRadius, ballXSpeed, ballYSpeed};
+
+    m_playerPtr->loadBall(m_ballPtr);
 };
 
 
 Game::~Game() {
     delete m_playerPtr;
+    delete m_ballPtr;
 };
 
 
@@ -92,6 +105,7 @@ void Game::gameLoop() {
         SDL_RenderTexture(Framework::display.renderer(), img, nullptr, &realRect.getSDLFRect());
 
         m_playerPtr->update(Framework::display.renderer(), deltaTime, m_screenRect);
+        m_ballPtr->update(Framework::display.renderer(), deltaTime);
         // SDL_RenderTextureRotated(Framework::display.renderer(), img, nullptr, &srcRect, angle, nullptr, SDL_FLIP_NONE);
         
         SDL_RenderPresent(Framework::display.renderer());

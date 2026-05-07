@@ -6,11 +6,14 @@
 #include "./utils/fRect.h"
 #include "./controller/playerController.h"
 
+#include "./entities/ball.h"
+
 
 class Game {
     FRect m_screenRect {};
     PlayerController m_playerController{};
     Player* m_playerPtr {nullptr};
+    Ball* m_ballPtr {nullptr};
 
 
 public:
