@@ -316,7 +316,7 @@ std::pair<float, float> FRect::midTop() const {
     return std::pair<float, float>{topX, m_sdlRect.y};
 };
 
-void FRect::setMidTop(std::pair<float, float>& midTop) {
+void FRect::setMidTop(const std::pair<float, float>& midTop) {
     auto [topX, topY] = midTop;
     m_sdlRect.x = topX - (m_sdlRect.w / 2);
     m_sdlRect.y = topY;
@@ -334,7 +334,7 @@ std::pair<float, float> FRect::midBottom() const {
     return std::pair<float, float>{bottomX, bottomY};
 };
 
-void FRect::setMidBottom(std::pair<float, float>& midBottom) {
+void FRect::setMidBottom(const std::pair<float, float>& midBottom) {
     auto [bottomX, bottomY] = midBottom;
     m_sdlRect.x = bottomX - (m_sdlRect.w / 2);
     m_sdlRect.y = bottomY - m_sdlRect.h;
@@ -351,7 +351,7 @@ std::pair<float, float> FRect::midLeft() const {
     return std::pair<float, float>{m_sdlRect.x, leftY};
 };
 
-void FRect::setMidLeft(std::pair<float, float>& midLeft) {
+void FRect::setMidLeft(const std::pair<float, float>& midLeft) {
     auto [leftX, leftY] = midLeft;
     m_sdlRect.x = leftX;
     m_sdlRect.y = leftY - (m_sdlRect.h / 2);
@@ -369,7 +369,7 @@ std::pair<float, float> FRect::midRight() const {
     return std::pair<float, float>{rightX, rightY};
 };
 
-void FRect::setMidRight(std::pair<float, float>& midRight) {
+void FRect::setMidRight(const std::pair<float, float>& midRight) {
     auto [rightX, rightY] = midRight;
     m_sdlRect.x = rightX - m_sdlRect.w;
     m_sdlRect.y = rightY - (m_sdlRect.h / 2);
@@ -403,7 +403,7 @@ std::pair<float, float> FRect::size() const {
     return std::pair<float, float>{m_sdlRect.w, m_sdlRect.h};
 };
 
-void FRect::setSize(std::pair<float, float>& size) {
+void FRect::setSize(const std::pair<float, float>& size) {
     auto [width, height] = size;
     m_sdlRect.w = width;
     m_sdlRect.h = height;

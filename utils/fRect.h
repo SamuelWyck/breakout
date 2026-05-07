@@ -129,22 +129,22 @@ public:
 
 
     std::pair<float, float> midTop() const;
-    void setMidTop(std::pair<float, float>& midTop);
+    void setMidTop(const std::pair<float, float>& midTop);
     void setMidTop(float topX, float topY);
 
 
     std::pair<float, float> midBottom() const;
-    void setMidBottom(std::pair<float, float>& midBottom);
+    void setMidBottom(const std::pair<float, float>& midBottom);
     void setMidBottom(float bottomX, float bottomY);
 
 
     std::pair<float, float> midLeft() const;
-    void setMidLeft(std::pair<float, float>& midLeft);
+    void setMidLeft(const std::pair<float, float>& midLeft);
     void setMidLeft(float leftX, float leftY);
 
 
     std::pair<float, float> midRight() const;
-    void setMidRight(std::pair<float, float>& midRight);
+    void setMidRight(const std::pair<float, float>& midRight);
     void setMidRight(float rightX, float rightY);
 
 
@@ -156,7 +156,7 @@ public:
     void setHeight(float height);
 
     std::pair<float, float> size() const;
-    void setSize(std::pair<float, float>& size);
+    void setSize(const std::pair<float, float>& size);
     void setSize(float width, float height);
 
     // end getters and setters
