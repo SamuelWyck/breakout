@@ -52,6 +52,10 @@ public:
 
 
     void handleBlockCollision(const FRect& blockRect);
+
+
+private:
+    float clampSpeed(float speed);
 };
 
 

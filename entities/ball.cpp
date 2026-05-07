@@ -48,11 +48,7 @@ void Ball::bounceY(float ySpeedDelta) {
         m_ySpeed = (m_ySpeed < 0.0) ? m_ySpeed - ySpeedDelta : m_ySpeed + ySpeedDelta;
     }
 
-    if (m_ySpeed > m_maxSpeedPos) {
-        m_ySpeed = m_maxSpeedPos;
-    } else if (m_ySpeed < m_maxSpeedNeg) {
-        m_ySpeed = m_maxSpeedNeg;
-    }
+    m_ySpeed = clampSpeed(m_ySpeed);
 };
 
 
@@ -64,31 +60,19 @@ void Ball::bounceX(float xSpeedDelta) {
         m_xSpeed = (m_xSpeed < 0.0) ? m_xSpeed - xSpeedDelta : m_xSpeed + xSpeedDelta;
     }
 
-    if (m_xSpeed > m_maxSpeedPos) {
-        m_xSpeed = m_maxSpeedPos;
-    } else if (m_xSpeed < m_maxSpeedNeg) {
-        m_xSpeed = m_maxSpeedNeg;
-    }
+    m_xSpeed = clampSpeed(m_xSpeed);
 };
 
 
 void Ball::changeXSpeed(float deltaSpeed) {
     m_xSpeed += deltaSpeed;
-    if (m_xSpeed > m_maxSpeedPos) {
-        m_xSpeed = m_maxSpeedPos;
-    } else if (m_xSpeed < m_maxSpeedNeg) {
-        m_xSpeed = m_maxSpeedNeg;
-    }
+    m_xSpeed = clampSpeed(m_xSpeed);
 };
 
 
 void Ball::changeYSpeed(float deltaSpeed) {
     m_ySpeed += deltaSpeed;
-    if (m_ySpeed > m_maxSpeedPos) {
-        m_ySpeed = m_maxSpeedPos;
-    } else if (m_ySpeed < m_maxSpeedNeg) {
-        m_ySpeed = m_maxSpeedNeg;
-    }
+    m_ySpeed = clampSpeed(m_ySpeed);
 };
 
 
@@ -98,12 +82,7 @@ float Ball::xSpeed() const {
 
 
 void Ball::setXSpeed(float xSpeed) {
-    m_xSpeed = xSpeed;
-    if (m_xSpeed > m_maxSpeedPos) {
-        m_xSpeed = m_maxSpeedPos;
-    } else if (m_xSpeed < m_maxSpeedNeg) {
-        m_xSpeed = m_maxSpeedNeg;
-    }
+    m_xSpeed = clampSpeed(xSpeed);
 };
 
 
@@ -113,12 +92,7 @@ float Ball::ySpeed() const {
 
 
 void Ball::setYSpeed(float ySpeed) {
-    m_ySpeed = ySpeed;
-    if (m_ySpeed > m_maxSpeedPos) {
-        m_ySpeed = m_maxSpeedPos;
-    } else if (m_ySpeed < m_maxSpeedNeg) {
-        m_ySpeed = m_maxSpeedNeg;
-    }
+    m_ySpeed = clampSpeed(ySpeed);
 };
 
 
@@ -170,4 +144,14 @@ void Ball::handleBlockCollision(const FRect& blockRect) {
         bounceY(speedDelta);
         setCenter(m_rect.centerX(), blockRect.bottom() + m_hitbox.radius());
     }
+};
+
+
+float Ball::clampSpeed(float speed) {
+    if (speed > m_maxSpeedPos) {
+        speed = m_maxSpeedPos;
+    } else if (speed < m_maxSpeedNeg) {
+        speed = m_maxSpeedNeg;
+    }
+    return speed;
 };
