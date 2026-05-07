@@ -43,4 +43,22 @@ namespace Math {
         float y {radius * sinf(angle)};
         return std::pair<float, float>{x, y};
     };
+
+
+    float remap(float srcMin, float srcMax, float dstMin, float dstMax, float value) {
+        float percentOfRange {(value - srcMin) / (srcMax - srcMin)};
+        return percentOfRange * (dstMax - dstMin) + dstMin;
+    };
+
+
+    double remap(double srcMin, double srcMax, double dstMin, double dstMax, double value) {
+        double percentOfRange {(value - srcMin) / (srcMax - srcMin)};
+        return percentOfRange * (dstMax - dstMin) + dstMin;
+    };
+
+
+    double remap(int srcMin, int srcMax, int dstMin, int dstMax, int value) {
+        double percentOfRange {(value - srcMin) / static_cast<double>((srcMax - srcMin))};
+        return percentOfRange * (dstMax - dstMin) + dstMin;
+    };
 };

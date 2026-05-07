@@ -25,6 +25,11 @@ namespace Math {
 
     // returns a pair containing the x and y coords, angle is expected in degrees
     std::pair<float, float> toCartesianCoordsDeg(float radius, float angle);
+
+    // takes value in range srcMin-srcMax and remaps it to range dstMin-dstMax
+    float remap(float srcMin, float srcMax, float dstMin, float dstMax, float value);
+    double remap(double srcMin, double srcMax, double dstMin, double dstMax, double value);
+    double remap(int srcMin, int srcMax, int dstMin, int dstMax, int value);
 };
 
 
