@@ -62,6 +62,10 @@ void Player::launchBall() {
 
 
 void Player::handleBallBounce(Ball& ball) {
+    if (&ball == m_ballPtr) {
+        return;
+    }
+
     if (m_bottomRect.hasRectIntersection(&ball.m_rect)) {
         float xDistance {ball.m_rect.centerX() - m_rect.centerX()};
         if (xDistance < 0.0) {
