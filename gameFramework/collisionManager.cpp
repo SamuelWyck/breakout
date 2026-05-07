@@ -1,6 +1,8 @@
+#include <vector>
 #include "./collisionManager.h"
 #include "../entities/ball.h"
 #include "../entities/player.h"
+#include "../entities/basicBlock.h"
 
 
 
@@ -9,11 +11,17 @@ CollisionManager::CollisionManager(const FRect& screenRect)
 };
 
 
-void CollisionManager::handleCollisions(Player& player, Ball& ball) {
+void CollisionManager::handleCollisions(Player& player, Ball& ball, const std::vector<BasicBlock*>& blocks) {
     handleBallScreenCollisions(ball);
 
     if (player.m_rect.hasCircleIntersection(&ball.m_hitbox)) {
         player.handleBallBounce(ball);
+    }
+
+    for (BasicBlock* blockPtr : blocks) {
+        if (blockPtr->hasBallCollision(ball)) {
+            ball.handleBlockCollision(blockPtr->m_rect);
+        }
     }
 };
 

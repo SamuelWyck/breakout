@@ -2,9 +2,11 @@
 #define COLLISION_MANAGER_H
 
 
+#include <vector>
 #include "../utils/fRect.h"
 #include "../entities/ball.h"
 #include "../entities/player.h"
+#include "../entities/basicBlock.h"
 
 
 class CollisionManager {
@@ -16,7 +18,7 @@ class CollisionManager {
 public:
     CollisionManager(const FRect& screenRect);
 
-    void handleCollisions(Player& player, Ball& ball);
+    void handleCollisions(Player& player, Ball& ball, const std::vector<BasicBlock*>& blocks);
 
 
 private:
