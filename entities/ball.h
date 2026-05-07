@@ -41,7 +41,9 @@ public:
     void changeYSpeed(float deltaSpeed);
 
     
+    float xSpeed() const;
     void setXSpeed(float xSpeed);
+    float ySpeed() const;
     void setYSpeed(float ySpeed);
 
 

@@ -92,6 +92,11 @@ void Ball::changeYSpeed(float deltaSpeed) {
 };
 
 
+float Ball::xSpeed() const {
+    return m_xSpeed;
+};
+
+
 void Ball::setXSpeed(float xSpeed) {
     m_xSpeed = xSpeed;
     if (m_xSpeed > m_maxSpeedPos) {
@@ -99,6 +104,11 @@ void Ball::setXSpeed(float xSpeed) {
     } else if (m_xSpeed < m_maxSpeedNeg) {
         m_xSpeed = m_maxSpeedNeg;
     }
+};
+
+
+float Ball::ySpeed() const {
+    return m_ySpeed;
 };
 
 
