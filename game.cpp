@@ -8,6 +8,7 @@
 #include "./utils/clock.h"
 #include "./entities/player.h"
 #include "./controller/playerController.h"
+#include "./gameFramework/collisionManager.h"
 #include "./controller/userInput.h"
 #include "./utils/fRect.h"
 
@@ -28,7 +29,7 @@ m_playerController{
     std::unordered_set<std::string>{"LEFT", "RIGHT"}
 } {
 
-    int playerSpeed {8};
+    constexpr int playerSpeed {9};
     m_playerPtr = new Player{
         Framework::display.canvasWidth() / 2.0f, 
         Framework::display.canvasHeight() - 50.0f,
@@ -36,19 +37,24 @@ m_playerController{
         m_playerController
     };
 
-    float ballXSpeed {0};
-    float ballYSpeed {0};
-    float ballRadius {15};
-    float ballCenterCoord {0};
+    constexpr float ballXSpeed {0};
+    constexpr float ballYSpeed {0};
+    constexpr float ballRadius {15};
+    constexpr float ballCenterCoord {0};
     m_ballPtr = new Ball{ballCenterCoord, ballCenterCoord, ballRadius, ballXSpeed, ballYSpeed};
 
     m_playerPtr->loadBall(m_ballPtr);
+
+
+    // set up collision manager
+    m_collisionManagerPtr = new CollisionManager{m_screenRect};
 };
 
 
 Game::~Game() {
     delete m_playerPtr;
     delete m_ballPtr;
+    delete m_collisionManagerPtr;
 };
 
 
@@ -96,6 +102,8 @@ void Game::gameLoop() {
             }
         }
 
+
+        m_collisionManagerPtr->handleCollisions(*m_playerPtr, *m_ballPtr);
 
         realRect.pivot(450, 450, deltaTime * 2);
 
