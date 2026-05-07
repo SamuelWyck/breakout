@@ -29,7 +29,7 @@ void Ball::update(SDL_Renderer* renderer, double deltaTime) {
 
 
 void Ball::launch(float xSpeedDelta) {
-    m_ySpeed = -3.0f;
+    m_ySpeed = m_maxSpeedNeg;
     m_xSpeed += xSpeedDelta;
 };
 
@@ -37,6 +37,78 @@ void Ball::launch(float xSpeedDelta) {
 void Ball::stop() {
     m_xSpeed = 0.0f;
     m_ySpeed = 0.0f;
+};
+
+
+void Ball::bounceY(float ySpeedDelta) {
+    m_ySpeed *= -1.0f;
+    if (ySpeedDelta < 0.0) {
+        m_ySpeed = (m_ySpeed < 0.0) ? m_ySpeed + ySpeedDelta : m_ySpeed - ySpeedDelta;
+    } else {
+        m_ySpeed = (m_ySpeed < 0.0) ? m_ySpeed - ySpeedDelta : m_ySpeed + ySpeedDelta;
+    }
+
+    if (m_ySpeed > m_maxSpeedPos) {
+        m_ySpeed = m_maxSpeedPos;
+    } else if (m_ySpeed < m_maxSpeedNeg) {
+        m_ySpeed = m_maxSpeedNeg;
+    }
+};
+
+
+void Ball::bounceX(float xSpeedDelta) {
+    m_xSpeed *= -1.0f;
+    if (xSpeedDelta < 0.0) {
+        m_xSpeed = (m_xSpeed < 0.0) ? m_xSpeed + xSpeedDelta : m_xSpeed - xSpeedDelta;
+    } else {
+        m_xSpeed = (m_xSpeed < 0.0) ? m_xSpeed - xSpeedDelta : m_xSpeed + xSpeedDelta;
+    }
+
+    if (m_xSpeed > m_maxSpeedPos) {
+        m_xSpeed = m_maxSpeedPos;
+    } else if (m_xSpeed < m_maxSpeedNeg) {
+        m_xSpeed = m_maxSpeedNeg;
+    }
+};
+
+
+void Ball::changeXSpeed(float deltaSpeed) {
+    m_xSpeed += deltaSpeed;
+    if (m_xSpeed > m_maxSpeedPos) {
+        m_xSpeed = m_maxSpeedPos;
+    } else if (m_xSpeed < m_maxSpeedNeg) {
+        m_xSpeed = m_maxSpeedNeg;
+    }
+};
+
+
+void Ball::changeYSpeed(float deltaSpeed) {
+    m_ySpeed += deltaSpeed;
+    if (m_ySpeed > m_maxSpeedPos) {
+        m_ySpeed = m_maxSpeedPos;
+    } else if (m_ySpeed < m_maxSpeedNeg) {
+        m_ySpeed = m_maxSpeedNeg;
+    }
+};
+
+
+void Ball::setXSpeed(float xSpeed) {
+    m_xSpeed = xSpeed;
+    if (m_xSpeed > m_maxSpeedPos) {
+        m_xSpeed = m_maxSpeedPos;
+    } else if (m_xSpeed < m_maxSpeedNeg) {
+        m_xSpeed = m_maxSpeedNeg;
+    }
+};
+
+
+void Ball::setYSpeed(float ySpeed) {
+    m_ySpeed = ySpeed;
+    if (m_ySpeed > m_maxSpeedPos) {
+        m_ySpeed = m_maxSpeedPos;
+    } else if (m_ySpeed < m_maxSpeedNeg) {
+        m_ySpeed = m_maxSpeedNeg;
+    }
 };
 
 
