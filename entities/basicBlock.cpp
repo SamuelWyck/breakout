@@ -38,5 +38,10 @@ void BasicBlock::update(SDL_Renderer* renderer) {
 
 
 bool BasicBlock::hasBallCollision(const Ball& ball) {
-    return ball.m_hitbox.hasRectIntersection(&m_rect.getSDLFRect());
+    if (!ball.m_hitbox.hasRectIntersection(&m_rect.getSDLFRect())) {
+        return false;
+    }
+
+    m_health -= 1;
+    return true;
 };
