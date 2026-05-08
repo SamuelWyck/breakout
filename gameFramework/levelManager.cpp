@@ -102,8 +102,37 @@ void LevelManager::updateLevel(SDL_Renderer* renderer, double deltaTime) {
         ballPtr->update(renderer, deltaTime);
     }
 
+    bool removeBlock {false};
     for (BasicBlock* blockPtr : m_blocks) {
+        if (blockPtr->isDead()) {
+            removeBlock = true;
+            continue;
+        }
+
         blockPtr->update(renderer);
+    }
+
+    if (removeBlock) {
+        clearDeadBlocks();
+    }
+};
+
+
+void LevelManager::clearDeadBlocks() {
+    std::vector<BasicBlock*> deadBlocks{};
+    std::vector<BasicBlock*> liveBlocks{};
+    for (BasicBlock* blockPtr : m_blocks) {
+        if (blockPtr->isDead()) {
+            deadBlocks.push_back(blockPtr);
+        } else {
+            liveBlocks.push_back(blockPtr);
+        }
+    }
+
+    m_blocks = liveBlocks;
+
+    for (BasicBlock* blockPtr : deadBlocks) {
+        delete blockPtr;
     }
 };
 

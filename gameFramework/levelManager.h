@@ -88,6 +88,8 @@ private:
 
     void clearLevel();
 
+    void clearDeadBlocks();
+
     void initializeBall();
 };
 
