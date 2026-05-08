@@ -26,6 +26,10 @@ void CollisionManager::handleCollisions(Player& player, LevelManager::LevelObjec
 
 
         for (BasicBlock* blockPtr : blocks) {
+            if (blockPtr->isDead()) {
+                continue;
+            }
+
             if (blockPtr->hasBallCollision(*ballPtr)) {
                 ballPtr->handleBlockCollision(blockPtr->m_rect);
             }
