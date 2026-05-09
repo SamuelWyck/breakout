@@ -123,6 +123,7 @@ void LevelManager::clearDeadBlocks() {
     for (BasicBlock* blockPtr : m_blocks) {
         if (blockPtr->isDead()) {
             delete blockPtr;
+            blockPtr = nullptr;
         } else {
             liveBlocks.push_back(blockPtr);
         }
