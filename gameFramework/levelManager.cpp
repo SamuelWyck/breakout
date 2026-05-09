@@ -119,21 +119,16 @@ void LevelManager::updateLevel(SDL_Renderer* renderer, double deltaTime) {
 
 
 void LevelManager::clearDeadBlocks() {
-    std::vector<BasicBlock*> deadBlocks{};
     std::vector<BasicBlock*> liveBlocks{};
     for (BasicBlock* blockPtr : m_blocks) {
         if (blockPtr->isDead()) {
-            deadBlocks.push_back(blockPtr);
+            delete blockPtr;
         } else {
             liveBlocks.push_back(blockPtr);
         }
     }
 
     m_blocks = liveBlocks;
-
-    for (BasicBlock* blockPtr : deadBlocks) {
-        delete blockPtr;
-    }
 };
 
 
