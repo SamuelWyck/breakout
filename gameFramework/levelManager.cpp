@@ -67,7 +67,9 @@ void LevelManager::parseBlock(std::string_view token, int row, int col) {
 void LevelManager::initializeBall() {
     constexpr float ballSpeed {0};
     constexpr float ballCenterCoord{0};
-    m_balls.push_back(new Ball{ballCenterCoord, ballCenterCoord, m_ballRadius, ballSpeed, ballSpeed});
+    m_balls.push_back(
+        new Ball{Framework::images.ballImg, ballCenterCoord, ballCenterCoord, m_ballRadius, ballSpeed, ballSpeed}
+    );
     m_playerPtr->loadBall(m_balls[0]);
 };
 

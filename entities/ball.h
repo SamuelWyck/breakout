@@ -15,6 +15,8 @@ public:
 
 
 private:
+    SDL_Texture* m_img {nullptr};
+
     float m_xSpeed {0.0f};
     float m_ySpeed {0.0f};
     float m_maxSpeedPos {5.5f};
@@ -22,7 +24,7 @@ private:
 
 
 public:
-    Ball(float centerX, float centerY, float radius, float xSpeed, float ySpeed);
+    Ball(SDL_Texture* img, float centerX, float centerY, float radius, float xSpeed, float ySpeed);
     Ball();
 
 

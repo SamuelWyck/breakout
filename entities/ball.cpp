@@ -4,8 +4,8 @@
 
 
 
-Ball::Ball(float centerX, float centerY, float radius, float xSpeed, float ySpeed) 
-    : m_hitbox{centerX, centerY, radius}, m_xSpeed{xSpeed}, m_ySpeed{ySpeed} 
+Ball::Ball(SDL_Texture* img, float centerX, float centerY, float radius, float xSpeed, float ySpeed) 
+    : m_hitbox{centerX, centerY, radius}, m_img{img}, m_xSpeed{xSpeed}, m_ySpeed{ySpeed} 
 {
     m_rect.setCenter(centerX, centerY);
     m_rect.setSize(radius * 2, radius * 2);    
@@ -23,8 +23,7 @@ void Ball::update(SDL_Renderer* renderer, double deltaTime) {
     m_rect.setY(m_rect.y() + realYSpeed);
     m_hitbox.setCenter(m_rect.center());
 
-    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-    SDL_RenderFillRect(renderer, &m_rect.getSDLFRect());
+    SDL_RenderTexture(renderer, m_img, nullptr, &m_rect.getSDLFRect());
 };
 
 

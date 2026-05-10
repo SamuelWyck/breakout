@@ -20,6 +20,7 @@ Images::Images(SDL_Renderer* renderer) {
     // non block entites
 
     playerImg = IMG_LoadTexture(renderer, fs::absolute(fs::path{entityImgPath + "/player.png"}).string().data());
+    ballImg = IMG_LoadTexture(renderer, fs::absolute(fs::path{entityImgPath + "/ball.png"}).string().data());
 
 
     // other images
@@ -31,4 +32,7 @@ Images::Images(SDL_Renderer* renderer) {
 
 Images::~Images() {
     SDL_DestroyTexture(basicBlockImg);
+    SDL_DestroyTexture(playerImg);
+    SDL_DestroyTexture(ballImg);
+    SDL_DestroyTexture(backgroundImg);
 };

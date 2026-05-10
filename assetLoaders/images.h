@@ -10,6 +10,7 @@ public:
     SDL_Texture* basicBlockImg {nullptr};
     SDL_Texture* playerImg {nullptr};
     SDL_Texture* backgroundImg {nullptr};
+    SDL_Texture* ballImg {nullptr};
 
     
 
