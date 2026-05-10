@@ -33,6 +33,7 @@ m_playerController{
     m_playerPtr = new Player{
         Framework::display.canvasWidth() / 2.0f, 
         Framework::display.canvasHeight() - 50.0f,
+        Framework::images.playerImg,
         playerSpeed,
         m_playerController
     };
@@ -104,10 +105,16 @@ void Game::gameLoop() {
 
         SDL_SetRenderDrawColor(Framework::display.renderer(), 0, 0, 0, 255);
         SDL_RenderClear(Framework::display.renderer());
+        SDL_RenderTexture(
+            Framework::display.renderer(), 
+            Framework::images.backgroundImg, 
+            nullptr, &m_screenRect.getSDLFRect()
+        );
 
 
         m_levelManagerPtr->updateLevel(Framework::display.renderer(), deltaTime);
         m_playerPtr->update(Framework::display.renderer(), deltaTime, m_screenRect);
+
         // SDL_RenderTextureRotated(Framework::display.renderer(), img, nullptr, &srcRect, angle, nullptr, SDL_FLIP_NONE);
         
         SDL_RenderPresent(Framework::display.renderer());
