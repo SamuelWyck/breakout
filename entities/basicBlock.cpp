@@ -8,7 +8,7 @@ BasicBlock::BasicBlock(float x, float y, const Color& color, int health, int sco
     : m_color{color}, m_health{health}, m_scoreValue{scoreVal} 
 {
     m_rect.setTopleft(x, y);
-    m_rect.setSize(80, 40);
+    m_rect.setSize(96, 36);
 };
 
 
