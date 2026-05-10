@@ -37,13 +37,13 @@ public:
 
     void handleBallBounce(Ball& ball);
 
+    void launchBall();
+
 
 private:
     void handleInputs(const FRect& screenRect, double deltaTime);
 
     void positionBall();
-
-    void launchBall();
 };
 
 
