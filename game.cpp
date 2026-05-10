@@ -3,7 +3,6 @@
 #include <vector>
 #include <string>
 #include <SDL3/SDL.h>
-#include <SDL3_image/SDL_image.h>
 #include "./game.h"
 #include "./framework/framework.h"
 #include "./utils/clock.h"
@@ -13,7 +12,6 @@
 #include "./gameFramework/levelManager.h"
 #include "./controller/userInput.h"
 
-#include "./utils/fRect.h"
 
 
 Game::Game() 
@@ -70,14 +68,6 @@ void Game::startGame() {
 
 void Game::gameLoop() {
     bool running {true};
-    SDL_Texture* img {IMG_LoadTexture(Framework::display.renderer(), "C:\\Users\\samaw\\.vscode\\breakout\\wall2.png")};
-    SDL_SetTextureScaleMode(img, SDL_SCALEMODE_PIXELART);
-    if (!img) {
-        SDL_Log(SDL_GetError());
-    }
-
-    FRect realRect{500, 500, 40, 40};
-
     Clock clock{};
 
     while (running) {
@@ -107,18 +97,16 @@ void Game::gameLoop() {
             }
         }
 
+
         LevelManager::LevelObjects levelObjects{m_levelManagerPtr->getLevelObjects()};
         m_collisionManagerPtr->handleCollisions(*m_playerPtr, levelObjects);
 
-        realRect.pivot(450, 450, deltaTime * 2);
 
         SDL_SetRenderDrawColor(Framework::display.renderer(), 0, 0, 0, 255);
         SDL_RenderClear(Framework::display.renderer());
 
-        SDL_RenderTexture(Framework::display.renderer(), img, nullptr, &realRect.getSDLFRect());
 
         m_levelManagerPtr->updateLevel(Framework::display.renderer(), deltaTime);
-
         m_playerPtr->update(Framework::display.renderer(), deltaTime, m_screenRect);
         // SDL_RenderTextureRotated(Framework::display.renderer(), img, nullptr, &srcRect, angle, nullptr, SDL_FLIP_NONE);
         
