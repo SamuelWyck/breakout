@@ -14,6 +14,7 @@
 #include "../entities/ball.h"
 #include "../entities/player.h"
 #include "../framework/colors.h"
+#include "../framework/framework.h"
 
 
 class LevelManager {
@@ -60,7 +61,7 @@ private:
     static constexpr int blockX {0};
     static constexpr int blockY {0};
     std::unordered_map<std::string, BasicBlock> m_blockMap{
-        {"B", BasicBlock{blockX, blockY, Color{}, basicBlockHealth, basicBlockScore}}
+        {"B", BasicBlock{blockX, blockY, Framework::images.basicBlockImg, Color{}, basicBlockHealth, basicBlockScore}}
     };
 
 
