@@ -6,8 +6,8 @@
 #include "./utils/fRect.h"
 #include "./controller/playerController.h"
 #include "./gameFramework/collisionManager.h"
+#include "./gameFramework/levelManager.h"
 
-#include "./entities/ball.h"
 
 
 class Game {
@@ -15,10 +15,10 @@ class Game {
 
     PlayerController m_playerController{};
 
-    CollisionManager* m_collisionManagerPtr{};
+    CollisionManager* m_collisionManagerPtr{nullptr};
+    LevelManager* m_levelManagerPtr{nullptr};
 
     Player* m_playerPtr {nullptr};
-    Ball* m_ballPtr {nullptr};
 
 
 public:

@@ -50,12 +50,17 @@ void Player::positionBall() {
 
 
 void Player::launchBall() {
+    if (m_ballPtr == nullptr) {
+        return;
+    }
+
     float ballXSpeedDelta {0.0f};
     if (m_movingLeft && !m_movingRight) {
         ballXSpeedDelta = -1 * m_ballXSpeedDelta;
     } else if (m_movingRight && !m_movingLeft) {
         ballXSpeedDelta = m_ballXSpeedDelta;
     }
+    
     m_ballPtr->launch(ballXSpeedDelta);
     m_ballPtr = nullptr;
 };

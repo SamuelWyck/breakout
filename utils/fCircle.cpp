@@ -114,9 +114,9 @@ bool FCircle::hasRectIntersection(const FRect* rect) const {
     float yDisToCircleEdge {m_radius * sinf(angleToRect)};
 
     SDL_FPoint edgePoint{m_centerX + xDisToCircleEdge, m_centerY + yDisToCircleEdge};
-    SDL_FPoint centerPoint{m_centerX, m_centerY};
+    float distanceBetweenCenters {sqrtf((oppositeDis * oppositeDis) + (adjacentDis * adjacentDis))};
 
-    return SDL_PointInRectFloat(&edgePoint, &rect->getSDLFRect()) || SDL_PointInRectFloat(&centerPoint, &rect->getSDLFRect());
+    return SDL_PointInRectFloat(&edgePoint, &rect->getSDLFRect()) || distanceBetweenCenters <= m_radius;
 };
 
 

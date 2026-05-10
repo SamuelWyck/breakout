@@ -7,6 +7,7 @@
 #include "../entities/ball.h"
 #include "../entities/player.h"
 #include "../entities/basicBlock.h"
+#include "./levelManager.h"
 
 
 class CollisionManager {
@@ -18,7 +19,7 @@ class CollisionManager {
 public:
     CollisionManager(const FRect& screenRect);
 
-    void handleCollisions(Player& player, Ball& ball, const std::vector<BasicBlock*>& blocks);
+    void handleCollisions(Player& player, LevelManager::LevelObjects& levelObjects);
 
 
 private:

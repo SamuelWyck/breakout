@@ -10,11 +10,10 @@
 #include "./entities/player.h"
 #include "./controller/playerController.h"
 #include "./gameFramework/collisionManager.h"
+#include "./gameFramework/levelManager.h"
 #include "./controller/userInput.h"
 
 #include "./utils/fRect.h"
-#include "./entities/basicBlock.h"
-#include "./utils/color.h"
 
 
 Game::Game() 
@@ -40,28 +39,31 @@ m_playerController{
         m_playerController
     };
 
-    constexpr float ballXSpeed {0};
-    constexpr float ballYSpeed {0};
-    constexpr float ballRadius {15};
-    constexpr float ballCenterCoord {0};
-    m_ballPtr = new Ball{ballCenterCoord, ballCenterCoord, ballRadius, ballXSpeed, ballYSpeed};
-
-    m_playerPtr->loadBall(m_ballPtr);
-
 
     // set up collision manager
     m_collisionManagerPtr = new CollisionManager{m_screenRect};
+
+
+    // set up level manager
+    constexpr int levelX {128};
+    constexpr int levelY {80};
+    constexpr int tileWidth {100};
+    constexpr int tileHeight {40};
+    constexpr int blockWidth {96};
+    constexpr int blockHeight {36};
+    m_levelManagerPtr = new LevelManager{levelX, levelY, tileWidth, tileHeight, blockWidth, blockHeight, m_playerPtr};
 };
 
 
 Game::~Game() {
-    delete m_playerPtr;
-    delete m_ballPtr;
     delete m_collisionManagerPtr;
+    delete m_levelManagerPtr;
+    delete m_playerPtr;
 };
 
 
 void Game::startGame() {
+    m_levelManagerPtr->loadLevel(0);
     gameLoop();
 };
 
@@ -75,8 +77,6 @@ void Game::gameLoop() {
     }
 
     FRect realRect{500, 500, 40, 40};
-    std::vector<BasicBlock*> blocks{};
-    blocks.push_back(new BasicBlock{700, 500, Color{0, 0, 255}, 1, 10});
 
     Clock clock{};
 
@@ -107,8 +107,8 @@ void Game::gameLoop() {
             }
         }
 
-
-        m_collisionManagerPtr->handleCollisions(*m_playerPtr, *m_ballPtr, blocks);
+        LevelManager::LevelObjects levelObjects{m_levelManagerPtr->getLevelObjects()};
+        m_collisionManagerPtr->handleCollisions(*m_playerPtr, levelObjects);
 
         realRect.pivot(450, 450, deltaTime * 2);
 
@@ -117,20 +117,12 @@ void Game::gameLoop() {
 
         SDL_RenderTexture(Framework::display.renderer(), img, nullptr, &realRect.getSDLFRect());
 
-        for (auto ptr : blocks) {
-            ptr->update(Framework::display.renderer());
-        }
+        m_levelManagerPtr->updateLevel(Framework::display.renderer(), deltaTime);
 
         m_playerPtr->update(Framework::display.renderer(), deltaTime, m_screenRect);
-        m_ballPtr->update(Framework::display.renderer(), deltaTime);
         // SDL_RenderTextureRotated(Framework::display.renderer(), img, nullptr, &srcRect, angle, nullptr, SDL_FLIP_NONE);
         
         SDL_RenderPresent(Framework::display.renderer());
         m_playerController.resetPressedInputs();
-    }
-
-
-    for (BasicBlock* ptr : blocks) {
-        delete ptr;
     }
 };

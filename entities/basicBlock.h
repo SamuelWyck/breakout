@@ -21,9 +21,14 @@ private:
 
 
 public:
-    BasicBlock(float top, float left, const Color& color, int health, int scoreVal);
+    BasicBlock(float x, float y, const Color& color, int health, int scoreVal);
+    BasicBlock();
 
     bool isDead() const;
+
+    void setTopLeft(float x, float y);
+
+    void setColor(const Color& color);
 
     void update(SDL_Renderer* renderer);
 
