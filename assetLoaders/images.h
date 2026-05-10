@@ -2,10 +2,14 @@
 #define IMAGES_H
 
 
+#include <vector>
 #include <SDL3/SDL_render.h>
 
 
 class Images {
+    std::vector<SDL_Texture*> m_images{};
+
+
 public:
     SDL_Texture* basicBlockImg {nullptr};
     SDL_Texture* playerImg {nullptr};

@@ -15,24 +15,27 @@ Images::Images(SDL_Renderer* renderer) {
     // block images
 
     basicBlockImg = IMG_LoadTexture(renderer, fs::absolute(fs::path{blockImgPath + "/basicBlock.png"}).string().data());
+    m_images.push_back(backgroundImg);
 
 
     // non block entites
 
     playerImg = IMG_LoadTexture(renderer, fs::absolute(fs::path{entityImgPath + "/player.png"}).string().data());
+    m_images.push_back(playerImg);
     ballImg = IMG_LoadTexture(renderer, fs::absolute(fs::path{entityImgPath + "/ball.png"}).string().data());
+    m_images.push_back(ballImg);
 
 
     // other images
 
     backgroundImg = IMG_LoadTexture(renderer, fs::absolute(fs::path{otherImgPath + "/backgroundImg.png"}).string().data());
+    m_images.push_back(backgroundImg);
 };
 
 
 
 Images::~Images() {
-    SDL_DestroyTexture(basicBlockImg);
-    SDL_DestroyTexture(playerImg);
-    SDL_DestroyTexture(ballImg);
-    SDL_DestroyTexture(backgroundImg);
+    for (SDL_Texture* img : m_images) {
+        SDL_DestroyTexture(img);
+    }
 };
