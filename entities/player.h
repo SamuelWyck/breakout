@@ -15,6 +15,7 @@ public:
 
 private:
     FRect m_bottomRect{};
+    SDL_Texture* m_img {nullptr};
 
     int m_speed {};
     bool m_movingLeft {false};
@@ -29,7 +30,7 @@ private:
 
 
 public:
-    Player(float centerX, float centerY, int speed, const PlayerController& controller);
+    Player(float centerX, float centerY, SDL_Texture* img, int speed, const PlayerController& controller);
 
     void update(SDL_Renderer* renderer, double deltaTime, const FRect& screenRect);
 

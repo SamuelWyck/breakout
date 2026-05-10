@@ -7,15 +7,13 @@
 
 
 
-Player::Player(float centerX, float centerY, int speed, const PlayerController& controller) 
-    : m_speed{speed}, m_controller{controller}
+Player::Player(float centerX, float centerY, SDL_Texture* img, int speed, const PlayerController& controller) 
+    : m_img{img}, m_speed{speed}, m_controller{controller}
 {
     m_rect.setCenter(centerX, centerY);
-    m_rect.setWidth(200);
-    m_rect.setHeight(30);
+    m_rect.setSize(m_img->w, m_img->h);
 
-    m_bottomRect.setWidth(200);
-    m_bottomRect.setHeight(15);
+    m_bottomRect.setSize(m_img->w, m_img->h / 2);
     m_bottomRect.setMidBottom(m_rect.midBottom());
 };
 
@@ -28,10 +26,7 @@ void Player::update(SDL_Renderer* renderer, double deltaTime, const FRect& scree
         launchBall();
     }
 
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_RenderFillRect(renderer, &m_rect.getSDLFRect());
-    // SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-    // SDL_RenderFillRect(renderer, &m_bottomRect.getSDLFRect());
+    SDL_RenderTexture(renderer, m_img, nullptr, &m_rect.getSDLFRect());
 };
 
 

@@ -9,7 +9,7 @@ BasicBlock::BasicBlock(float x, float y, SDL_Texture* img, const Color& color, i
     : m_color{color}, m_img{img}, m_health{health}, m_scoreValue{scoreVal} 
 {
     m_rect.setTopleft(x, y);
-    m_rect.setSize(96, 36);
+    m_rect.setSize(m_img->w, m_img->h);
 };
 
 
