@@ -25,6 +25,8 @@ private:
     int m_levelAreaY {};
     int m_tileWidth {};
     int m_tileHeight {};
+    int m_blockWidth {};
+    int m_blockHeight {};
 
     File m_fileReader{};
     const char m_tileDelim {','};
@@ -64,7 +66,7 @@ private:
 
 
 public:
-    LevelManager(int x, int y, int tileWidth, int tileHeight, Player* playerPtr);
+    LevelManager(int x, int y, int tileWidth, int blockWidth, int blockHeight, int tileHeight, Player* playerPtr);
 
     ~LevelManager();
     LevelManager(const LevelManager&) = delete;

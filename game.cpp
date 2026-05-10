@@ -47,9 +47,11 @@ m_playerController{
     // set up level manager
     constexpr int levelX {128};
     constexpr int levelY {80};
-    constexpr int tileWidth {80};
+    constexpr int tileWidth {100};
     constexpr int tileHeight {40};
-    m_levelManagerPtr = new LevelManager{levelX, levelY, tileWidth, tileHeight, m_playerPtr};
+    constexpr int blockWidth {96};
+    constexpr int blockHeight {36};
+    m_levelManagerPtr = new LevelManager{levelX, levelY, tileWidth, tileHeight, blockWidth, blockHeight, m_playerPtr};
 };
 
 

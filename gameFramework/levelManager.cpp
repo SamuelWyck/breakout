@@ -6,9 +6,14 @@
 
 
 
-LevelManager::LevelManager(int x, int y, int tileWidth, int tileHeight, Player* playerPtr) 
-    : m_levelAreaX{x}, m_levelAreaY{y}, m_tileWidth{tileWidth}, m_tileHeight{tileHeight}, m_playerPtr{playerPtr} 
-    {
+LevelManager::LevelManager(int x, int y, int tileWidth, int tileHeight, int blockWidth, int blockHeight, Player* playerPtr) 
+    : m_levelAreaX{x}, 
+    m_levelAreaY{y}, 
+    m_tileWidth{tileWidth}, 
+    m_tileHeight{tileHeight}, 
+    m_blockWidth{blockWidth},
+    m_blockHeight{blockHeight},
+    m_playerPtr{playerPtr} {
 };
 
 
@@ -50,7 +55,7 @@ void LevelManager::parseBlock(std::string_view token, int row, int col) {
 
     BasicBlock* blockPtr {new BasicBlock{m_blockMap[blockSymbol]}};
     auto [x, y] {calcPixelCoords(row, col)};
-    blockPtr->setTopLeft(x, y);
+    blockPtr->setTopLeft(x + m_blockWidth / 2, y + m_blockHeight / 2);
     blockPtr->setColor(m_colorMap[colorSymbol]);
 
     m_blocks.push_back(blockPtr);
