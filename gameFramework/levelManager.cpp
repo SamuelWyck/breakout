@@ -55,7 +55,9 @@ void LevelManager::parseBlock(std::string_view token, int row, int col) {
 
     BasicBlock* blockPtr {new BasicBlock{m_blockMap[blockSymbol]}};
     auto [x, y] {calcPixelCoords(row, col)};
-    blockPtr->setTopLeft(x + m_blockWidth / 2, y + m_blockHeight / 2);
+    x += (m_tileWidth - m_blockWidth) / 2;
+    y += (m_tileHeight - m_blockHeight) / 2;
+    blockPtr->setTopLeft(x, y);
     blockPtr->setColor(m_colorMap[colorSymbol]);
 
     m_blocks.push_back(blockPtr);

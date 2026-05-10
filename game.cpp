@@ -45,7 +45,7 @@ m_playerController{
 
 
     // set up level manager
-    constexpr int levelX {128};
+    constexpr int levelX {118};
     constexpr int levelY {80};
     constexpr int tileWidth {100};
     constexpr int tileHeight {40};
