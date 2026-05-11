@@ -27,6 +27,8 @@ private:
     Ball* m_ballPtr {nullptr};
     float m_ballXSpeedDelta {2.0f};
 
+    int m_health {3};
+
 
 
 public:
@@ -39,6 +41,8 @@ public:
     void handleBallBounce(Ball& ball);
 
     void launchBall();
+
+    int getHealth() const;
 
 
 private:

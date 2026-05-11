@@ -129,3 +129,8 @@ void Player::handleInputs(const FRect& screenRect, double deltaTime) {
         positionBall();
     }
 };
+
+
+int Player::getHealth() const {
+    return m_health;
+};
