@@ -81,6 +81,9 @@ IBlock* LevelManager::getBlock(const std::string& blockSymbol) {
 
     } else if (blockSymbol == m_wallBlockSymbol) {
         newBlock = new WallBlock{m_blockMap[blockSymbol]};
+
+    } else if (blockSymbol == m_ghostBlockSymbol) {
+        newBlock = new GhostBlock{m_blockMap[blockSymbol]};
     }
 
     return newBlock;
