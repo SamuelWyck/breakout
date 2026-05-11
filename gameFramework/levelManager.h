@@ -11,6 +11,8 @@
 #include "../utils/file.h"
 #include "../utils/color.h"
 #include "../entities/iBlock.h"
+#include "../entities/basicBlock.h"
+#include "../entities/hardBlock.h"
 #include "../entities/ball.h"
 #include "../entities/player.h"
 #include "../framework/colors.h"
@@ -57,15 +59,27 @@ private:
 
 
     static constexpr std::string m_basicBlockSymbol{"B"};
+    static constexpr std::string m_hardBlockSymbol{"HB"};
 
     static constexpr int basicBlockScore {5};
     static constexpr int basicBlockHealth {1};
+    static constexpr int hardBlockScore {20};
+    static constexpr int hardBlockHealth {2};
     static constexpr int blockX {0};
     static constexpr int blockY {0};
     std::unordered_map<std::string, IBlock*> m_blockMap{
         {
             m_basicBlockSymbol, 
             new BasicBlock{blockX, blockY, Framework::images.basicBlockImg, Color{}, basicBlockHealth, basicBlockScore}
+        },
+        {
+            m_hardBlockSymbol,
+            new HardBlock{
+                blockX, blockY, 
+                Framework::images.hardBlockImg, 
+                Framework::images.hardBlockHitImg, 
+                Color{}, hardBlockHealth, hardBlockScore
+            }
         }
     };
 
