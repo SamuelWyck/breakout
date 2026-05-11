@@ -55,6 +55,8 @@ public:
 
     void handleBlockCollision(const FRect& blockRect);
 
+    void handleBallCollision(Ball& ball);
+
 
 private:
     float clampSpeed(float speed);

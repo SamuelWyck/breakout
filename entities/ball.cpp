@@ -146,6 +146,12 @@ void Ball::handleBlockCollision(const FRect& blockRect) {
 };
 
 
+void Ball::handleBallCollision(Ball& ball) {
+    handleBlockCollision(ball.m_rect);
+    ball.handleBlockCollision(m_rect);
+};
+
+
 float Ball::clampSpeed(float speed) {
     if (speed > m_maxSpeedPos) {
         speed = m_maxSpeedPos;
