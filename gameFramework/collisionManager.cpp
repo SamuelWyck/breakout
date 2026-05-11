@@ -35,6 +35,17 @@ void CollisionManager::handleCollisions(Player& player, LevelManager::LevelObjec
                 ballPtr->handleBlockCollision(blockPtr->getRect());
             }
         }
+
+
+        for (Ball* otherBallPtr : balls) {
+            if (ballPtr == otherBallPtr) {
+                continue;
+            }
+
+            if (ballPtr->m_hitbox.hasCircleIntersection(&otherBallPtr->m_hitbox)) {
+                ballPtr->handleBallCollision(*otherBallPtr);
+            }
+        }
     }
 };
 
