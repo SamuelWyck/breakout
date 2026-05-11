@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <SDL3/SDL_render.h>
+#include <SDl3/SDL_surface.h>
 
 
 class Images {
@@ -15,6 +16,7 @@ public:
     SDL_Texture* hardBlockImg {nullptr};
     SDL_Texture* hardBlockHitImg {nullptr};
     SDL_Texture* wallBlockImg {nullptr};
+    SDL_Surface* ghostBlockMask {nullptr};
 
     SDL_Texture* playerImg {nullptr};
     SDL_Texture* ballImg {nullptr};

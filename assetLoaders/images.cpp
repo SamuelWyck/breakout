@@ -2,6 +2,7 @@
 #include <string>
 #include <SDL3_image/SDL_image.h>
 #include <SDL3/SDL_render.h>
+#include <SDL3/SDL_surface.h>
 #include "./images.h"
 
 
@@ -22,6 +23,8 @@ Images::Images(SDL_Renderer* renderer) {
     m_images.push_back(hardBlockHitImg);
     wallBlockImg = IMG_LoadTexture(renderer, fs::absolute(fs::path{blockImgPath + "/wallBlock.png"}).string().data());
     m_images.push_back(wallBlockImg);
+
+    ghostBlockMask = SDL_LoadSurface(fs::absolute(fs::path{blockImgPath + "/ghostBlockMask.png"}).string().data());
 
 
     // non block entites
@@ -44,4 +47,6 @@ Images::~Images() {
     for (SDL_Texture* img : m_images) {
         SDL_DestroyTexture(img);
     }
+
+    SDL_DestroySurface(ghostBlockMask);
 };
