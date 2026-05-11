@@ -16,6 +16,10 @@ Images::Images(SDL_Renderer* renderer) {
 
     basicBlockImg = IMG_LoadTexture(renderer, fs::absolute(fs::path{blockImgPath + "/basicBlock.png"}).string().data());
     m_images.push_back(backgroundImg);
+    hardBlockImg = IMG_LoadTexture(renderer, fs::absolute(fs::path(blockImgPath + "/hardBlock.png")).string().data());
+    m_images.push_back(hardBlockImg);
+    hardBlockHitImg = IMG_LoadTexture(renderer, fs::absolute(fs::path{blockImgPath + "/hardBlockHit.png"}).string().data());
+    m_images.push_back(hardBlockHitImg);
 
 
     // non block entites

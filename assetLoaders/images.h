@@ -12,9 +12,13 @@ class Images {
 
 public:
     SDL_Texture* basicBlockImg {nullptr};
+    SDL_Texture* hardBlockImg {nullptr};
+    SDL_Texture* hardBlockHitImg {nullptr};
+
     SDL_Texture* playerImg {nullptr};
-    SDL_Texture* backgroundImg {nullptr};
     SDL_Texture* ballImg {nullptr};
+    
+    SDL_Texture* backgroundImg {nullptr};
 
     
 
