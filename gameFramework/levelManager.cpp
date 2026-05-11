@@ -4,6 +4,7 @@
 #include "../utils/stringUtility.h"
 #include "../entities/basicBlock.h"
 #include "../entities/hardBlock.h"
+#include "../entities/wallBlock.h"
 
 
 
@@ -77,6 +78,9 @@ IBlock* LevelManager::getBlock(const std::string& blockSymbol) {
 
     } else if (blockSymbol == m_hardBlockSymbol) {
         newBlock = new HardBlock{m_blockMap[blockSymbol]};
+
+    } else if (blockSymbol == m_wallBlockSymbol) {
+        newBlock = new WallBlock{m_blockMap[blockSymbol]};
     }
 
     return newBlock;

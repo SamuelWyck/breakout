@@ -13,6 +13,7 @@
 #include "../entities/iBlock.h"
 #include "../entities/basicBlock.h"
 #include "../entities/hardBlock.h"
+#include "../entities/wallBlock.h"
 #include "../entities/ball.h"
 #include "../entities/player.h"
 #include "../framework/colors.h"
@@ -60,6 +61,7 @@ private:
 
     static constexpr std::string m_basicBlockSymbol{"B"};
     static constexpr std::string m_hardBlockSymbol{"HB"};
+    static constexpr std::string m_wallBlockSymbol{"WB"};
 
     static constexpr int basicBlockScore {5};
     static constexpr int basicBlockHealth {1};
@@ -80,6 +82,10 @@ private:
                 Framework::images.hardBlockHitImg, 
                 Color{}, hardBlockHealth, hardBlockScore
             }
+        },
+        {
+            m_wallBlockSymbol,
+            new WallBlock{blockX, blockY, Framework::images.wallBlockImg, Color{}}
         }
     };
 
