@@ -4,6 +4,7 @@
 #include "../entities/ball.h"
 #include "../entities/player.h"
 #include "../entities/basicBlock.h"
+#include "../entities/iBlock.h"
 #include "./levelManager.h"
 
 
@@ -15,7 +16,7 @@ CollisionManager::CollisionManager(const FRect& screenRect)
 
 void CollisionManager::handleCollisions(Player& player, LevelManager::LevelObjects& levelObjects) {
     std::vector<Ball*>& balls {levelObjects.first};
-    std::vector<BasicBlock*>& blocks{levelObjects.second};
+    std::vector<IBlock*>& blocks{levelObjects.second};
 
     for (Ball* ballPtr : balls) {
         handleBallScreenCollisions(*ballPtr);
@@ -25,13 +26,13 @@ void CollisionManager::handleCollisions(Player& player, LevelManager::LevelObjec
         }
 
 
-        for (BasicBlock* blockPtr : blocks) {
+        for (IBlock* blockPtr : blocks) {
             if (blockPtr->isDead()) {
                 continue;
             }
 
             if (blockPtr->hasBallCollision(*ballPtr)) {
-                ballPtr->handleBlockCollision(blockPtr->m_rect);
+                ballPtr->handleBlockCollision(blockPtr->getRect());
             }
         }
     }

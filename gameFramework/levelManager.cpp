@@ -19,6 +19,11 @@ LevelManager::LevelManager(int x, int y, int tileWidth, int tileHeight, int bloc
 
 LevelManager::~LevelManager() {
     clearLevel();
+
+    for (auto& entry : m_blockMap) {
+        const std::string& key {entry.first};
+        delete m_blockMap[key];
+    }
 };
 
 
@@ -53,14 +58,24 @@ void LevelManager::parseBlock(std::string_view token, int row, int col) {
     const std::string& colorSymbol{(tokenParts.size() > 1) ? tokenParts[colorSymbolIdx] : m_defaultColorSymbol};
 
 
-    BasicBlock* blockPtr {new BasicBlock{m_blockMap[blockSymbol]}};
+    IBlock* blockPtr {getBlock(blockSymbol)};
     auto [x, y] {calcPixelCoords(row, col)};
     x += (m_tileWidth - m_blockWidth) / 2;
     y += (m_tileHeight - m_blockHeight) / 2;
-    blockPtr->setTopLeft(x, y);
+    blockPtr->setTopleft(x, y);
     blockPtr->setColor(m_colorMap[colorSymbol]);
 
     m_blocks.push_back(blockPtr);
+};
+
+
+IBlock* LevelManager::getBlock(const std::string& blockSymbol) {
+    IBlock* newBlock {nullptr};
+    if (blockSymbol == m_basicBlockSymbol) {
+        newBlock = new BasicBlock{m_blockMap[blockSymbol]};
+    }
+
+    return newBlock;
 };
 
 
@@ -99,7 +114,7 @@ void LevelManager::clearLevel() {
     }
     m_balls.clear();
 
-    for (BasicBlock* blockPtr : m_blocks) {
+    for (IBlock* blockPtr : m_blocks) {
         delete blockPtr;
     }
     m_blocks.clear();
@@ -112,7 +127,7 @@ void LevelManager::updateLevel(SDL_Renderer* renderer, double deltaTime) {
     }
 
     bool removeBlock {false};
-    for (BasicBlock* blockPtr : m_blocks) {
+    for (IBlock* blockPtr : m_blocks) {
         if (blockPtr->isDead()) {
             removeBlock = true;
             continue;
@@ -128,8 +143,8 @@ void LevelManager::updateLevel(SDL_Renderer* renderer, double deltaTime) {
 
 
 void LevelManager::clearDeadBlocks() {
-    std::vector<BasicBlock*> liveBlocks{};
-    for (BasicBlock* blockPtr : m_blocks) {
+    std::vector<IBlock*> liveBlocks{};
+    for (IBlock* blockPtr : m_blocks) {
         if (blockPtr->isDead()) {
             delete blockPtr;
         } else {
