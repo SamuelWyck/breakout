@@ -10,4 +10,5 @@ namespace Colors {
     const Color LIME{124, 197, 62};
     const Color GREEN{1, 173, 97};
     const Color BLUE{0, 72, 182};
+    const Color KEY{255, 127, 127};
 };

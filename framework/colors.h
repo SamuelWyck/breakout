@@ -12,6 +12,7 @@ namespace Colors {
     extern const Color LIME;
     extern const Color GREEN;
     extern const Color BLUE;
+    extern const Color KEY;
 };
 
 
