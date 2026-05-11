@@ -1,7 +1,10 @@
+#include <typeinfo>
+#include <exception>
 #include <SDL3/SDL_render.h>
 #include <SDL3_image/SDL_image.h>
 #include "./basicBlock.h"
 #include "./ball.h"
+#include "./iBlock.h"
 
 
 
@@ -17,12 +20,29 @@ BasicBlock::BasicBlock() {
 };
 
 
+BasicBlock::BasicBlock(const IBlock* block) {
+    if (typeid(*block) != typeid(BasicBlock)) {
+        throw std::runtime_error("Wrong underlying block type.\n");
+    }
+
+    const BasicBlock* realBlockPtr {dynamic_cast<const BasicBlock*>(block)};
+
+    m_rect.setTopleft(realBlockPtr->m_rect.topleft());
+    m_rect.setSize(realBlockPtr->m_rect.size());
+    
+    m_color = realBlockPtr->m_color;
+    m_health = realBlockPtr->m_health;
+    m_scoreValue = realBlockPtr->m_scoreValue;
+    m_img = realBlockPtr->m_img;
+};
+
+
 bool BasicBlock::isDead() const {
     return m_health <= 0;
 };
 
 
-void BasicBlock::setTopLeft(float x, float y) {
+void BasicBlock::setTopleft(float x, float y) {
     m_rect.setTopleft(x, y);
 };
 
@@ -46,4 +66,9 @@ bool BasicBlock::hasBallCollision(const Ball& ball) {
 
     m_health -= 1;
     return true;
+};
+
+
+const FRect& BasicBlock::getRect() const {
+    return m_rect;
 };
