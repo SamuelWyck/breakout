@@ -1,6 +1,6 @@
 B,B,B,B,B,B,B,B,B,B,B,B,B,
 B,O,O,O,O,HB,HB,O,O,O,O,O,O,
-B,O,O,O,O,O,O,O,O,O,O,O,O,
+B,O,O,O,O,WB,O,O,O,O,O,O,O,
 B,O,O,O,O,O,O,O,O,O,O,O,O,
 B,O,O,O,O,O,O,O,O,O,O,O,O,
 B,O,O,O,O,O,O,O,O,O,O,O,O,
