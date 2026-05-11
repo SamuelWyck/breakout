@@ -7,6 +7,7 @@
 #include "./controller/playerController.h"
 #include "./gameFramework/collisionManager.h"
 #include "./gameFramework/levelManager.h"
+#include "./hud/hud.h"
 
 
 
@@ -19,6 +20,8 @@ class Game {
     LevelManager* m_levelManagerPtr{nullptr};
 
     Player* m_playerPtr {nullptr};
+
+    Hud* m_hudPtr {nullptr};
 
 
 public:

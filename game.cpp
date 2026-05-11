@@ -11,6 +11,7 @@
 #include "./gameFramework/collisionManager.h"
 #include "./gameFramework/levelManager.h"
 #include "./controller/userInput.h"
+#include "./hud/hud.h"
 
 
 
@@ -39,6 +40,10 @@ m_playerController{
     };
 
 
+    // set up hud manager
+    m_hudPtr = new Hud{m_playerPtr};
+
+
     // set up collision manager
     m_collisionManagerPtr = new CollisionManager{m_screenRect};
 
@@ -57,6 +62,7 @@ m_playerController{
 Game::~Game() {
     delete m_collisionManagerPtr;
     delete m_levelManagerPtr;
+    delete m_hudPtr;
     delete m_playerPtr;
 };
 
@@ -110,6 +116,7 @@ void Game::gameLoop() {
             Framework::images.backgroundImg, 
             nullptr, &m_screenRect.getSDLFRect()
         );
+        m_hudPtr->update(Framework::display.renderer());
 
 
         m_levelManagerPtr->updateLevel(Framework::display.renderer(), deltaTime);
