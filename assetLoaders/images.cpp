@@ -23,6 +23,8 @@ Images::Images(SDL_Renderer* renderer) {
     m_images.push_back(hardBlockHitImg);
     wallBlockImg = IMG_LoadTexture(renderer, fs::absolute(fs::path{blockImgPath + "/wallBlock.png"}).string().data());
     m_images.push_back(wallBlockImg);
+    ballBlockImg = IMG_LoadTexture(renderer, fs::absolute(fs::path{blockImgPath + "/ballBlock.png"}).string().data());
+    m_images.push_back(ballBlockImg);
 
     ghostBlockMask = SDL_LoadSurface(fs::absolute(fs::path{blockImgPath + "/ghostBlockMask.png"}).string().data());
 

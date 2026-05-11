@@ -16,6 +16,7 @@ public:
     SDL_Texture* hardBlockImg {nullptr};
     SDL_Texture* hardBlockHitImg {nullptr};
     SDL_Texture* wallBlockImg {nullptr};
+    SDL_Texture* ballBlockImg {nullptr};
     SDL_Surface* ghostBlockMask {nullptr};
 
     SDL_Texture* playerImg {nullptr};
