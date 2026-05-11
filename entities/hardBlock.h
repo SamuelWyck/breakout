@@ -22,6 +22,9 @@ class HardBlock : public IBlock {
     int m_health {};
     int m_scoreValue {};
 
+    bool m_justHit {false};
+    bool m_stillHit {false};
+
 
 public:
     HardBlock(float x, float y, SDL_Texture* goodImg, SDL_Texture* hitImg, const Color& color, int health, int scoreVal);

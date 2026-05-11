@@ -44,6 +44,12 @@ bool HardBlock::isDead() const {
 
 
 void HardBlock::update(SDL_Renderer* renderer) {
+    if (!m_stillHit) {
+        m_justHit = false;
+    }
+    m_stillHit = false;
+
+
     SDL_SetRenderDrawColor(renderer, m_color.red(), m_color.green(), m_color.blue(), m_color.alpha());
     SDL_RenderFillRect(renderer, &m_rect.getSDLFRect());
     SDL_RenderTexture(renderer, m_activeImg, nullptr, &m_rect.getSDLFRect());
@@ -69,8 +75,14 @@ bool HardBlock::hasBallCollision(const Ball& ball) {
     if (!ball.m_hitbox.hasRectIntersection(&m_rect)) {
         return false;
     }
+    if (m_justHit) {
+        m_stillHit = true;
+        return true;
+    }
 
     m_health -= 1;
     m_activeImg = m_hitImg;
+    m_justHit = true;
+    m_stillHit = true;
     return true;
 };
