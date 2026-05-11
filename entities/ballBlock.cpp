@@ -56,8 +56,10 @@ bool BallBlock::hasBallCollision(const Ball& ball) {
 
     Ball* newBall {new Ball{ball}};
     newBall->setCenter(m_rect.center());
-    constexpr float ballYSpeed {2};
-    newBall->setYSpeed(ballYSpeed);
+    
+    float ballAbsXSpeed {(ball.xSpeed() > 0.0f) ? ball.xSpeed() : ball.xSpeed() * -1};
+    float ballAbsYSpeed {(ball.ySpeed() > 0.0f) ? ball.ySpeed() : ball.ySpeed() * -1};
+    newBall->setYSpeed((ballAbsYSpeed > ballAbsXSpeed) ? ballAbsYSpeed : ballAbsXSpeed);
 
     m_ballsPtr->push_back(newBall);
 
