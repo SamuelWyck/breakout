@@ -19,17 +19,9 @@ class Hud {
 
 
 public:
-    Hud(Player* playerPtr) {
-        auto healthCb {[playerPtr]() -> int {
-            return playerPtr->getHealth();
-        }};
-        m_playerHealthDisplay.setGetterCb(healthCb);
-    };
+    Hud(Player* playerPtr);
 
-
-    void update(SDL_Renderer* renderer) {
-        m_playerHealthDisplay.update(renderer);
-    };
+    void update(SDL_Renderer* renderer);
 };
 
 
