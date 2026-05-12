@@ -38,7 +38,10 @@
                 "-lSDL3",
                 "-IC:\\SDL_IMAGE\\x86_64-w64-mingw32\\include",
                 "-LC:\\SDL_IMAGE\\x86_64-w64-mingw32\\lib",
-                "-lSDL3_image"
+                "-lSDL3_image",
+                "-IC:\\SDL_TTF\\x86_64-w64-mingw32\\include",
+                "-LC:\\SDL_TTF\\x86_64-w64-mingw32\\lib",
+                "-lSDL3_ttf"
                 // end sdl stuff
             ],
             "options": {

@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "C:\\SDL\\x86_64-w64-mingw32\\include",
-                "C:\\SDL_IMAGE\\x86_64-w64-mingw32\\include"
+                "C:\\SDL_IMAGE\\x86_64-w64-mingw32\\include",
+                "C:\\SDL_TTF\\x86_64-w64-mingw32\\include"
             ],
             "defines": [
                 "_DEBUG",
