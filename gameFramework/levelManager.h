@@ -125,6 +125,8 @@ public:
 
     LevelObjects getLevelObjects();
 
+    void loadPlayerPaddle();
+    
 
 private:
     void readLevelFile(int filePathIdx, std::vector<std::vector<std::string>>& level);

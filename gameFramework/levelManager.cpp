@@ -48,7 +48,7 @@ void LevelManager::loadLevel(int filePathIdx) {
         }
     }
 
-    initializeBall();
+    loadPlayerPaddle();
 };
 
 
@@ -102,6 +102,12 @@ void LevelManager::initializeBall() {
         new Ball{Framework::images.ballImg, ballCenterCoord, ballCenterCoord, m_ballRadius, ballSpeed, ballSpeed}
     );
     m_playerPtr->loadBall(m_balls[0]);
+};
+
+
+void LevelManager::loadPlayerPaddle() {
+    initializeBall();
+    m_playerPtr->resetPosition();
 };
 
 
@@ -159,7 +165,7 @@ void LevelManager::updateLevel(SDL_Renderer* renderer, double deltaTime, const F
         blockPtr->update(renderer);
     }
 
-    
+
     if (removeBlock) {
         clearDeadBlocks();
     }
