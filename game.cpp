@@ -36,7 +36,7 @@ m_playerController{
         Framework::display.canvasHeight() - 50.0f,
         Framework::images.playerImg,
         playerSpeed,
-        m_playerController
+        &m_playerController
     };
 
 
@@ -78,6 +78,10 @@ void Game::gameLoop() {
     bool running {true};
     Clock clock{};
 
+    constexpr int firstLevel {0};
+    // constexpr int levelCleared {1};
+    constexpr int levelFailed {-1};
+
     while (running) {
         double deltaTime {clock.getNormalizedDeltaTime()};
 
@@ -107,7 +111,16 @@ void Game::gameLoop() {
 
 
         LevelManager::LevelObjects levelObjects{m_levelManagerPtr->getLevelObjects()};
-        m_collisionManagerPtr->handleCollisions(*m_playerPtr, levelObjects);
+        int gameStatus {m_collisionManagerPtr->handleCollisions(*m_playerPtr, levelObjects)};
+        if (gameStatus == levelFailed) {
+            m_playerPtr->takeDamage();
+            if (m_playerPtr->isDead()) {
+                m_levelManagerPtr->loadLevel(firstLevel);
+                m_playerPtr->reset();
+            } else {
+                m_levelManagerPtr->loadPlayerPaddle();
+            }
+        }
 
 
         SDL_SetRenderDrawColor(Framework::display.renderer(), 0, 0, 0, 255);
@@ -117,13 +130,10 @@ void Game::gameLoop() {
             Framework::images.backgroundImg, 
             nullptr, &m_screenRect.getSDLFRect()
         );
+
         m_hudPtr->update(Framework::display.renderer());
-
-
         m_levelManagerPtr->updateLevel(Framework::display.renderer(), deltaTime, m_screenRect);
         m_playerPtr->update(Framework::display.renderer(), deltaTime, m_screenRect);
-
-        // SDL_RenderTextureRotated(Framework::display.renderer(), img, nullptr, &srcRect, angle, nullptr, SDL_FLIP_NONE);
         
         SDL_RenderPresent(Framework::display.renderer());
         m_playerController.resetPressedInputs();
