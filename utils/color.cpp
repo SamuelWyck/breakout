@@ -1,3 +1,4 @@
+#include <SDL3/SDL_pixels.h>
 #include "./color.h"
 
 
@@ -14,6 +15,13 @@ Color::Color(int red, int green, int blue)
     m_green{clampValue(green)}, 
     m_blue{clampValue(blue)}, 
     m_alpha{255} {
+};
+
+Color::Color(const SDL_Color& color)
+    : m_red{clampValue(color.r)},
+    m_green{clampValue(color.g)},
+    m_blue{clampValue(color.b)},
+    m_alpha{clampValue(color.a)} {
 };
 
 Color::Color() {
@@ -92,6 +100,16 @@ Color& Color::blendColor(const Color& color, Color::BlendFlag blendFlag) {
 };
 
 
+SDL_Color Color::getSDLColor() const {
+    return SDL_Color{
+        static_cast<Uint8>(m_red), 
+        static_cast<Uint8>(m_green), 
+        static_cast<Uint8>(m_blue), 
+        static_cast<Uint8>(m_alpha)
+    };
+};
+
+
 int Color::red() const {
     return m_red;
 };
@@ -127,6 +145,29 @@ void Color::setAlpha(int channelVal) {
 
 bool Color::operator==(const Color& color) const {
     return m_red == color.m_red && m_green == color.m_green && m_blue == color.m_blue && m_alpha == color.m_alpha;
+};
+
+
+bool Color::operator==(const SDL_Color& color) const {
+    return m_red == color.r && m_green == color.g && m_blue == color.b && m_alpha == color.a;
+};
+
+
+Color::operator SDL_Color() const {
+    return SDL_Color{
+        static_cast<Uint8>(m_red), 
+        static_cast<Uint8>(m_green), 
+        static_cast<Uint8>(m_blue), 
+        static_cast<Uint8>(m_alpha)
+    };
+};
+
+
+Color& Color::operator=(const SDL_Color& color) {
+    m_red = clampValue(color.r);
+    m_green = clampValue(color.g);
+    m_blue = clampValue(color.b);
+    m_alpha = clampValue(color.a);
 };
 
 

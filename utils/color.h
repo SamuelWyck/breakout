@@ -2,6 +2,8 @@
 #define COLOR_H
 
 
+#include <SDL3/SDL_pixels.h>
+
 
 class Color {
 public:
@@ -34,10 +36,13 @@ public:
 
     Color(int red, int green, int blue, int alpha);
     Color(int red, int green, int blue);
+    Color(const SDL_Color& color);
     Color();
 
 
     Color& blendColor(const Color& color, Color::BlendFlag blendFlag=BLEND_RGB_ADD);
+
+    SDL_Color getSDLColor() const;
 
 
     int red() const;
@@ -51,6 +56,11 @@ public:
 
 
     bool operator==(const Color& color) const;
+    bool operator==(const SDL_Color& color) const;
+
+    Color& operator=(const SDL_Color& color);
+
+    explicit operator SDL_Color() const;
 
 
 private:
