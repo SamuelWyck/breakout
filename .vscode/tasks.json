@@ -28,6 +28,7 @@
                 "${fileDirname}\\controller\\*.cpp",
                 "${fileDirname}\\gameFramework\\*.cpp",
                 "${fileDirname}\\assetLoaders\\*.cpp",
+                "${fileDirname}\\hud\\*.cpp",
                 "${fileDirname}\\*.cpp", // all cpp files in curr dir
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
