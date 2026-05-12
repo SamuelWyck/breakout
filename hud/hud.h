@@ -12,8 +12,9 @@ class Hud {
     static constexpr float healthDisplayX {25};
     static constexpr float healthDisplayY {25};
     static constexpr float healthDisplayGap {10};
+    static constexpr int (*healthGetterCb)() {nullptr};
     ImageStatTracker m_playerHealthDisplay{
-        healthDisplayX, healthDisplayY, healthDisplayGap,  Framework::images.ballImg, nullptr
+        healthDisplayX, healthDisplayY, healthDisplayGap,  Framework::images.ballImg, healthGetterCb
     };
 
 
