@@ -3,6 +3,7 @@
 #include "../utils/file.h"
 #include "../utils/stringUtility.h"
 #include "../entities/basicBlock.h"
+#include "../utils/fRect.h"
 #include "../entities/hardBlock.h"
 #include "../entities/wallBlock.h"
 
@@ -136,10 +137,17 @@ void LevelManager::clearLevel() {
 };
 
 
-void LevelManager::updateLevel(SDL_Renderer* renderer, double deltaTime) {
+void LevelManager::updateLevel(SDL_Renderer* renderer, double deltaTime, const FRect& screenRect) {
+    bool removeBall {false};
     for (Ball* ballPtr : m_balls) {
+        if (ballPtr->m_rect.y() >= screenRect.bottom()) {
+            removeBall = true;
+            continue;
+        }
+
         ballPtr->update(renderer, deltaTime);
     }
+
 
     bool removeBlock {false};
     for (IBlock* blockPtr : m_blocks) {
@@ -151,8 +159,12 @@ void LevelManager::updateLevel(SDL_Renderer* renderer, double deltaTime) {
         blockPtr->update(renderer);
     }
 
+    
     if (removeBlock) {
         clearDeadBlocks();
+    }
+    if (removeBall) {
+        clearDeadBalls(screenRect);
     }
 };
 
@@ -168,6 +180,20 @@ void LevelManager::clearDeadBlocks() {
     }
 
     m_blocks = liveBlocks;
+};
+
+
+void LevelManager::clearDeadBalls(const FRect& screenRect) {
+    std::vector<Ball*> liveBalls{};
+    for (Ball* ballPtr : m_balls) {
+        if (ballPtr->m_rect.y() >= screenRect.bottom()) {
+            delete ballPtr;
+        } else {
+            liveBalls.push_back(ballPtr);
+        }
+    }
+
+    m_balls = liveBalls;
 };
 
 

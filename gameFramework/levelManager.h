@@ -10,6 +10,7 @@
 #include <SDL3/SDL_render.h>
 #include "../utils/file.h"
 #include "../utils/color.h"
+#include "../utils/fRect.h"
 #include "../entities/iBlock.h"
 #include "../entities/basicBlock.h"
 #include "../entities/hardBlock.h"
@@ -120,7 +121,7 @@ public:
 
     void loadLevel(int filePathIdx);
 
-    void updateLevel(SDL_Renderer* renderer, double deltaTime);
+    void updateLevel(SDL_Renderer* renderer, double deltaTime, const FRect& screenRect);
 
     LevelObjects getLevelObjects();
 
@@ -135,6 +136,8 @@ private:
     void clearLevel();
 
     void clearDeadBlocks();
+
+    void clearDeadBalls(const FRect& screenRect);
 
     void initializeBall();
 
