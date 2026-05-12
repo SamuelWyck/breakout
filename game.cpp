@@ -64,6 +64,7 @@ Game::~Game() {
     delete m_levelManagerPtr;
     delete m_hudPtr;
     delete m_playerPtr;
+    SDL_Quit();
 };
 
 
