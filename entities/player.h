@@ -44,6 +44,10 @@ public:
 
     int getHealth() const;
 
+    void takeDamage();
+
+    bool isDead() const;
+
 
 private:
     void handleInputs(const FRect& screenRect, double deltaTime);

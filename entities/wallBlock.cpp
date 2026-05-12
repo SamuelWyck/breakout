@@ -62,3 +62,8 @@ bool WallBlock::hasBallCollision(const Ball& ball) {
 const FRect& WallBlock::getRect() const {
     return m_rect;
 };
+
+
+bool WallBlock::isInvincible() const {
+    return true;
+};

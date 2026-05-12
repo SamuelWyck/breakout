@@ -134,3 +134,13 @@ void Player::handleInputs(const FRect& screenRect, double deltaTime) {
 int Player::getHealth() const {
     return m_health;
 };
+
+
+void Player::takeDamage() {
+    m_health -= 1;
+};
+
+
+bool Player::isDead() const {
+    return m_health <= 0;
+};

@@ -50,6 +50,8 @@ public:
 
     const FRect& getRect() const override;
 
+    bool isInvincible() const override;
+
 
 private:
     void createGhostImage();

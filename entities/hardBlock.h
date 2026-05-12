@@ -49,6 +49,8 @@ public:
     void setTopleft(float x, float y) override;
 
     void setColor(const Color& color) override;
+
+    bool isInvincible() const override;
 };
 
 

@@ -23,6 +23,8 @@ public:
     virtual bool hasBallCollision(const Ball& ball) = 0;
 
     virtual const FRect& getRect() const = 0;
+
+    virtual bool isInvincible() const = 0;
 };
 
 

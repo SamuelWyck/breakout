@@ -131,3 +131,8 @@ void GhostBlock::setColor(const Color& color) {
 const FRect& GhostBlock::getRect() const {
     return m_rect;
 };
+
+
+bool GhostBlock::isInvincible() const {
+    return false;
+};

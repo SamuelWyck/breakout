@@ -44,6 +44,8 @@ public:
     void setColor(const Color& color) override;
 
     void update(SDL_Renderer* renderer) override;
+
+    bool isInvincible() const override;
 };
 
 

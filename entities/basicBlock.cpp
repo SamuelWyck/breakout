@@ -72,3 +72,8 @@ bool BasicBlock::hasBallCollision(const Ball& ball) {
 const FRect& BasicBlock::getRect() const {
     return m_rect;
 };
+
+
+bool BasicBlock::isInvincible() const {
+    return false;
+};

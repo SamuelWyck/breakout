@@ -42,6 +42,8 @@ public:
     bool hasBallCollision(const Ball& ball) override;
 
     const FRect& getRect() const override;
+
+    bool isInvincible() const override;
 };
 
 

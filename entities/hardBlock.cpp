@@ -86,3 +86,8 @@ bool HardBlock::hasBallCollision(const Ball& ball) {
     m_stillHit = true;
     return true;
 };
+
+
+bool HardBlock::isInvincible() const {
+    return false;
+};

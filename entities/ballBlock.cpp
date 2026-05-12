@@ -83,3 +83,8 @@ void BallBlock::update(SDL_Renderer* renderer) {
     SDL_RenderFillRect(renderer, &m_rect.getSDLFRect());
     SDL_RenderTexture(renderer, m_img, nullptr, &m_rect.getSDLFRect());
 };
+
+
+bool BallBlock::isInvincible() const {
+    return false;
+};
