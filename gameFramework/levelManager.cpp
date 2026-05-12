@@ -30,11 +30,16 @@ LevelManager::~LevelManager() {
 };
 
 
-void LevelManager::loadLevel(int filePathIdx) {
+void LevelManager::loadLevel(int levelNum) {
+    m_currentLevel = levelNum;
+    if (m_currentLevel >= static_cast<int>(m_levelFilePaths.size())) {
+        m_currentLevel = 0;
+    }
+
     clearLevel();
 
     std::vector<std::vector<std::string>> level {};
-    readLevelFile(filePathIdx, level);
+    readLevelFile(m_currentLevel, level);
 
     int numRows {static_cast<int>(level.size())};
     int numCols {static_cast<int>(level[0].size())};
@@ -49,6 +54,9 @@ void LevelManager::loadLevel(int filePathIdx) {
     }
 
     loadPlayerPaddle();
+    if (m_currentLevel % 2 == 0) {
+        m_playerPtr->healHealth();
+    }
 };
 
 
@@ -205,4 +213,9 @@ void LevelManager::clearDeadBalls(const FRect& screenRect) {
 
 LevelManager::LevelObjects LevelManager::getLevelObjects() {
     return {m_balls, m_blocks};
+};
+
+
+int LevelManager::getLevelNum() const {
+    return m_currentLevel;
 };

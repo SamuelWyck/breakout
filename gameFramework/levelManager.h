@@ -35,12 +35,14 @@ private:
     int m_blockWidth {};
     int m_blockHeight {};
 
+
     File m_fileReader{};
     const char m_tileDelim {','};
     const char m_tileSymbolDelim {'-'};
     const char* m_emptySpaceSymbol {"O"};
     std::vector<std::string> m_levelFilePaths {
-        {"./levels/level_1.txt"}
+        {"./levels/level_1.txt"},
+        {"./levels/level_2.txt"}
     };
 
 
@@ -49,7 +51,9 @@ private:
     static constexpr float m_ballRadius {15};
     std::vector<Ball*> m_balls{};
 
+
     Player* m_playerPtr{};
+
 
     static constexpr std::string m_defaultColorSymbol{"b"};
     std::unordered_map<std::string, Color> m_colorMap{
@@ -109,6 +113,8 @@ private:
     };
 
 
+    int m_currentLevel {0};
+
 
 public:
     LevelManager(int x, int y, int tileWidth, int blockWidth, int blockHeight, int tileHeight, Player* playerPtr);
@@ -119,7 +125,9 @@ public:
     LevelManager& operator=(const LevelManager&) = delete;
     LevelManager& operator=(LevelManager&&) = delete;
 
-    void loadLevel(int filePathIdx);
+    void loadLevel(int levelNum);
+
+    int getLevelNum() const;
 
     void updateLevel(SDL_Renderer* renderer, double deltaTime, const FRect& screenRect);
 
