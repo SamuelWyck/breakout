@@ -79,7 +79,7 @@ void Game::gameLoop() {
     Clock clock{};
 
     constexpr int firstLevel {0};
-    // constexpr int levelCleared {1};
+    constexpr int levelCleared {1};
     constexpr int levelFailed {-1};
 
     while (running) {
@@ -117,9 +117,14 @@ void Game::gameLoop() {
             if (m_playerPtr->isDead()) {
                 m_levelManagerPtr->loadLevel(firstLevel);
                 m_playerPtr->reset();
+                continue;
             } else {
                 m_levelManagerPtr->loadPlayerPaddle();
             }
+
+        } else if (gameStatus == levelCleared) {
+            m_levelManagerPtr->loadLevel(m_levelManagerPtr->getLevelNum() + 1);
+            continue;
         }
 
 
