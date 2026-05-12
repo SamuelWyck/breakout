@@ -18,7 +18,10 @@ void CollisionManager::handleCollisions(Player& player, LevelManager::LevelObjec
     std::vector<Ball*>& balls {levelObjects.first};
     std::vector<IBlock*>& blocks{levelObjects.second};
 
-    for (Ball* ballPtr : balls) {
+    int length {static_cast<int>(balls.size())};
+    for (int i {0}; i < length; i += 1) {
+        Ball* ballPtr {balls[i]};
+        
         handleBallScreenCollisions(*ballPtr);
 
         if (player.m_rect.hasCircleIntersection(&ballPtr->m_hitbox)) {
