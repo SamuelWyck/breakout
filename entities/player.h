@@ -14,6 +14,9 @@ public:
 
 
 private:
+    float m_startCenterX {};
+    float m_startCenterY {};
+
     FRect m_bottomRect{};
     SDL_Texture* m_img {nullptr};
 
@@ -21,18 +24,19 @@ private:
     bool m_movingLeft {false};
     bool m_movingRight {false};
     
-    const PlayerController& m_controller{};
+    PlayerController* m_controller{nullptr};
 
     bool m_launchBall {false};
     Ball* m_ballPtr {nullptr};
     float m_ballXSpeedDelta {2.0f};
 
     int m_health {3};
+    int m_maxHealth {3};
 
 
 
 public:
-    Player(float centerX, float centerY, SDL_Texture* img, int speed, const PlayerController& controller);
+    Player(float centerX, float centerY, SDL_Texture* img, int speed, PlayerController* controller);
 
     void update(SDL_Renderer* renderer, double deltaTime, const FRect& screenRect);
 
@@ -46,7 +50,13 @@ public:
 
     void takeDamage();
 
+    void healHealth();
+
     bool isDead() const;
+
+    void reset();
+
+    void resetPosition();
 
 
 private:

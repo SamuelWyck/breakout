@@ -7,8 +7,8 @@
 
 
 
-Player::Player(float centerX, float centerY, SDL_Texture* img, int speed, const PlayerController& controller) 
-    : m_img{img}, m_speed{speed}, m_controller{controller}
+Player::Player(float centerX, float centerY, SDL_Texture* img, int speed, PlayerController* controller) 
+    : m_startCenterX{centerX}, m_startCenterY{centerY}, m_img{img}, m_speed{speed}, m_controller{controller}
 {
     m_rect.setCenter(centerX, centerY);
     m_rect.setSize(m_img->w, m_img->h);
@@ -97,7 +97,7 @@ void Player::handleBallBounce(Ball& ball) {
 
 
 void Player::handleInputs(const FRect& screenRect, double deltaTime) {
-    auto pressedInputs {m_controller.getPressedInputs()};
+    auto pressedInputs {m_controller->getPressedInputs()};
     m_movingLeft = false;
     m_movingRight = false;
 
@@ -141,6 +141,27 @@ void Player::takeDamage() {
 };
 
 
+void Player::healHealth() {
+    m_health += 1;
+    if (m_health > m_maxHealth) {
+        m_health = m_maxHealth;
+    }
+};
+
+
 bool Player::isDead() const {
     return m_health <= 0;
+};
+
+
+void Player::reset() {
+    resetPosition();
+    m_health = m_maxHealth;
+};
+
+
+void Player::resetPosition() {
+    m_rect.setCenter(m_startCenterX, m_startCenterY);
+    m_bottomRect.setMidBottom(m_rect.midBottom());
+    m_controller->resetAllInputs();
 };
