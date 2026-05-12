@@ -19,11 +19,15 @@ class CollisionManager {
 public:
     CollisionManager(const FRect& screenRect);
 
-    void handleCollisions(Player& player, LevelManager::LevelObjects& levelObjects);
+    int handleCollisions(Player& player, LevelManager::LevelObjects& levelObjects);
 
 
 private:
     void handleBallScreenCollisions(Ball& ball);
+
+    bool levelWon(const std::vector<IBlock*>& blocks);
+
+    void handleBallCollisions(Player& player, std::vector<Ball*>& balls, std::vector<IBlock*>& blocks);
 };
 
 

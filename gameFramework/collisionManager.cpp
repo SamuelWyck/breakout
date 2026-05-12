@@ -14,14 +14,31 @@ CollisionManager::CollisionManager(const FRect& screenRect)
 };
 
 
-void CollisionManager::handleCollisions(Player& player, LevelManager::LevelObjects& levelObjects) {
+int CollisionManager::handleCollisions(Player& player, LevelManager::LevelObjects& levelObjects) {
     std::vector<Ball*>& balls {levelObjects.first};
     std::vector<IBlock*>& blocks{levelObjects.second};
 
+    constexpr int levelCleared {1};
+    constexpr int levelFailed {-1};
+    constexpr int levelNeutral {0};
+
+    if (balls.size() == 0) {
+        return levelFailed;
+    }
+    if (levelWon(blocks)) {
+        return levelCleared;
+    }
+
+    handleBallCollisions(player, balls, blocks);
+    return levelNeutral;
+};
+
+
+void CollisionManager::handleBallCollisions(Player& player, std::vector<Ball*>& balls, std::vector<IBlock*>& blocks){
     int length {static_cast<int>(balls.size())};
     for (int i {0}; i < length; i += 1) {
         Ball* ballPtr {balls[i]};
-        
+
         handleBallScreenCollisions(*ballPtr);
 
         if (player.m_rect.hasCircleIntersection(&ballPtr->m_hitbox)) {
@@ -72,4 +89,14 @@ void CollisionManager::handleBallScreenCollisions(Ball& ball) {
         ball.m_rect.setRight(m_screenRect.right());
         ball.bounceX(m_ballSpeedDelta);
     }
+};
+
+
+bool CollisionManager::levelWon(const std::vector<IBlock*>& blocks) {
+    for (IBlock* blockPtr : blocks) {
+        if (!blockPtr->isInvincible()) {
+            return false;
+        }
+    }
+    return true;
 };
