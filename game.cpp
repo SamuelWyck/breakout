@@ -119,7 +119,7 @@ void Game::gameLoop() {
         m_hudPtr->update(Framework::display.renderer());
 
 
-        m_levelManagerPtr->updateLevel(Framework::display.renderer(), deltaTime);
+        m_levelManagerPtr->updateLevel(Framework::display.renderer(), deltaTime, m_screenRect);
         m_playerPtr->update(Framework::display.renderer(), deltaTime, m_screenRect);
 
         // SDL_RenderTextureRotated(Framework::display.renderer(), img, nullptr, &srcRect, angle, nullptr, SDL_FLIP_NONE);
