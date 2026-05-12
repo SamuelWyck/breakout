@@ -128,19 +128,27 @@ void Ball::handleBlockCollision(const FRect& blockRect) {
 
     constexpr float speedDelta {1.0f};
     if (minDistance == leftSideDis) {
-        bounceX(speedDelta);
+        if (m_xSpeed < 0.0f) {
+            bounceX(speedDelta);
+        }
         setCenter(blockRect.right() + m_hitbox.radius(), m_rect.centerY());
 
     } else if (minDistance == rightSideDis) {
-        bounceX(speedDelta);
+        if (m_xSpeed > 0.0f) {
+            bounceX(speedDelta);
+        }
         setCenter(blockRect.left() - m_hitbox.radius(), m_rect.centerY());
 
     } else if (minDistance == bottomSideDis) {
-        bounceY(speedDelta);
+        if (m_ySpeed > 0.0f) {
+            bounceY(speedDelta);
+        }
         setCenter(m_rect.centerX(), blockRect.top() - m_hitbox.radius());
 
     } else if (minDistance == topSideDis) {
-        bounceY(speedDelta);
+        if (m_ySpeed < 0.0f) {
+            bounceY(speedDelta);
+        }
         setCenter(m_rect.centerX(), blockRect.bottom() + m_hitbox.radius());
     }
 };
