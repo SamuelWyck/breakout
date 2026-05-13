@@ -52,6 +52,7 @@ Display::Display(
 Display::~Display() {
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_screen);
+    SDL_Quit();
 };
 
 
