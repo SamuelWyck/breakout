@@ -168,6 +168,8 @@ Color& Color::operator=(const SDL_Color& color) {
     m_green = clampValue(color.g);
     m_blue = clampValue(color.b);
     m_alpha = clampValue(color.a);
+
+    return *this;
 };
 
 
