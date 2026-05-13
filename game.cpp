@@ -41,7 +41,7 @@ m_playerController{
 
 
     // set up hud manager
-    m_hudPtr = new Hud{m_playerPtr};
+    m_hudPtr = new Hud{m_playerPtr, Framework::display.canvasWidth(), Framework::display.canvasHeight()};
 
 
     // set up collision manager
