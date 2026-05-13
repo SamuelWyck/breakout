@@ -1,5 +1,5 @@
 #include <SDL3/SDL_render.h>
-#include "../utils/fRect.h"
+#include "../sdlUtils/fRect.h"
 #include "../utils/math.h"
 #include "./player.h"
 #include "./ball.h"

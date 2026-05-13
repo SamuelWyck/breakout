@@ -5,7 +5,7 @@
 #include <SDL3/SDL.h>
 #include "./game.h"
 #include "./framework/framework.h"
-#include "./utils/clock.h"
+#include "./sdlUtils/clock.h"
 #include "./entities/player.h"
 #include "./controller/playerController.h"
 #include "./gameFramework/collisionManager.h"

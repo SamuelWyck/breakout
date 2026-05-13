@@ -3,7 +3,7 @@
 #include "../utils/file.h"
 #include "../utils/stringUtility.h"
 #include "../entities/basicBlock.h"
-#include "../utils/fRect.h"
+#include "../sdlUtils/fRect.h"
 #include "../entities/hardBlock.h"
 #include "../entities/wallBlock.h"
 

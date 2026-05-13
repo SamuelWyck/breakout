@@ -4,7 +4,7 @@
 
 #include <functional>
 #include <SDL3/SDL_render.h>
-#include "../utils/fRect.h"
+#include "../sdlUtils/fRect.h"
 
 
 class ImageStatTracker {

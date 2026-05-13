@@ -4,8 +4,8 @@
 
 #include <vector>
 #include <SDL3/SDL_render.h>
-#include "../utils/fRect.h"
-#include "../utils/color.h"
+#include "../sdlUtils/fRect.h"
+#include "../sdlUtils/color.h"
 #include "./iBlock.h"
 #include "./ball.h"
 

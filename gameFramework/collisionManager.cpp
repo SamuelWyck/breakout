@@ -5,6 +5,7 @@
 #include "../entities/player.h"
 #include "../entities/basicBlock.h"
 #include "../entities/iBlock.h"
+#include "../sdlUtils/fRect.h"
 #include "./levelManager.h"
 
 

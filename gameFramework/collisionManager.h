@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include "../utils/fRect.h"
+#include "../sdlUtils/fRect.h"
 #include "../entities/ball.h"
 #include "../entities/player.h"
 #include "../entities/basicBlock.h"

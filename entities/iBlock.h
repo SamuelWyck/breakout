@@ -3,9 +3,9 @@
 
 
 #include <SDL3/SDL_render.h>
-#include "../utils/color.h"
+#include "../sdlUtils/color.h"
 #include "./ball.h"
-#include "../utils/fRect.h"
+#include "../sdlUtils/fRect.h"
 
 
 class IBlock {

@@ -2,7 +2,7 @@
 #define COLORS_NAMESPACE_H
 
 
-#include "../utils/color.h"
+#include "../sdlUtils/color.h"
 
 
 namespace Colors {

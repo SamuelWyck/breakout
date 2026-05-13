@@ -3,9 +3,9 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3_image/SDL_image.h>
 #include "./basicBlock.h"
+#include "../sdlUtils/color.h"
 #include "./ball.h"
-#include "./iBlock.h"
-
+#include "../sdlUtils/fRect.h"
 
 
 BasicBlock::BasicBlock(float x, float y, SDL_Texture* img, const Color& color, int health, int scoreVal) 

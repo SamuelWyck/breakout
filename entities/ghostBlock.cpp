@@ -5,8 +5,8 @@
 #include <SDL3/SDL_pixels.h>
 #include "./iBlock.h"
 #include "./ball.h"
-#include "../utils/color.h"
-#include "../utils/fRect.h"
+#include "../sdlUtils/color.h"
+#include "../sdlUtils/fRect.h"
 #include "./ghostBlock.h"
 #include "../framework/colors.h"
 #include "../framework/framework.h"

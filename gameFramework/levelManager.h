@@ -9,8 +9,8 @@
 #include <vector>
 #include <SDL3/SDL_render.h>
 #include "../utils/file.h"
-#include "../utils/color.h"
-#include "../utils/fRect.h"
+#include "../sdlUtils/color.h"
+#include "../sdlUtils/fRect.h"
 #include "../entities/iBlock.h"
 #include "../entities/basicBlock.h"
 #include "../entities/hardBlock.h"

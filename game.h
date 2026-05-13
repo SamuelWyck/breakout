@@ -3,7 +3,7 @@
 
 
 #include "./entities/player.h"
-#include "./utils/fRect.h"
+#include "./sdlUtils/fRect.h"
 #include "./controller/playerController.h"
 #include "./gameFramework/collisionManager.h"
 #include "./gameFramework/levelManager.h"
