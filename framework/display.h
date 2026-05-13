@@ -2,6 +2,7 @@
 #define DISPLAY_H
 
 
+#include <string_view>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 
@@ -20,10 +21,11 @@ class Display {
 
 public:
     Display(
+        std::string_view title, 
         int screenWidth, 
         int screenHeight,
         int canvasWidth, 
-        int canvasHeight, 
+        int canvasHeight,
         SDL_WindowFlags windowFlags=0,
         SDL_RendererLogicalPresentation rendererPresentationFlag=SDL_LOGICAL_PRESENTATION_DISABLED
     );

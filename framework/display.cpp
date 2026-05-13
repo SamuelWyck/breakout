@@ -1,3 +1,4 @@
+#include <string_view>
 #include <stdexcept>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
@@ -8,6 +9,7 @@
 
 
 Display::Display(
+    std::string_view title,
     int screenWidth,
     int screenHeight,
     int canvasWidth, 
@@ -28,7 +30,7 @@ Display::Display(
     }
 
 
-    m_screen = SDL_CreateWindow("Breakout", m_screenWidth, m_screenHeight, windowFlags);
+    m_screen = SDL_CreateWindow(title.data(), m_screenWidth, m_screenHeight, windowFlags);
     if (!m_screen) {
         SDL_Log("Unable to create window: %s", SDL_GetError());
         SDL_Quit();
