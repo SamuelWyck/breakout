@@ -5,12 +5,14 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 #include "../assetLoaders/images.h"
+#include "../assetLoaders/fonts.h"
 #include "../sdlUtils/display.h"
 
 
 namespace Framework {
     extern Display display;
     extern Images images;
+    extern Fonts fonts;
 };
 
 

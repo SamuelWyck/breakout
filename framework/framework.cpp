@@ -2,6 +2,7 @@
 #include <SDL3/SDL_video.h>
 #include "../sdlUtils/display.h"
 #include "../assetLoaders/images.h"
+#include "../assetLoaders/fonts.h"
 
 
 
@@ -18,4 +19,6 @@ namespace Framework {
 
 
     Images images{display.renderer()};
+
+    Fonts fonts{};
 };
