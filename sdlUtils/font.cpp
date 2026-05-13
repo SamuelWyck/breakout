@@ -12,10 +12,6 @@
 #include "./font.h"
 
 
-// #include "./framework/framework.h"
-// #include <iostream>
-
-
 
 void Font::init() {
     if (instanceCount > 0) {
@@ -90,6 +86,7 @@ Font& Font::operator=(Font&& font) {
 
 
 // Render text to a surface. Caller is responsible for managing the returned surface.
+// For wrapLength: -1 = no wrap, 0 = wrap on newline, > 0 = wrap after that many pixels. 
 SDL_Surface* Font::renderSurface(const std::string& text, const SDL_Color& color, int wrapLength) const {
     constexpr int textLength {0}; // zero for null terminated strings
     SDL_Surface* renderedText {nullptr};
@@ -104,6 +101,7 @@ SDL_Surface* Font::renderSurface(const std::string& text, const SDL_Color& color
 };
 
 // Render text to a texture. Caller is responsible for managing the returned texture.
+// For wrapLength: -1 = no wrap, 0 = wrap on newline, > 0 = wrap after that many pixels. 
 SDL_Texture* Font::renderTexture(SDL_Renderer* renderer, const std::string& text, const SDL_Color& color, int wrapLength) const {
 
     SDL_Surface* surface {renderSurface(text, color, wrapLength)};
@@ -330,43 +328,3 @@ Font::Style operator&(Font::Style a, Font::Style b) {
 Font::Style operator^(Font::Style a, Font::Style b) {
     return static_cast<Font::Style>(static_cast<Uint32>(a) ^ static_cast<Uint32>(b));
 };
-
-
-
-// int main() {
-//     Font font{"C:\\Users\\samaw\\.vscode\\breakout\\assets\\fonts\\forge.ttf", 40.2};
-//     Font font2{"C:\\Users\\samaw\\.vscode\\breakout\\assets\\fonts\\forge.ttf", 40};
-
-//     std::cout << font.hasGlyph('(')<< "\n";
-
-    
-//     SDL_Texture* text {font.renderTexture(Framework::display.renderer(), "Hello, World$\nTest Line erm", SDL_Color{255, 0, 0, 255}, 0)};
-//     SDL_Texture* text2 {font2.renderTexture(Framework::display.renderer(), "Hello, World!\nTest Line erm", SDL_Color{0, 255, 0, 255}, 0)};
-//     SDL_FRect rect{0, 0, static_cast<float>(text->w), static_cast<float>(text->h)};
-//     std::cout << font.height() << " " << text->h;
-//     SDL_FRect rect2{0, 100, static_cast<float>(text2->w), static_cast<float>(text2->h)};
-    
-//     bool running {true};
-//     while (running) {
-//         SDL_Event event{};
-//         while (SDL_PollEvent(&event)) {
-//             if (event.type == SDL_EVENT_QUIT) {
-//                 running = false;
-//             } else if (event.type == SDL_EVENT_KEY_DOWN) {
-//                 if (event.key.scancode == SDL_SCANCODE_BACKSPACE) {
-//                     running = false;
-//                 }
-//             }
-//         }
-
-
-//         SDL_SetRenderDrawColor(Framework::display.renderer(), 0, 0, 0, 255);
-//         SDL_RenderClear(Framework::display.renderer());
-//         SDL_RenderTexture(Framework::display.renderer(), text, nullptr, &rect);
-//         SDL_RenderTexture(Framework::display.renderer(), text2, nullptr, &rect2);
-//         SDL_RenderPresent(Framework::display.renderer());
-//     }
-
-//     SDL_DestroyTexture(text);
-//     SDL_DestroyTexture(text2);
-// };

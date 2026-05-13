@@ -56,9 +56,11 @@ public:
 
 
     // Render text to a surface. Caller is responsible for managing the returned surface.
+    // For wrapLength: -1 = no wrap, 0 = wrap on newline, > 0 = wrap after that many pixels. 
     SDL_Surface* renderSurface(const std::string& text, const SDL_Color& color, int wrapLength=-1) const;
 
     // Render text to a texture. Caller is responsible for managing the returned texture.
+    // For wrapLength: -1 = no wrap, 0 = wrap on newline, > 0 = wrap after that many pixels. 
     SDL_Texture* renderTexture(SDL_Renderer* renderer, const std::string& text, const SDL_Color& color, int wrapLength=-1) const;
 
 
