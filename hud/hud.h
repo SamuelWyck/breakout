@@ -3,8 +3,10 @@
 
 
 #include <SDL3/SDL_render.h>
+#include <SDL3/SDL_pixels.h>
 #include "../entities/player.h"
 #include "./imageStatTracker.h"
+#include "./liveTextDisplay.h"
 #include "../framework/framework.h"
 
 
@@ -17,9 +19,11 @@ class Hud {
         healthDisplayX, healthDisplayY, healthDisplayGap,  Framework::images.ballImg, healthGetterCb
     };
 
+    LiveTextDisplay m_scoreDisplay{0, 0, &Framework::fonts.scoreFont, SDL_Color{255, 255, 255, 255}, nullptr};
+
 
 public:
-    Hud(Player* playerPtr);
+    Hud(Player* playerPtr, int canvasWidth, int canvasHeight);
 
     void update(SDL_Renderer* renderer);
 };
