@@ -145,6 +145,7 @@ void LiveTextDisplay::setFont(Font* font) {
 
 void LiveTextDisplay::setTopleft(float x, float y) {
     m_rect.setTopleft(x, y);
+    m_useCenter = false;
 };
 
 
