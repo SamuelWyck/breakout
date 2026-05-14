@@ -41,8 +41,13 @@ private:
     const char m_tileSymbolDelim {'-'};
     const char* m_emptySpaceSymbol {"O"};
     std::vector<std::string> m_levelFilePaths {
-        {"./levels/level_1.txt"},
-        {"./levels/level_2.txt"}
+        {"./levels/level1.txt"},
+        {"./levels/level2.txt"},
+        {"./levels/level3.txt"},
+        {"./levels/level4.txt"},
+        {"./levels/level5.txt"},
+        {"./levels/level6.txt"},
+        {"./levels/level7.txt"}
     };
 
 
