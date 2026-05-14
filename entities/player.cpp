@@ -52,9 +52,9 @@ void Player::launchBall() {
 
     float ballXSpeedDelta {0.0f};
     if (m_movingLeft && !m_movingRight) {
-        ballXSpeedDelta = -1 * m_ballXSpeedDelta;
+        ballXSpeedDelta = -1 * m_ballXSpeedDelta * 2;
     } else if (m_movingRight && !m_movingLeft) {
-        ballXSpeedDelta = m_ballXSpeedDelta;
+        ballXSpeedDelta = m_ballXSpeedDelta * 2;
     }
     
     m_ballPtr->launch(ballXSpeedDelta);
