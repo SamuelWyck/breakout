@@ -77,3 +77,8 @@ const FRect& BasicBlock::getRect() const {
 bool BasicBlock::isInvincible() const {
     return false;
 };
+
+
+int BasicBlock::getScore() const {
+    return m_scoreValue;
+};

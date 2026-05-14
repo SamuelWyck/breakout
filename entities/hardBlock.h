@@ -51,6 +51,8 @@ public:
     void setColor(const Color& color) override;
 
     bool isInvincible() const override;
+
+    int getScore() const override;
 };
 
 

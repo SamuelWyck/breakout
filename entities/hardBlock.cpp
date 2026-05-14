@@ -91,3 +91,8 @@ bool HardBlock::hasBallCollision(const Ball& ball) {
 bool HardBlock::isInvincible() const {
     return false;
 };
+
+
+int HardBlock::getScore() const  {
+    return m_scoreValue;
+};

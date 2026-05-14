@@ -88,3 +88,8 @@ void BallBlock::update(SDL_Renderer* renderer) {
 bool BallBlock::isInvincible() const {
     return false;
 };
+
+
+int BallBlock::getScore() const {
+    return m_scoreValue;
+};

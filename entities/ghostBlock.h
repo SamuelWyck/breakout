@@ -52,6 +52,8 @@ public:
 
     bool isInvincible() const override;
 
+    int getScore() const override;
+
 
 private:
     void createGhostImage();

@@ -67,3 +67,8 @@ const FRect& WallBlock::getRect() const {
 bool WallBlock::isInvincible() const {
     return true;
 };
+
+
+int WallBlock::getScore() const {
+    return 0;
+};

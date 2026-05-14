@@ -46,6 +46,8 @@ public:
     void update(SDL_Renderer* renderer) override;
 
     bool isInvincible() const override;
+
+    int getScore() const override;
 };
 
 

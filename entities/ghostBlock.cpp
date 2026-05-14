@@ -136,3 +136,8 @@ const FRect& GhostBlock::getRect() const {
 bool GhostBlock::isInvincible() const {
     return false;
 };
+
+
+int GhostBlock::getScore() const {
+    return m_scoreValue;
+};

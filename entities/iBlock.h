@@ -25,6 +25,8 @@ public:
     virtual const FRect& getRect() const = 0;
 
     virtual bool isInvincible() const = 0;
+
+    virtual int getScore() const = 0;
 };
 
 

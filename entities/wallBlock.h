@@ -41,6 +41,8 @@ public:
     const FRect& getRect() const override;
 
     bool isInvincible() const override;
+
+    int getScore() const override;
 };
 
 
