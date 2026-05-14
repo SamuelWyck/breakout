@@ -4,6 +4,7 @@
 #include "./player.h"
 #include "./ball.h"
 #include "../controller/playerController.h"
+#include "../utils/random.h"
 
 
 
@@ -85,8 +86,17 @@ void Player::handleBallBounce(Ball& ball) {
     float ballXSpeedDelta {0.0f};
     if (m_movingLeft && !m_movingRight) {
         ballXSpeedDelta -= m_ballXSpeedDelta;
+
     } else if (m_movingRight && !m_movingLeft) {
         ballXSpeedDelta += m_ballXSpeedDelta;
+
+    } else if (m_movingLeft == m_movingRight && (-.5f <= ball.xSpeed() && ball.xSpeed() <= .5f)) {
+        int randChoice {Random::get(1, 10)};
+        if (randChoice <= 5) {
+            ballXSpeedDelta += m_ballXSpeedDelta;
+        } else {
+            ballXSpeedDelta -= m_ballXSpeedDelta;
+        }
     }
 
     constexpr float ballYSpeedDelta {0.0f};
