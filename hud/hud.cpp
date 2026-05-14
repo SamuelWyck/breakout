@@ -7,20 +7,21 @@
 
 
 Hud::Hud(Player* playerPtr, int canvasWidth, int) {
-    auto healthCb {[playerPtr]() -> int {
-        return playerPtr->getHealth();
-    }};
-    m_playerHealthDisplay.setGetterCb(healthCb);
-
-
-    float scoreDisplayX {canvasWidth / 2.0f};
-    float scoreDisplayY {30};
-    m_scoreDisplay.setCenter(scoreDisplayX, scoreDisplayY);
-    m_scoreDisplay.setTextGetter(
-        [playerPtr]() -> std::string {
-            return std::to_string(playerPtr->getHealth());
+    m_playerHealthDisplay.setGetterCb(
+        [playerPtr]() -> int {
+            return playerPtr->getHealth();
         }
     );
+
+
+    m_scoreDisplay.setTextGetter(
+        [playerPtr]() -> std::string {
+            return std::to_string(playerPtr->getScore());
+        }
+    );
+    float scoreDisplayX {canvasWidth / 2.0f};
+    float scoreDisplayY {1 + healthDisplayY + Framework::images.ballImg->w / 2.0f}; // add one to align with health display
+    m_scoreDisplay.setCenter(scoreDisplayX, scoreDisplayY);
 };
 
 
