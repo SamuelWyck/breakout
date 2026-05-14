@@ -54,6 +54,9 @@ void CollisionManager::handleBallCollisions(Player& player, std::vector<Ball*>& 
 
             if (blockPtr->hasBallCollision(*ballPtr)) {
                 ballPtr->handleBlockCollision(blockPtr->getRect());
+                if (blockPtr->isDead()) {
+                    player.increaseScore(blockPtr->getScore());
+                }
             }
         }
 
