@@ -11,4 +11,5 @@ namespace Colors {
     const Color GREEN{1, 173, 97};
     const Color BLUE{0, 72, 182};
     const Color KEY{255, 127, 127};
+    const Color WHITE{255, 255, 255, 255};
 };
