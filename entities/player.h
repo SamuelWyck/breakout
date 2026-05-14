@@ -32,6 +32,7 @@ private:
 
     int m_health {3};
     int m_maxHealth {3};
+    int m_score {0};
 
 
 
@@ -57,6 +58,10 @@ public:
     void reset();
 
     void resetPosition();
+
+    int getScore() const;
+
+    void increaseScore(int amount);
 
 
 private:

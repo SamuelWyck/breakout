@@ -149,6 +149,16 @@ void Player::healHealth() {
 };
 
 
+int Player::getScore() const {
+    return m_score;
+};
+
+
+void Player::increaseScore(int amount) {
+    m_score += amount;
+};
+
+
 bool Player::isDead() const {
     return m_health <= 0;
 };
@@ -157,6 +167,7 @@ bool Player::isDead() const {
 void Player::reset() {
     resetPosition();
     m_health = m_maxHealth;
+    m_score = 0;
 };
 
 
