@@ -81,6 +81,9 @@ void Game::gameLoop() {
     constexpr int levelCleared {1};
     constexpr int levelFailed {-1};
 
+    bool levelWon {false};
+    bool levelLost {false};
+
     while (running) {
         double deltaTime {clock.getNormalizedDeltaTime()};
 
@@ -114,16 +117,13 @@ void Game::gameLoop() {
         if (gameStatus == levelFailed) {
             m_playerPtr->takeDamage();
             if (m_playerPtr->isDead()) {
-                m_levelManagerPtr->loadLevel(firstLevel);
-                m_playerPtr->reset();
-                continue;
+                levelLost = true;
             } else {
                 m_levelManagerPtr->loadPlayerPaddle();
             }
 
         } else if (gameStatus == levelCleared) {
-            m_levelManagerPtr->loadLevel(m_levelManagerPtr->getLevelNum() + 1);
-            continue;
+            levelWon = true;
         }
 
 
@@ -138,6 +138,20 @@ void Game::gameLoop() {
         m_hudPtr->update(Framework::display.renderer());
         m_levelManagerPtr->updateLevel(Framework::display.renderer(), deltaTime, m_screenRect);
         m_playerPtr->update(Framework::display.renderer(), deltaTime, m_screenRect);
+
+        if (levelLost) {
+            levelLost = false;
+            m_hudPtr->showGameOver(Framework::display.renderer());
+            m_levelManagerPtr->loadLevel(firstLevel);
+            m_playerPtr->reset();
+            continue;
+
+        } else if (levelWon) {
+            levelWon = false;
+            m_hudPtr->showLevelCleared(Framework::display.renderer());
+            m_levelManagerPtr->loadLevel(m_levelManagerPtr->getLevelNum() + 1);
+            continue;
+        }
         
         SDL_RenderPresent(Framework::display.renderer());
         m_playerController.resetPressedInputs();
