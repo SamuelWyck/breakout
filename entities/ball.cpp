@@ -31,6 +31,8 @@ void Ball::update(SDL_Renderer* renderer, double deltaTime) {
 void Ball::launch(float xSpeedDelta) {
     m_ySpeed = m_maxSpeedNeg;
     m_xSpeed += xSpeedDelta;
+    m_rect.setY(m_rect.y() - 1);
+    m_hitbox.setCenter(m_rect.center());
 };
 
 
