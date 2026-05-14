@@ -3,14 +3,18 @@
 
 
 #include <SDL3/SDL_render.h>
-#include <SDL3/SDL_pixels.h>
 #include "../entities/player.h"
 #include "./imageStatTracker.h"
 #include "./liveTextDisplay.h"
+#include "./textDisplay.h"
+#include "../sdlUtils/color.h"
 #include "../framework/framework.h"
+#include "../framework/colors.h"
 
 
 class Hud {
+    static constexpr int oneSecond {1000};
+
     static constexpr float healthDisplayX {25};
     static constexpr float healthDisplayY {25};
     static constexpr float healthDisplayGap {10};
@@ -19,13 +23,20 @@ class Hud {
         healthDisplayX, healthDisplayY, healthDisplayGap,  Framework::images.ballImg, healthGetterCb
     };
 
-    LiveTextDisplay m_scoreDisplay{0, 0, &Framework::fonts.scoreFont, SDL_Color{255, 255, 255, 255}, nullptr};
+    LiveTextDisplay m_scoreDisplay{0, 0, &Framework::fonts.scoreFont, Colors::WHITE, nullptr};
+
+    TextDisplay m_gameOverDisplay{0, 0, "Game Over", &Framework::fonts.scoreFont, Colors::WHITE};
+    TextDisplay m_levelClearedDisplay{0, 0, "Level Cleared", &Framework::fonts.scoreFont, Colors::WHITE};
 
 
 public:
     Hud(Player* playerPtr, int canvasWidth, int canvasHeight);
 
     void update(SDL_Renderer* renderer);
+
+    void showGameOver(SDL_Renderer* renderer);
+
+    void showLevelCleared(SDL_Renderer* renderer);
 };
 
 
