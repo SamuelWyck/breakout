@@ -43,6 +43,9 @@
                 "-IC:\\SDL_TTF\\x86_64-w64-mingw32\\include",
                 "-LC:\\SDL_TTF\\x86_64-w64-mingw32\\lib",
                 "-lSDL3_ttf",
+                "-IC:\\SDL_MIXER\\x86_64-w64-mingw32\\include",
+                "-LC:\\SDL_MIXER\\x86_64-w64-mingw32\\lib",
+                "-lSDL_mixer",
                 // end sdl stuff
                 // start stuff needed for random.h to work
                 "-Wl,-Bstatic,--whole-archive", // start static linking. need whole archive to ensure pthreads works
