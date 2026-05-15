@@ -47,7 +47,17 @@ private:
         {"./levels/level4.txt"},
         {"./levels/level5.txt"},
         {"./levels/level6.txt"},
-        {"./levels/level7.txt"}
+        {"./levels/level7.txt"},
+        {"./levels/level8.txt"},
+        {"./levels/level9.txt"},
+        {"./levels/level10.txt"},
+        {"./levels/level11.txt"},
+        {"./levels/level12.txt"},
+        {"./levels/level13.txt"},
+        {"./levels/level14.txt"},
+        {"./levels/level15.txt"},
+        {"./levels/level16.txt"},
+        {"./levels/level17.txt"}
     };
 
 
