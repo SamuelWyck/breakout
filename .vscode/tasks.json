@@ -21,18 +21,18 @@
                 "-g", // debug flag
                 // "-O2", // prod flag
                 // "-DNDEBUG", // prod flag
-                // "${fileDirname}${pathSeparator}${fileBasename}", // target cpp file
-                "${fileDirname}\\framework\\*.cpp",
+                "${fileDirname}${pathSeparator}${fileBasename}", // target cpp file
+                // "${fileDirname}\\framework\\*.cpp",
                 "${fileDirname}\\utils\\*.cpp",
-                "${fileDirname}\\entities\\*.cpp",
-                "${fileDirname}\\controller\\*.cpp",
-                "${fileDirname}\\gameFramework\\*.cpp",
-                "${fileDirname}\\assetLoaders\\*.cpp",
-                "${fileDirname}\\hud\\*.cpp",
+                // "${fileDirname}\\entities\\*.cpp",
+                // "${fileDirname}\\controller\\*.cpp",
+                // "${fileDirname}\\gameFramework\\*.cpp",
+                // "${fileDirname}\\assetLoaders\\*.cpp",
+                // "${fileDirname}\\hud\\*.cpp",
                 "${fileDirname}\\sdlUtils\\*.cpp",
-                "${fileDirname}\\*.cpp", // all cpp files in curr dir
+                // "${fileDirname}\\*.cpp", // all cpp files in curr dir
                 "-o",
-                // "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
                 // start sdl stuff
                 "-IC:\\SDL\\x86_64-w64-mingw32\\include",
                 "-LC:\\SDL\\x86_64-w64-mingw32\\lib",
@@ -45,7 +45,7 @@
                 "-lSDL3_ttf",
                 "-IC:\\SDL_MIXER\\x86_64-w64-mingw32\\include",
                 "-LC:\\SDL_MIXER\\x86_64-w64-mingw32\\lib",
-                "-lSDL_mixer",
+                "-lSDL3_mixer",
                 // end sdl stuff
                 // start stuff needed for random.h to work
                 "-Wl,-Bstatic,--whole-archive", // start static linking. need whole archive to ensure pthreads works
