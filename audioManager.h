@@ -62,18 +62,21 @@ public:
     AudioManager& operator=(AudioManager&&) = delete;
 
     ~AudioManager() {
+        for (auto& entry : m_channelsMap) {
+            auto [channelName, channelTrack] {entry};
+            MIX_SetTrackAudio(channelTrack, nullptr);
+            MIX_DestroyTrack(channelTrack);
+        }
+
         for (auto& entry : m_soundsMap) {
             auto [soundName, soundAudio] {entry};
             MIX_DestroyAudio(soundAudio);
         }
 
-        for (auto& entry : m_channelsMap) {
-            auto [channelName, channelTrack] {entry};
-            MIX_DestroyTrack(channelTrack);
-        }
-
-        MIX_DestroyAudio(m_musicAudio);
+        MIX_SetTrackAudio(m_musicChannel, nullptr);
         MIX_DestroyTrack(m_musicChannel);
+        MIX_DestroyAudio(m_musicAudio);
+
         MIX_DestroyMixer(m_mixer);
         MIX_Quit();
         AudioManager::created = false;
