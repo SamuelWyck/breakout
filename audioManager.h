@@ -76,44 +76,41 @@ public:
         MIX_Quit();
         AudioManager::created = false;
     };
-
-
-    void playMenuMusic(bool loop=true, int fadeInMs=0) {
-    };
-
-
+    
+    
+    
     void loadMusic(const std::string& musicFilePath) {
         unloadMusic();
-    
+        
         constexpr bool decode {true};
         m_musicAudio = MIX_LoadAudio(m_mixer, musicFilePath.data(), !decode);
         if (!m_musicAudio) {
             throw std::runtime_error(SDL_GetError());
         }
-    
+        
         MIX_SetTrackAudio(m_musicChannel, m_musicAudio);
     };
-
-
+    
+    
     void unloadMusic() {
         MIX_SetTrackAudio(m_musicChannel, nullptr);
         MIX_DestroyAudio(m_musicAudio);
         m_musicAudio = nullptr;
     };
-
+    
 
     void playMusic(int loops=0, int startMs=0, int fadeInMs=0) {
         SDL_PropertiesID properties {SDL_CreateProperties()};
         SDL_SetNumberProperty(properties, MIX_PROP_PLAY_LOOPS_NUMBER, loops);
         SDL_SetNumberProperty(properties, MIX_PROP_PLAY_START_MILLISECOND_NUMBER, startMs);
         SDL_SetNumberProperty(properties, MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER, fadeInMs);
-
+        
         MIX_PlayTrack(m_musicChannel, properties);
-
+        
         SDL_DestroyProperties(properties);
     };
-
-
+    
+    
     void stopMusic() {
         constexpr int fadeOutFrames {0};
         MIX_StopTrack(m_musicChannel, fadeOutFrames);
@@ -123,15 +120,35 @@ public:
     void pauseMusic() {
         MIX_PauseTrack(m_musicChannel);
     };
-
-
+    
+    
     void resumeMusic() {
         MIX_ResumeTrack(m_musicChannel);
     };
-
-
+    
+    
     bool musicPlaying() const {
         return MIX_TrackPlaying(m_musicChannel);
+    };
+
+
+    float getMusicVolume() const {
+        return MIX_GetTrackGain(m_musicChannel);
+    };
+    
+    
+    void setMusicVolume(float volume) {
+        if (volume < 0.0f) {
+            volume = 0.0f;
+        } else if (volume > 1.0f) {
+            volume = 1.0f;
+        }
+        
+        MIX_SetTrackGain(m_musicChannel, volume);
+    };
+    
+
+    void playMenuMusic(bool loop=true, int fadeInMs=0) {
     };
 
 

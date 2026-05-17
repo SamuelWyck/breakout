@@ -36,6 +36,10 @@ int main() {
                     }
                 } else if (event.key.scancode == SDL_SCANCODE_R) {
                     audioManager.pauseMusic();
+                } else if (event.key.scancode == SDL_SCANCODE_A) {
+                    audioManager.setMusicVolume(audioManager.getMusicVolume() - .1f);
+                } else if (event.key.scancode == SDL_SCANCODE_D) {
+                    audioManager.setMusicVolume(audioManager.getMusicVolume() + .1f);
                 }
             }
         }
