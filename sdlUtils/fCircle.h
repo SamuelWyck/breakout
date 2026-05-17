@@ -45,6 +45,12 @@ public:
 
     // pivot circle (angle) degrees clockwise about the given x y coord
     void pivot(float x, float y, double angle);
+
+
+private:
+    SDL_FPoint edgePointClosestTo(float x, float y) const;
+
+    SDL_FPoint closestRectEdgePoint(const FRect* rect) const;
 };
 
 
