@@ -46,14 +46,9 @@ public:
         }
 
         createChannelsAndSounds(channels, soundFilepaths);
-
         m_musicChannel = MIX_CreateTrack(m_mixer);
 
         AudioManager::created = true;
-
-        m_musicAudio = MIX_LoadAudio(m_mixer, m_menuMusicFilePath.data(), false);
-        MIX_SetTrackAudio(m_musicChannel, m_musicAudio);
-        MIX_PlayTrack(m_musicChannel, 0);
     };
 
     AudioManager(const AudioManager&) = delete;
@@ -63,13 +58,13 @@ public:
 
     ~AudioManager() {
         for (auto& entry : m_channelsMap) {
-            auto [channelName, channelTrack] {entry};
+            auto& [channelName, channelTrack] {entry};
             MIX_SetTrackAudio(channelTrack, nullptr);
             MIX_DestroyTrack(channelTrack);
         }
 
         for (auto& entry : m_soundsMap) {
-            auto [soundName, soundAudio] {entry};
+            auto& [soundName, soundAudio] {entry};
             MIX_DestroyAudio(soundAudio);
         }
 
@@ -152,7 +147,7 @@ private:
 
         constexpr bool decode {true};
         for (const auto& entry : soundFilepaths) {
-            auto [soundName, soundFilepath] {entry};
+            auto& [soundName, soundFilepath] {entry};
             MIX_Audio* soundAudio {MIX_LoadAudio(m_mixer, soundFilepath.data(), decode)};
             if (!soundAudio) {
                 throw std::runtime_error(SDL_GetError());
