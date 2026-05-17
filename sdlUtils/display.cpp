@@ -17,7 +17,7 @@ Display::Display(
     SDL_WindowFlags windowFlags,
     SDL_RendererLogicalPresentation rendererPresentationFlag
 ) : m_screenWidth{screenWidth}, m_screenHeight{screenHeight}, m_canvasWidth{canvasWidth}, m_canvasHeight{canvasHeight} {
-    if (created) {
+    if (Display::created) {
         SDL_Log("Display already initialized\n");
         throw std::runtime_error("Display already initialized\n");
     }
@@ -47,7 +47,7 @@ Display::Display(
     }
     SDL_SetRenderLogicalPresentation(m_renderer, m_canvasWidth, m_canvasHeight, rendererPresentationFlag);
 
-    created = true;
+    Display::created = true;
 };
 
 
@@ -55,6 +55,7 @@ Display::~Display() {
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_screen);
     SDL_Quit();
+    Display::created = false;
 };
 
 
