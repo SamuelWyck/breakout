@@ -22,12 +22,12 @@
                 // "-O2", // prod flag
                 // "-DNDEBUG", // prod flag
                 "${fileDirname}${pathSeparator}${fileBasename}", // target cpp file
-                // "${fileDirname}\\framework\\*.cpp",
+                "${fileDirname}\\framework\\*.cpp",
                 "${fileDirname}\\utils\\*.cpp",
                 // "${fileDirname}\\entities\\*.cpp",
                 // "${fileDirname}\\controller\\*.cpp",
                 // "${fileDirname}\\gameFramework\\*.cpp",
-                // "${fileDirname}\\assetLoaders\\*.cpp",
+                "${fileDirname}\\assetLoaders\\*.cpp",
                 // "${fileDirname}\\hud\\*.cpp",
                 "${fileDirname}\\sdlUtils\\*.cpp",
                 // "${fileDirname}\\*.cpp", // all cpp files in curr dir
