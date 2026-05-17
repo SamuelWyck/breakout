@@ -11,7 +11,9 @@
 int main() {
     namespace fs = std::filesystem;
     // Display display {"Test", 0, 0, 1536, 864, SDL_WINDOW_FULLSCREEN};
-    AudioManager audioManager{{}, {}, {}, fs::absolute(fs::path{"./menu_music.ogg"}).string()};
+    AudioManager audioManager{{}, {}, {}};
+    audioManager.loadMusic(fs::absolute(fs::path{"./menu_music.ogg"}).string());
+    audioManager.playMusic(-1, 0, 2000);
 
     FRect rect{500, 500, 200, 500};
     FCircle circle{0, 0, 14};
@@ -23,9 +25,17 @@ int main() {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_EVENT_QUIT) {
                 running = false;
-            } else if (event.type == SDL_EVENT_KEY_DOWN) {
+            } else if (event.type == SDL_EVENT_KEY_DOWN && !event.key.repeat) {
                 if (event.key.scancode == SDL_SCANCODE_BACKSPACE) {
                     running = false;
+                } else if (event.key.scancode == SDL_SCANCODE_E) {
+                    if (audioManager.musicPlaying()) {
+                        audioManager.pauseMusic();
+                    } else {
+                        audioManager.resumeMusic();
+                    }
+                } else if (event.key.scancode == SDL_SCANCODE_R) {
+                    audioManager.pauseMusic();
                 }
             }
         }
