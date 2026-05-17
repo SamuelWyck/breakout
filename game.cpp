@@ -92,7 +92,7 @@ void Game::gameLoop() {
             if (event.type == SDL_EVENT_QUIT) {
                 running = false;
 
-            } else if (event.type == SDL_EVENT_KEY_DOWN) {
+            } else if (event.type == SDL_EVENT_KEY_DOWN && !event.key.repeat) {
                 if (event.key.scancode == SDL_SCANCODE_BACKSPACE) {
                     running = false;
                 } else {
