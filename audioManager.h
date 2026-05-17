@@ -130,6 +130,11 @@ public:
     };
 
 
+    bool musicPlaying() const {
+        return MIX_TrackPlaying(m_musicChannel);
+    };
+
+
 private:
     void createChannelsAndSounds(
         const std::vector<std::string>& channels, 
