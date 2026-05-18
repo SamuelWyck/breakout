@@ -9,6 +9,7 @@
 #include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3/SDL_properties.h>
 #include <SDL3/SDL_error.h>
+#include "./soundEffect.h"
 
 
 class AudioManager {
@@ -202,6 +203,20 @@ public:
 
         m_usingGameMusicLoopCb = true;
     };
+
+    // Get a sound effect with the specified channel and sound.
+    // Throws an std::runtime_error if the channel or sound name don't exist.
+    SoundEffect getSoundEffect(const std::string& channelName, const std::string& soundName) {
+        if (!m_channelsMap.contains(channelName)) {
+            throw std::runtime_error("Channel: '" + channelName + "' doesn't exist.\n");
+        }
+        if (!m_soundsMap.contains(soundName)) {
+            throw std::runtime_error("Sound: '" + soundName + "' doesn't exist\n");
+        }
+
+        return SoundEffect{m_channelsMap[channelName], m_soundsMap[soundName]};
+    };
+
 
 
 private:
