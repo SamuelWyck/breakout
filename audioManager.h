@@ -9,7 +9,7 @@
 #include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3/SDL_properties.h>
 #include <SDL3/SDL_error.h>
-#include "./soundEffect.h"
+#include "./sdlUtils/soundEffect.h"
 
 
 class AudioManager {
@@ -28,6 +28,7 @@ class AudioManager {
     std::vector<std::string> m_gameMusicFilePaths{};
     std::string m_menuMusicFilePath{};
 
+    float m_soundVolume {1.0f};
     std::unordered_map<std::string, MIX_Track*> m_channelsMap{};
     std::unordered_map<std::string, MIX_Audio*> m_soundsMap{};
     
@@ -139,13 +140,7 @@ public:
     
     // Set the volume of the music channel. Clamps the passed value to 0-1.
     void setMusicVolume(float volume) {
-        if (volume < 0.0f) {
-            volume = 0.0f;
-        } else if (volume > 1.0f) {
-            volume = 1.0f;
-        }
-        
-        MIX_SetTrackGain(m_musicChannel, volume);
+        MIX_SetTrackGain(m_musicChannel, clampVolume(volume));
     };
 
     // Set the event to be placed on the event queue when music finishes playing or is stopped.
@@ -218,6 +213,21 @@ public:
     };
 
 
+    float getSoundVolume() const {
+        return m_soundVolume;
+    };
+
+
+    void setSoundVolume(float volume) {
+        m_soundVolume = clampVolume(volume);
+
+        for (auto& entry : m_channelsMap) {
+            MIX_Track* channel {entry.second};
+            MIX_SetTrackGain(channel, m_soundVolume);
+        }
+    };
+
+
 
 private:
     void createChannelsAndSounds(
@@ -244,6 +254,16 @@ private:
 
             m_soundsMap[soundName] = soundAudio;
         }
+    };
+
+
+    float clampVolume(float volume) {
+        if (volume < 0.0f) {
+            volume = 0.0f;
+        } else if (volume > 1.0f) {
+            volume = 1.0f;
+        }
+        return volume;
     };
 
 
