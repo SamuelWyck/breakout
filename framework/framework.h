@@ -7,12 +7,14 @@
 #include "../assetLoaders/images.h"
 #include "../assetLoaders/fonts.h"
 #include "../sdlUtils/display.h"
+#include "../sdlUtils/audioManager.h"
 
 
 namespace Framework {
     extern Display display;
     extern Images images;
     extern Fonts fonts;
+    extern AudioManager audioManager;
 };
 
 

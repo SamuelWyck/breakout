@@ -1,6 +1,8 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
+#include <SDL3/SDL_filesystem.h>
 #include "../sdlUtils/display.h"
+#include "../sdlUtils/audioManager.h"
 #include "../assetLoaders/images.h"
 #include "../assetLoaders/fonts.h"
 
@@ -21,4 +23,6 @@ namespace Framework {
     Images images{display.renderer()};
 
     Fonts fonts{};
+
+    AudioManager audioManager{};
 };
