@@ -400,8 +400,12 @@ void AudioManager::saveVolumeSettings() {
 // int main() {
 //     namespace fs = std::filesystem;
 //     // Display display {"Test", 0, 0, 1536, 864, SDL_WINDOW_FULLSCREEN};
+//     std::string path{SDL_GetBasePath()};
+//     path += "lose.wav";
+//     std::cout << path;
+
 //     AudioManager audioManager{
-//         {"TEST"}, {{"SOUND", fs::absolute(fs::path{"./lose.wav"}).string()}}, 
+//         {"TEST"}, {{"SOUND", path}}, 
 //         {},{},fs::absolute(fs::path{"./savedVolume.txt"}).string()
 //     };
 //     audioManager.saveVolumeSettings();
