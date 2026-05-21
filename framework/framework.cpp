@@ -1,10 +1,13 @@
+#include <string>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
+#include <SDL3/SDL_filesystem.h>
 #include <SDL3/SDL_filesystem.h>
 #include "../sdlUtils/display.h"
 #include "../sdlUtils/audioManager.h"
 #include "../assetLoaders/images.h"
 #include "../assetLoaders/fonts.h"
+#include "../assetLoaders/sounds.h"
 
 
 
@@ -24,5 +27,12 @@ namespace Framework {
 
     Fonts fonts{};
 
-    AudioManager audioManager{};
+    AudioManager audioManager{
+        {"BALL"}, 
+        {
+            {"BALL_SOUND", SDL_GetBasePath() + std::string{"assets/sounds/ballBounce.wav"}}
+        }
+    };
+
+    Sounds sounds{audioManager};
 };

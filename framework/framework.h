@@ -8,6 +8,7 @@
 #include "../assetLoaders/fonts.h"
 #include "../sdlUtils/display.h"
 #include "../sdlUtils/audioManager.h"
+#include "../assetLoaders/sounds.h"
 
 
 namespace Framework {
@@ -15,6 +16,7 @@ namespace Framework {
     extern Images images;
     extern Fonts fonts;
     extern AudioManager audioManager;
+    extern Sounds sounds;
 };
 
 
