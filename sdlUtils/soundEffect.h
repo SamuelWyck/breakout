@@ -18,6 +18,7 @@ class SoundEffect {
 
 
 public:
+    SoundEffect();
     SoundEffect(const SoundEffect&) = default;
     SoundEffect(SoundEffect&&) = default;
     ~SoundEffect() = default;
@@ -40,6 +41,10 @@ public:
 
     // Stop the channel related to this sound effect if it is currently playing this sound.
     void stop();
+
+
+private:
+    bool validState() const;
 };
 
 
