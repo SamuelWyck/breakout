@@ -67,6 +67,7 @@ void Player::handleBallBounce(Ball& ball) {
         return;
     }
 
+    ball.playBounceSound();
     if (m_bottomRect.hasRectIntersection(&ball.m_rect)) {
         float xDistance {ball.m_rect.centerX() - m_rect.centerX()};
         if (xDistance < 0.0) {
