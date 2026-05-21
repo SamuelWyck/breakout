@@ -3,18 +3,16 @@
 
 
 #include <string>
-#include <filesystem>
+#include <SDL3/SDL_filesystem.h>
 #include "../sdlUtils/font.h"
 
 
 class Fonts {
-    using path = std::filesystem::path;
-
-    static constexpr std::string fontsDirPath{"./assets/fonts"};
+    static constexpr std::string fontsDirPath{"assets/fonts"};
 
 
 public:
-    Font scoreFont{std::filesystem::absolute(path{fontsDirPath + "/forge.ttf"}).string(), 40};
+    Font scoreFont{SDL_GetBasePath() + fontsDirPath + "/forge.ttf", 40};
 };
 
 
