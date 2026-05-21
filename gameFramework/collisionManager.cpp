@@ -82,7 +82,6 @@ void CollisionManager::handleBallScreenCollisions(Ball& ball) {
     if (ball.m_rect.top() < m_screenRect.top()) {
         ball.m_rect.setTop(m_screenRect.top());
         ball.bounceY(m_ballSpeedDelta);
-
     }
 
     if (ball.m_rect.left() < m_screenRect.left()) {
