@@ -6,21 +6,24 @@
 #include <SDL3/SDL_render.h>
 #include "../sdlUtils/fRect.h"
 #include "../sdlUtils/fCircle.h"
+#include "../sdlUtils/soundEffect.h"
 
 
 class Ball {
 public:
     FRect m_rect{};
     FCircle m_hitbox{};
-
-
+    
+    
 private:
     SDL_Texture* m_img {nullptr};
-
+    
     float m_xSpeed {0.0f};
     float m_ySpeed {0.0f};
     float m_maxSpeedPos {5.5f};
     float m_maxSpeedNeg {-5.5f};
+    
+    SoundEffect m_sound{};
 
 
 public:
@@ -54,8 +57,10 @@ public:
 
 
     void handleBlockCollision(const FRect& blockRect);
-
     void handleBallCollision(Ball& ball);
+
+
+    void playBounceSound() const;
 
 
 private:

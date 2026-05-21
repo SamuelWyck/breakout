@@ -2,6 +2,7 @@
 #include <SDL3/SDL_render.h>
 #include "./ball.h"
 #include "../sdlUtils/fRect.h"
+#include "../framework/framework.h"
 
 
 
@@ -10,9 +11,17 @@ Ball::Ball(SDL_Texture* img, float centerX, float centerY, float radius, float x
 {
     m_rect.setCenter(centerX, centerY);
     m_rect.setSize(radius * 2, radius * 2);    
+    m_sound = Framework::sounds.ballBounce;
 };
 
 Ball::Ball() {
+    m_sound = Framework::sounds.ballBounce;
+};
+
+
+
+void Ball::playBounceSound() const {
+    m_sound.deferPlay();
 };
 
 
@@ -154,6 +163,8 @@ void Ball::handleBlockCollision(const FRect& blockRect) {
         }
         setCenter(m_rect.centerX(), blockRect.bottom() + m_hitbox.radius());
     }
+
+    m_sound.deferPlay();
 };
 
 
