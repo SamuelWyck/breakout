@@ -39,7 +39,9 @@ public:
     Display& operator=(Display&&) = delete;
 
 
-    SDL_Renderer* renderer();;
+    SDL_Renderer* renderer();
+
+    SDL_Window* window();
 
     int canvasWidth();
 

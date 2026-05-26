@@ -63,6 +63,10 @@ SDL_Renderer* Display::renderer() {
     return m_renderer;
 };
 
+SDL_Window* Display::window() {
+    return m_screen;
+};
+
 int Display::canvasWidth() {
     return m_canvasWidth;
 };
