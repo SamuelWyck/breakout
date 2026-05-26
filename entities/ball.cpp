@@ -1,7 +1,7 @@
 #include <utility>
 #include <SDL3/SDL_render.h>
 #include "./ball.h"
-#include "../sdlUtils/fRect.h"
+#include "../sdlUtils/collision/fRect.h"
 #include "../framework/framework.h"
 
 

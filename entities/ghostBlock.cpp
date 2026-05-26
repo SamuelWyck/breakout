@@ -6,7 +6,7 @@
 #include "./iBlock.h"
 #include "./ball.h"
 #include "../sdlUtils/color.h"
-#include "../sdlUtils/fRect.h"
+#include "../sdlUtils/collision/fRect.h"
 #include "./ghostBlock.h"
 #include "../framework/colors.h"
 #include "../framework/framework.h"

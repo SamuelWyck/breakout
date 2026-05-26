@@ -3,7 +3,7 @@
 #include <SDL3/SDL_surface.h>
 #include "../sdlUtils/font.h"
 #include "../sdlUtils/color.h"
-#include "../sdlUtils/fRect.h"
+#include "../sdlUtils/collision/fRect.h"
 #include "./textDisplay.h"
 
 

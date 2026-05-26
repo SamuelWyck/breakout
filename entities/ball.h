@@ -4,8 +4,8 @@
 
 #include <utility>
 #include <SDL3/SDL_render.h>
-#include "../sdlUtils/fRect.h"
-#include "../sdlUtils/fCircle.h"
+#include "../sdlUtils/collision/fRect.h"
+#include "../sdlUtils/collision/fCircle.h"
 #include "../sdlUtils/audio/soundEffect.h"
 
 

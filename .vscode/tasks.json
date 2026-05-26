@@ -31,6 +31,7 @@
                 "${fileDirname}\\hud\\*.cpp",
                 "${fileDirname}\\sdlUtils\\*.cpp",
                 "${fileDirname}\\sdlUtils\\audio\\*.cpp",
+                "${fileDirname}\\sdlUtils\\collision\\*.cpp",
                 "${fileDirname}\\*.cpp", // all cpp files in curr dir
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",

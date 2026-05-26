@@ -10,7 +10,7 @@
 #include <SDL3/SDL_render.h>
 #include "../utils/file.h"
 #include "../sdlUtils/color.h"
-#include "../sdlUtils/fRect.h"
+#include "../sdlUtils/collision/fRect.h"
 #include "../entities/iBlock.h"
 #include "../entities/basicBlock.h"
 #include "../entities/hardBlock.h"

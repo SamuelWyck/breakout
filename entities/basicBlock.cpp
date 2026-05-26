@@ -5,7 +5,7 @@
 #include "./basicBlock.h"
 #include "../sdlUtils/color.h"
 #include "./ball.h"
-#include "../sdlUtils/fRect.h"
+#include "../sdlUtils/collision/fRect.h"
 
 
 BasicBlock::BasicBlock(float x, float y, SDL_Texture* img, const Color& color, int health, int scoreVal) 

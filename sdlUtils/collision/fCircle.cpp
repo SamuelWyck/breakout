@@ -3,7 +3,7 @@
 #include <SDL3/SDL_rect.h>
 #include "./fCircle.h"
 #include "./fRect.h"
-#include "../utils/math.h"
+#include "../math.h"
 
 
 

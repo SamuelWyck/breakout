@@ -6,7 +6,7 @@
 #include <string>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
-#include "../sdlUtils/fRect.h"
+#include "../sdlUtils/collision/fRect.h"
 #include "../sdlUtils/color.h"
 #include "../sdlUtils/font.h"
 

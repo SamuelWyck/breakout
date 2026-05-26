@@ -2,7 +2,7 @@
 #include <exception>
 #include <typeinfo>
 #include <SDL3/SDL_render.h>
-#include "../sdlUtils/fRect.h"
+#include "../sdlUtils/collision/fRect.h"
 #include "../sdlUtils/color.h"
 #include "./iBlock.h"
 #include "./ball.h"

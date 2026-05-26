@@ -1,7 +1,7 @@
 #include <exception>
 #include <typeinfo>
 #include <SDL3/SDL_render.h>
-#include "../sdlUtils/fRect.h"
+#include "../sdlUtils/collision/fRect.h"
 #include "./iBlock.h"
 #include "./hardBlock.h"
 #include "../sdlUtils/color.h"

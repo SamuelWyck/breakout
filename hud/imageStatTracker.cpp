@@ -1,6 +1,6 @@
 #include <functional>
 #include <SDL3/SDL_render.h>
-#include "../sdlUtils/fRect.h"
+#include "../sdlUtils/collision/fRect.h"
 #include "./imageStatTracker.h"
 
 
