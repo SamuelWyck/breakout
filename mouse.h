@@ -7,7 +7,6 @@
 #include <SDL3/SDL_render.h>
 #include "./sdlUtils/math.h"
 #include "./sdlUtils/collision/fRect.h"
-#include <iostream>
 
 
 class Mouse {
