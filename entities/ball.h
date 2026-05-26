@@ -6,7 +6,7 @@
 #include <SDL3/SDL_render.h>
 #include "../sdlUtils/fRect.h"
 #include "../sdlUtils/fCircle.h"
-#include "../sdlUtils/soundEffect.h"
+#include "../sdlUtils/audio/soundEffect.h"
 
 
 class Ball {

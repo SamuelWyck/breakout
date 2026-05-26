@@ -7,7 +7,7 @@
 #include "../assetLoaders/images.h"
 #include "../assetLoaders/fonts.h"
 #include "../sdlUtils/display.h"
-#include "../sdlUtils/audioManager.h"
+#include "../sdlUtils/audio/audioManager.h"
 #include "../assetLoaders/sounds.h"
 
 

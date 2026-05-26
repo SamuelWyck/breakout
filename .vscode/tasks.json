@@ -30,6 +30,7 @@
                 "${fileDirname}\\assetLoaders\\*.cpp",
                 "${fileDirname}\\hud\\*.cpp",
                 "${fileDirname}\\sdlUtils\\*.cpp",
+                "${fileDirname}\\sdlUtils\\audio\\*.cpp",
                 "${fileDirname}\\*.cpp", // all cpp files in curr dir
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",

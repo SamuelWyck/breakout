@@ -2,8 +2,8 @@
 #define SOUNDS_LOADER_H
 
 
-#include "../sdlUtils/audioManager.h"
-#include "../sdlUtils/soundEffect.h"
+#include "../sdlUtils/audio/audioManager.h"
+#include "../sdlUtils/audio/soundEffect.h"
 
 
 class Sounds {

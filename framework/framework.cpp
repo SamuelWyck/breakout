@@ -4,7 +4,7 @@
 #include <SDL3/SDL_filesystem.h>
 #include <SDL3/SDL_filesystem.h>
 #include "../sdlUtils/display.h"
-#include "../sdlUtils/audioManager.h"
+#include "../sdlUtils/audio/audioManager.h"
 #include "../assetLoaders/images.h"
 #include "../assetLoaders/fonts.h"
 #include "../assetLoaders/sounds.h"
