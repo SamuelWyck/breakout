@@ -5,8 +5,8 @@
 #include <SDL3/SDL_render.h>
 #include "../entities/player.h"
 #include "./imageStatTracker.h"
-#include "./liveTextDisplay.h"
-#include "./textDisplay.h"
+#include "../sdlUtils/userInterface/elements/liveTextDisplay.h"
+#include "../sdlUtils/userInterface/elements/textDisplay.h"
 #include "../sdlUtils/color.h"
 #include "../framework/framework.h"
 #include "../framework/colors.h"
