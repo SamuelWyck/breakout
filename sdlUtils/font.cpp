@@ -1,4 +1,3 @@
-#include <string>
 #include <cmath>
 #include <string_view>
 #include <stdexcept>
@@ -87,7 +86,7 @@ Font& Font::operator=(Font&& font) {
 
 // Render text to a surface. Caller is responsible for managing the returned surface.
 // For wrapLength: -1 = no wrap, 0 = wrap on newline, > 0 = wrap after that many pixels. 
-SDL_Surface* Font::renderSurface(const std::string& text, const SDL_Color& color, int wrapLength) const {
+SDL_Surface* Font::renderSurface(std::string_view text, const SDL_Color& color, int wrapLength) const {
     constexpr int textLength {0}; // zero for null terminated strings
     SDL_Surface* renderedText {nullptr};
 
@@ -102,7 +101,7 @@ SDL_Surface* Font::renderSurface(const std::string& text, const SDL_Color& color
 
 // Render text to a texture. Caller is responsible for managing the returned texture.
 // For wrapLength: -1 = no wrap, 0 = wrap on newline, > 0 = wrap after that many pixels. 
-SDL_Texture* Font::renderTexture(SDL_Renderer* renderer, const std::string& text, const SDL_Color& color, int wrapLength) const {
+SDL_Texture* Font::renderTexture(SDL_Renderer* renderer, std::string_view text, const SDL_Color& color, int wrapLength) const {
 
     SDL_Surface* surface {renderSurface(text, color, wrapLength)};
     SDL_Texture* texture {SDL_CreateTextureFromSurface(renderer, surface)};
