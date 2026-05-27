@@ -1,5 +1,6 @@
 #include "./sdlUtils/userInterface/elements/button.h"
 #include "./sdlUtils/userInterface/elements/slider.h"
+#include "./sdlUtils/userInterface/elements/textDisplay.h"
 
 #include <SDL3/SDL.h>
 #include <string>
@@ -7,6 +8,7 @@
 #include "./framework/framework.h"
 #include "./sdlUtils/userInterface/mouse.h"
 #include <iostream>
+#include "./sdlUtils/color.h"
 
 
 
@@ -38,6 +40,9 @@ int main() {
 
     Slider slider{100, 100, sliderCb, imgBar, imgSlide};
     slider.setValue(1);
+
+
+    TextDisplay hardText{800, 400, "testing", &Framework::fonts.scoreFont, Color{255, 0, 0, 255}};
 
     FRect rect{600, 400, 50, 50};
     bool toggle {false};
@@ -88,6 +93,7 @@ int main() {
         SDL_SetRenderDrawColor(Framework::display.renderer(), red, green, 0, 255);
         SDL_RenderFillRect(Framework::display.renderer(), &rect.getSDLFRect());
         slider.update(Framework::display.renderer(), mousePos, mousePressed, mouseReleased);
+        hardText.update(Framework::display.renderer());
         mouse.draw(Framework::display.renderer());
 
 
