@@ -1,9 +1,11 @@
 #include "./sdlUtils/userInterface/elements/button.h"
 #include "./sdlUtils/userInterface/elements/slider.h"
 #include "./sdlUtils/userInterface/elements/textDisplay.h"
+#include "./sdlUtils/userInterface/elements/liveTextDisplay.h"
 
 #include <SDL3/SDL.h>
 #include <string>
+#include <format>
 #include <SDL3_image/SDL_image.h>
 #include "./framework/framework.h"
 #include "./sdlUtils/userInterface/mouse.h"
@@ -43,6 +45,17 @@ int main() {
 
 
     TextDisplay hardText{800, 400, "testing", &Framework::fonts.scoreFont, Color{255, 0, 0, 255}};
+
+
+    std::function<std::string()> liveTextCb{
+        [&slider]() -> std::string {
+            float val {slider.value()};
+            return std::format("{:.2f}", val);
+        }
+    };
+
+    LiveTextDisplay liveText{500, 100, &Framework::fonts.scoreFont, Color{0, 255, 0, 255}, liveTextCb};
+
 
     FRect rect{600, 400, 50, 50};
     bool toggle {false};
@@ -94,6 +107,7 @@ int main() {
         SDL_RenderFillRect(Framework::display.renderer(), &rect.getSDLFRect());
         slider.update(Framework::display.renderer(), mousePos, mousePressed, mouseReleased);
         hardText.update(Framework::display.renderer());
+        liveText.update(Framework::display.renderer());
         mouse.draw(Framework::display.renderer());
 
 
