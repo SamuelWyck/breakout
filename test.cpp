@@ -1,10 +1,12 @@
 #include "./sdlUtils/userInterface/elements/button.h"
+#include "./sdlUtils/userInterface/elements/slider.h"
 
 #include <SDL3/SDL.h>
 #include <string>
 #include <SDL3_image/SDL_image.h>
 #include "./framework/framework.h"
 #include "./sdlUtils/userInterface/mouse.h"
+#include <iostream>
 
 
 
@@ -12,6 +14,9 @@ int main() {
 
     SDL_Texture* img {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"play_btn.png"}}.data())};
     SDL_Texture* imgHover {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"play_btn_hover.png"}}.data())};
+    SDL_Texture* imgBar {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"slider_bar.png"}}.data())};
+    SDL_SetTextureScaleMode(imgBar, SDL_SCALEMODE_PIXELART);
+    SDL_Texture* imgSlide {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"slider_slide.png"}}.data())};
 
     Mouse mouse{
         static_cast<float>(Framework::display.screenWidth()),
@@ -25,11 +30,20 @@ int main() {
 
     Button button{400, 400, img, imgHover};
 
+    std::function<void(float)> sliderCb{
+        [](float val) -> void {
+            std::cout << val << "\n";
+        }
+    };
+
+    Slider slider{100, 100, sliderCb, imgBar, imgSlide};
+    slider.setValue(1);
+
     FRect rect{600, 400, 50, 50};
     bool toggle {false};
 
     bool running {true};
-    // mouse.setPositionToCursor();
+
     while (running) {
         bool mousePressed {false};
         bool mouseReleased {false};
@@ -73,6 +87,7 @@ int main() {
 
         SDL_SetRenderDrawColor(Framework::display.renderer(), red, green, 0, 255);
         SDL_RenderFillRect(Framework::display.renderer(), &rect.getSDLFRect());
+        slider.update(Framework::display.renderer(), mousePos, mousePressed, mouseReleased);
         mouse.draw(Framework::display.renderer());
 
 
@@ -81,6 +96,8 @@ int main() {
 
     SDL_DestroyTexture(img);
     SDL_DestroyTexture(imgHover);
+    SDL_DestroyTexture(imgBar);
+    SDL_DestroyTexture(imgSlide);
 
     return 0;
 };
