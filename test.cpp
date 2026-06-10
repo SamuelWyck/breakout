@@ -63,14 +63,14 @@ int main() {
     btns.push_back(new Button{button});
     btns.push_back(new Button{button});
 
-    std::vector<std::function<MenuReturn(SDL_Renderer*)>> cbs{};
+    std::vector<MenuCb> cbs{};
     cbs.push_back({
-        [](SDL_Renderer*) -> MenuReturn {
+        [](SDL_Renderer*, SDL_Texture*) -> MenuReturn {
             return {{0, -1}};
         }
     });
     cbs.push_back({
-        [](SDL_Renderer*) -> MenuReturn {
+        [](SDL_Renderer*, SDL_Texture*) -> MenuReturn {
             return {{1, -1}};
         }
     });
@@ -82,6 +82,10 @@ int main() {
     bool toggle {false};
 
     bool running {true};
+    bool prepMenuTexture {false};
+    bool enterMenu {false};
+
+    SDL_Texture* screenBg{nullptr};
 
     while (running) {
         bool mousePressed {false};
@@ -95,7 +99,7 @@ int main() {
                 if (event.key.scancode == SDL_SCANCODE_BACKSPACE) {
                     running = false;
                 } else if (event.key.scancode == SDL_SCANCODE_ESCAPE) {
-                    menu.run(Framework::display.renderer());
+                    prepMenuTexture = true;
                 }
             } else if (event.type == SDL_EVENT_MOUSE_MOTION) {
                 mouse.update(event.motion.xrel, event.motion.yrel);
@@ -108,6 +112,15 @@ int main() {
                     mouseReleased = true;
                 }
             }
+        }
+
+
+        if (enterMenu) {
+            enterMenu = false;
+            menu.run(Framework::display.renderer(), screenBg);
+        }
+        if (prepMenuTexture) {
+            Framework::display.targetTexture();
         }
 
 
@@ -133,6 +146,11 @@ int main() {
         liveText.update(Framework::display.renderer());
         mouse.draw(Framework::display.renderer());
 
+        if (prepMenuTexture) {
+            screenBg = Framework::display.targetWindow();
+            prepMenuTexture = false;
+            enterMenu = true;
+        }
 
         SDL_RenderPresent(Framework::display.renderer());
     }

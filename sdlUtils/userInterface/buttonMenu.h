@@ -11,7 +11,7 @@
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_rect.h>
 #include "./elements/button.h"
-#include "./menuReturnType.h"
+#include "./menuTypes.h"
 #include "./mouse.h"
 #include "../clock.h"
 #include "../collision/fRect.h"
@@ -19,7 +19,7 @@
 
 class ButtonMenu {
     std::vector<Button*> m_buttons{};
-    std::unordered_map<int, std::function<MenuReturn(SDL_Renderer*)>> m_buttonCbMap{};
+    std::unordered_map<int, MenuCb> m_buttonCbMap{};
     
     float m_btnX {};
     float m_btnY {};
@@ -34,7 +34,7 @@ class ButtonMenu {
 public:
     ButtonMenu(
         const std::vector<Button*>& buttons, 
-        const std::vector<std::function<MenuReturn(SDL_Renderer*)>>& btnCallbacks,
+        const std::vector<MenuCb>& btnCallbacks,
         float buttonX,
         float buttonY,
         float buttonGap,
@@ -74,7 +74,7 @@ public:
     };
 
 
-    MenuReturn run(SDL_Renderer* renderer) {
+    MenuReturn run(SDL_Renderer* renderer, SDL_Texture* currentCanvas) {
         bool running {true};
         m_mouseManger->setMouseHidden(false);
 
@@ -98,9 +98,10 @@ public:
 
             SDL_FPoint mousePos{m_mouseManger->getPos()};
 
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
 
+            SDL_RenderTexture(renderer, currentCanvas, nullptr, &m_bgImageRect.getSDLFRect());
             if (m_bgImage) {
                 SDL_RenderTexture(renderer, m_bgImage, nullptr, &m_bgImageRect.getSDLFRect());
             }
@@ -110,8 +111,8 @@ public:
                 if (btnPtr->clicked()) {
                     btnPtr->unClick();
 
-                    std::function<MenuReturn(SDL_Renderer*)>& buttonCb {m_buttonCbMap[btnPtr->id()]};
-                    MenuReturn cbReturn{buttonCb(renderer)};
+                    MenuCb& buttonCb {m_buttonCbMap[btnPtr->id()]};
+                    MenuReturn cbReturn{buttonCb(renderer, currentCanvas)};
                     if (!cbReturn) {
                         return MenuReturn{};
                     }
@@ -135,7 +136,7 @@ public:
 
 
 private:
-    void positionButtons(std::vector<std::function<MenuReturn(SDL_Renderer*)>> btnCallbacks) {
+    void positionButtons(std::vector<MenuCb> btnCallbacks) {
         int length {static_cast<int>(m_buttons.size())};
         float currentY {m_btnY};
         float maxBtnHeight {getMaxButtonHeight()};
