@@ -62,17 +62,32 @@ int Button::id() const {
 };
 
 
+void Button::setId(int newId) {
+    m_id = newId;
+};
+
+
 // Methods for menu element interface
 
 void Button::update(SDL_Renderer*) {
 };
 
 float Button::width() const {
-    return m_imgRect.width();
+    if (m_hoverImg == nullptr) {
+        return m_imgRect.width();
+    }
+    float imgWidth {m_imgRect.width()};
+    float hvrImgWidth {m_hoverImgRect.width()};
+    return (imgWidth < hvrImgWidth) ? hvrImgWidth : imgWidth;
 };
 
 float Button::height() const {
-    return m_imgRect.height();
+    if (m_hoverImg == nullptr) {
+        return m_imgRect.height();
+    }
+    float imgHeight {m_imgRect.height()};
+    float hvrImgHeight {m_hoverImgRect.height()};
+    return (imgHeight < hvrImgHeight) ? hvrImgHeight : imgHeight;
 };
 
 std::pair<float, float> Button::topleft() const {
@@ -81,6 +96,9 @@ std::pair<float, float> Button::topleft() const {
 
 void Button::setTopleft(float x, float y) {
     m_imgRect.setTopleft(x, y);
+    if (m_hoverImg != nullptr) {
+        m_hoverImgRect.setCenter(m_imgRect.center());
+    }
 };
 
 std::pair<float, float> Button::center() const {
@@ -89,12 +107,21 @@ std::pair<float, float> Button::center() const {
 
 void Button::setCenter(float x, float y) {
     m_imgRect.setCenter(x, y);
+    if (m_hoverImg != nullptr) {
+        m_hoverImgRect.setCenter(m_imgRect.center());
+    }
 };
 
 void Button::setX(float x) {
     m_imgRect.setX(x);
+    if (m_hoverImg != nullptr) {
+        m_hoverImgRect.setCenter(m_imgRect.center());
+    }
 };
 
 void Button::setY(float y) {
     m_imgRect.setY(y);
+    if (m_hoverImg != nullptr) {
+        m_hoverImgRect.setCenter(m_imgRect.center());
+    }
 };

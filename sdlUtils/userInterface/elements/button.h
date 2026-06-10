@@ -43,6 +43,7 @@ public:
 
 
     int id() const;
+    void setId(int newId);
 
 
     // Methods for menu element interface
