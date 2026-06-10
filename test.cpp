@@ -11,11 +11,13 @@
 #include "./sdlUtils/userInterface/mouse.h"
 #include <iostream>
 #include "./sdlUtils/color.h"
+#include "./sdlUtils/userInterface/buttonMenu.h"
 
 
 
 int main() {
 
+    SDL_Texture* bgImg {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"audio_menu_bg.png"}}.data())};
     SDL_Texture* img {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"play_btn.png"}}.data())};
     SDL_Texture* imgHover {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"play_btn_hover.png"}}.data())};
     SDL_Texture* imgBar {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"slider_bar.png"}}.data())};
@@ -57,6 +59,25 @@ int main() {
     LiveTextDisplay liveText{500, 100, &Framework::fonts.scoreFont, Color{0, 255, 0, 255}, liveTextCb};
 
 
+    std::vector<Button*> btns{};
+    btns.push_back(new Button{button});
+    btns.push_back(new Button{button});
+
+    std::vector<std::function<MenuReturn(SDL_Renderer*)>> cbs{};
+    cbs.push_back({
+        [](SDL_Renderer*) -> MenuReturn {
+            return {{0, -1}};
+        }
+    });
+    cbs.push_back({
+        [](SDL_Renderer*) -> MenuReturn {
+            return {{1, -1}};
+        }
+    });
+
+    ButtonMenu menu{btns, cbs, 400, 400, 200, &mouse};
+
+
     FRect rect{600, 400, 50, 50};
     bool toggle {false};
 
@@ -73,6 +94,8 @@ int main() {
             } else if (event.type == SDL_EVENT_KEY_DOWN) {
                 if (event.key.scancode == SDL_SCANCODE_BACKSPACE) {
                     running = false;
+                } else if (event.key.scancode == SDL_SCANCODE_ESCAPE) {
+                    menu.run(Framework::display.renderer());
                 }
             } else if (event.type == SDL_EVENT_MOUSE_MOTION) {
                 mouse.update(event.motion.xrel, event.motion.yrel);
@@ -118,6 +141,7 @@ int main() {
     SDL_DestroyTexture(imgHover);
     SDL_DestroyTexture(imgBar);
     SDL_DestroyTexture(imgSlide);
+    SDL_DestroyTexture(bgImg);
 
     return 0;
 };
