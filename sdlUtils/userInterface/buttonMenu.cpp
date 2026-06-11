@@ -22,11 +22,11 @@ ButtonMenu::ButtonMenu(
     float buttonY,
     float buttonGap,
     Mouse* mouseManager,
-    SDL_Texture* bgImage=nullptr,
-    float bgImageX=0,
-    float bgImageY=0,
-    const std::function<void()>& musicStartCb=nullptr,
-    const std::function<void()>& musicEndCb=nullptr
+    SDL_Texture* bgImage,
+    float bgImageX,
+    float bgImageY,
+    const std::function<void()>& musicStartCb,
+    const std::function<void()>& musicEndCb
 ) 
     : m_buttons{buttons}, 
     m_btnX{buttonX}, 
@@ -56,7 +56,7 @@ ButtonMenu::~ButtonMenu() {
 };
 
 
-MenuReturn ButtonMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas=nullptr) {
+MenuReturn ButtonMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) {
     m_mouseManger->setMouseHidden(false);
     
     SDL_Texture* canvasTexture {nullptr};
