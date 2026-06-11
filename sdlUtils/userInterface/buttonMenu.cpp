@@ -103,10 +103,8 @@ MenuReturn ButtonMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) {
             if (!cbReturn) {
                 returnData = {};
                 running = false;
-            }
 
-            auto [menuLevels, data] = *cbReturn;
-            if (menuLevels != 0) {
+            } else if (cbReturn->first > 0) {
                 cbReturn->first -= 1;
                 returnData = cbReturn;
                 running = false;
