@@ -166,7 +166,9 @@ int ButtonMenu::runUpdate(SDL_Renderer* renderer, const SDL_FPoint& mousePos, bo
             btnPtr->unClick();
             MenuCb& buttonCb {m_buttonCbMap[btnPtr->id()]};
             MenuReturn returnVal {buttonCb(renderer, nullptr)};
-            data = returnVal->second;
+            if (returnVal) {
+                data = returnVal->second;
+            }
         }
     }
 
