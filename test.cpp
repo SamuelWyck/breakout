@@ -2,6 +2,7 @@
 #include "./sdlUtils/userInterface/elements/slider.h"
 #include "./sdlUtils/userInterface/elements/textDisplay.h"
 #include "./sdlUtils/userInterface/elements/liveTextDisplay.h"
+#include "./sdlUtils/userInterface/elements/elementGap.h"
 
 #include <SDL3/SDL.h>
 #include <string>
@@ -12,18 +13,14 @@
 #include <iostream>
 #include "./sdlUtils/color.h"
 #include "./sdlUtils/userInterface/buttonMenu.h"
+#include "./sdlUtils/userInterface/generalMenu.h"
+#include "./sdlUtils/color.h"
 
 
 
 int main() {
 
     SDL_Texture* bgImg {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"audio_menu_bg.png"}}.data())};
-    SDL_Texture* bgImg2 {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"level_menu_bg.png"}}.data())};
-    SDL_Texture* img {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"play_btn.png"}}.data())};
-    SDL_Texture* imgHover {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"play_btn_hover.png"}}.data())};
-    SDL_Texture* imgBar {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"slider_bar.png"}}.data())};
-    SDL_SetTextureScaleMode(imgBar, SDL_SCALEMODE_PIXELART);
-    SDL_Texture* imgSlide {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"slider_slide.png"}}.data())};
 
     Mouse mouse{
         static_cast<float>(Framework::display.screenWidth()),
@@ -37,49 +34,84 @@ int main() {
     };
     mouse.clampMouseToCanvas(true);
 
-    Button button{400, 400, img, imgHover};
+    Button button{400, 400, Framework::images.playBtnImg, Framework::images.playBtnHvrImg};
 
-    std::function<void(float)> sliderCb{
-        [](float val) -> void {
-            std::cout << val << "\n";
-        }
-    };
+    // std::function<void(float)> sliderCb{
+    //     [](float val) -> void {
+    //         std::cout << val << "\n";
+    //     }
+    // };
 
-    Slider slider{100, 100, sliderCb, imgBar, imgSlide};
-    slider.setValue(1);
+    // Slider slider{100, 100, sliderCb, imgBar, imgSlide};
+    // slider.setValue(1);
 
 
     TextDisplay hardText{800, 400, "testing", &Framework::fonts.scoreFont, Color{255, 0, 0, 255}};
 
 
-    std::function<std::string()> liveTextCb{
-        [&slider]() -> std::string {
-            float val {slider.value()};
+    // std::function<std::string()> liveTextCb{
+    //     [&slider]() -> std::string {
+    //         float val {slider.value()};
+    //         return std::format("{:.2f}", val);
+    //     }
+    // };
+    Slider* musicSlider{new Slider{
+        0, 0, 
+        [](float) -> void {
+        },
+        SDL_Color{255, 255, 255, 255},
+        SDL_Color{0, 0, 0, 255},
+        250, 40
+    }};
+
+
+    auto initCb {
+        [musicSlider]() -> void {
+            musicSlider->setValue(1);
+        }
+    };
+
+
+    auto musicTextCb {
+        [musicSlider]() ->std::string {
+            float val {musicSlider->value()};
             return std::format("{:.2f}", val);
         }
     };
 
-    LiveTextDisplay liveText{500, 100, &Framework::fonts.scoreFont, Color{0, 255, 0, 255}, liveTextCb};
 
+    // LiveTextDisplay liveText{500, 100, &Framework::fonts.scoreFont, Color{0, 255, 0, 255}, liveTextCb};
+    std::vector<IMenuElement*> elements{
+        new TextDisplay{0, 0, "Audio", &Framework::fonts.scoreFont, Color{255, 255, 255, 255}},
+        new ElementGap{30},
+        new TextDisplay{0, 0, "Music", &Framework::fonts.scoreFont, Color{255, 255, 255, 255}},
+        new LiveTextDisplay{0, 0, &Framework::fonts.scoreFont, Color{255, 255, 255, 255}, musicTextCb},
+        musicSlider,
+        new ElementGap{30},
+        new Button{0, 0, Framework::images.exitBtnImg, Framework::images.exitBtnHvrImg}
+    };
 
-
-    std::vector<Button*> btns2{};
-    btns2.push_back(new Button{button});
-    btns2.push_back(new Button{button});
-
-    std::vector<MenuCb> cbs2{};
-    cbs2.push_back({
-        [](SDL_Renderer*, SDL_Surface*) -> MenuReturn {
-            return {{0, -1}};
-        }
-    });
-    cbs2.push_back({
+    std::vector<MenuCb> genMenuCbs{
         [](SDL_Renderer*, SDL_Surface*) -> MenuReturn {
             return {{1, -1}};
         }
-    });
+    };
 
-    ButtonMenu menu2{btns2, cbs2, 400, 400, 200, &mouse, bgImg2, 300, 300};
+    AudioManager& audio{Framework::audioManager};
+
+    GeneralMenu genMenu{
+        Framework::display.canvasWidth() / 2.0f, 100, 20,
+        elements, genMenuCbs, &mouse, bgImg, 0, 0,
+        nullptr, initCb, 
+        [&audio]() -> void {
+            SoundEffect sound{audio.getSoundEffect("BALL", "BALL_SOUND")};
+            sound.playOnce();
+        },
+        [&audio]() -> void {
+            SoundEffect sound{audio.getSoundEffect("BALL", "BALL_SOUND")};
+            sound.playOnce();
+        }
+    };
 
 
 
@@ -89,8 +121,8 @@ int main() {
 
     std::vector<MenuCb> cbs{};
     cbs.push_back({
-        [&menu2](SDL_Renderer* renderer, SDL_Surface* canvas) -> MenuReturn {
-            return menu2.run(renderer, canvas);
+        [&genMenu](SDL_Renderer* renderer, SDL_Surface* currentCanvas) -> MenuReturn {
+            return genMenu.run(renderer, currentCanvas);
         }
     });
     cbs.push_back({
@@ -100,7 +132,6 @@ int main() {
     });
 
 
-    AudioManager& audio{Framework::audioManager};
     ButtonMenu menu{
         btns, cbs, 400, 400, 200, &mouse, nullptr, 0, 0,
         [&audio]() -> void {
@@ -155,10 +186,10 @@ int main() {
 
         SDL_FPoint mousePos {mouse.getPos()};
 
-
         SDL_SetRenderDrawColor(Framework::display.renderer(), 150, 150, 150, 255);
         SDL_RenderClear(Framework::display.renderer());
-
+        genMenu.runUpdate(Framework::display.renderer(), mousePos, mousePressed, mouseReleased);
+        
         button.update(Framework::display.renderer(), mousePos, mousePressed, mouseReleased);
 
         if (button.clicked()) {
@@ -170,9 +201,9 @@ int main() {
 
         SDL_SetRenderDrawColor(Framework::display.renderer(), red, green, 0, 255);
         SDL_RenderFillRect(Framework::display.renderer(), &rect.getSDLFRect());
-        slider.update(Framework::display.renderer(), mousePos, mousePressed, mouseReleased);
+        // slider.update(Framework::display.renderer(), mousePos, mousePressed, mouseReleased);
         hardText.update(Framework::display.renderer());
-        liveText.update(Framework::display.renderer());
+        // liveText.update(Framework::display.renderer());
         mouse.draw(Framework::display.renderer());
 
         if (prepMenuTexture) {
@@ -184,12 +215,7 @@ int main() {
         SDL_RenderPresent(Framework::display.renderer());
     }
 
-    SDL_DestroyTexture(img);
-    SDL_DestroyTexture(imgHover);
-    SDL_DestroyTexture(imgBar);
-    SDL_DestroyTexture(imgSlide);
     SDL_DestroyTexture(bgImg);
-    SDL_DestroyTexture(bgImg2);
     SDL_DestroySurface(currRender);
 
     return 0;
