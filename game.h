@@ -8,7 +8,8 @@
 #include "./gameFramework/collisionManager.h"
 #include "./gameFramework/levelManager.h"
 #include "./hud/hud.h"
-
+#include "./sdlUtils/userInterface/mouse.h"
+#include "./gameFramework/ui.h"
 
 
 class Game {
@@ -22,6 +23,10 @@ class Game {
     Player* m_playerPtr {nullptr};
 
     Hud* m_hudPtr {nullptr};
+
+    Mouse m_mouseManager{};
+
+    Ui* m_ui {nullptr};
 
 
 public:

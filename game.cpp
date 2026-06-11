@@ -12,6 +12,8 @@
 #include "./gameFramework/levelManager.h"
 #include "./controller/userInput.h"
 #include "./hud/hud.h"
+#include "./sdlUtils/userInterface/mouse.h"
+#include "./gameFramework/ui.h"
 
 
 
@@ -28,7 +30,18 @@ m_playerController{
         {"LAUNCH", UserInput{SDL_SCANCODE_SPACE}}
     },
     std::unordered_set<std::string>{"LEFT", "RIGHT"}
-} {
+},
+m_mouseManager{
+    static_cast<float>(Framework::display.screenWidth()),
+    static_cast<float>(Framework::display.screenHeight()),
+    static_cast<float>(Framework::display.canvasWidth()),
+    static_cast<float>(Framework::display.canvasHeight()),
+    Framework::display.window(),
+    Framework::images.mouseImg,
+    Framework::images.mouseImg->w / 2.0f,
+    Framework::images.mouseImg->h / 2.0f
+}
+{
 
     constexpr int playerSpeed {9};
     m_playerPtr = new Player{
@@ -56,10 +69,16 @@ m_playerController{
     constexpr int blockWidth {96};
     constexpr int blockHeight {36};
     m_levelManagerPtr = new LevelManager{levelX, levelY, tileWidth, tileHeight, blockWidth, blockHeight, m_playerPtr};
+
+
+    // set up ui
+    m_mouseManager.clampMouseToCanvas(true);
+    m_ui = new Ui{&m_mouseManager};
 };
 
 
 Game::~Game() {
+    delete m_ui;
     delete m_collisionManagerPtr;
     delete m_levelManagerPtr;
     delete m_hudPtr;
@@ -68,8 +87,15 @@ Game::~Game() {
 
 
 void Game::startGame() {
-    m_levelManagerPtr->loadLevel(0);
-    gameLoop();
+    while (true) {
+        MenuReturn menuData{m_ui->mainMenu->run(Framework::display.renderer(), nullptr)};
+        if (!menuData || menuData->first > 0) {
+            break;
+        }
+
+        m_levelManagerPtr->loadLevel(0);
+        gameLoop();
+    }
 };
 
 
