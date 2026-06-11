@@ -47,23 +47,11 @@ Display::Display(
     }
     SDL_SetRenderLogicalPresentation(m_renderer, m_canvasWidth, m_canvasHeight, rendererPresentationFlag);
 
-    // create texture for copying render to
-    m_screenTexture = SDL_CreateTexture(
-        m_renderer, 
-        SDL_PIXELFORMAT_RGBA8888,
-        SDL_TEXTUREACCESS_TARGET,
-        m_screenWidth, m_screenHeight
-    );
-    SDL_SetRenderTarget(m_renderer, m_screenTexture);
-    SDL_SetRenderLogicalPresentation(m_renderer, m_canvasWidth, m_canvasHeight, rendererPresentationFlag);
-    SDL_SetRenderTarget(m_renderer, nullptr);
-
     Display::created = true;
 };
 
 
 Display::~Display() {
-    SDL_DestroyTexture(m_screenTexture);
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_screen);
     SDL_Quit();
@@ -77,18 +65,6 @@ SDL_Renderer* Display::renderer() {
 
 SDL_Window* Display::window() {
     return m_screen;
-};
-
-void Display::targetScreenTexture() {
-    SDL_SetRenderTarget(m_renderer, m_screenTexture);
-};
-
-void Display::targetWindow() {
-    SDL_SetRenderTarget(m_renderer, nullptr);
-};
-
-SDL_Texture* Display::getScreenTexture() {
-    return m_screenTexture;
 };
 
 int Display::canvasWidth() {

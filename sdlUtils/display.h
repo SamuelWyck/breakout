@@ -16,8 +16,6 @@ class Display {
     int m_canvasWidth {};
     int m_canvasHeight {};
 
-    SDL_Texture* m_screenTexture {nullptr};
-
     inline static bool created {false};
 
 
@@ -44,12 +42,6 @@ public:
     SDL_Renderer* renderer();
 
     SDL_Window* window();
-
-    void targetScreenTexture();
-
-    void targetWindow();
-
-    SDL_Texture* getScreenTexture();
 
     int canvasWidth();
 
