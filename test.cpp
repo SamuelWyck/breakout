@@ -29,12 +29,12 @@ int main() {
         static_cast<float>(Framework::display.screenHeight()),
         static_cast<float>(Framework::display.canvasWidth()),
         static_cast<float>(Framework::display.canvasHeight()),
+        Framework::display.window(),
         Framework::images.ballImg,
         Framework::images.ballImg->w / 2.0f,
         Framework::images.ballImg->h / 2.0f,
     };
     mouse.clampMouseToCanvas(true);
-    SDL_SetWindowRelativeMouseMode(Framework::display.window(), true);
 
     Button button{400, 400, img, imgHover};
 
@@ -87,10 +87,6 @@ int main() {
     bool prepMenuTexture {false};
     bool enterMenu {false};
 
-    // Framework::display.targetTexture();
-    // SDL_SetRenderDrawColor(Framework::display.renderer(), 255, 0, 0, 255);
-    // SDL_RenderFillRect(Framework::display.renderer(), nullptr);
-    // SDL_Texture* screenBg{Framework::display.getScreenTexture()};
 
     while (running) {
         bool mousePressed {false};
