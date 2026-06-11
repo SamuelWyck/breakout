@@ -48,6 +48,10 @@ Mouse::Mouse(
     SDL_SetWindowRelativeMouseMode(window, true);
 };
 
+Mouse::Mouse() {
+    throw std::runtime_error("Mouse img cannot be nullptr.\n");
+};
+
 
 
 void Mouse::update(float relX, float relY) {

@@ -43,6 +43,8 @@ public:
         std::string_view saveFilePath=""
     );
 
+    Mouse();
+
     Mouse(const Mouse&) = delete;
     Mouse(Mouse&&) = delete;
     Mouse& operator=(const Mouse&) = delete;
