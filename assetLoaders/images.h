@@ -23,6 +23,15 @@ public:
     SDL_Texture* ballImg {nullptr};
     
     SDL_Texture* backgroundImg {nullptr};
+    SDL_Texture* mouseImg {nullptr};
+
+    SDL_Texture* mainMenuImg {nullptr};
+    SDL_Texture* playBtnImg {nullptr};
+    SDL_Texture* playBtnHvrImg {nullptr};
+    SDL_Texture* settingsBtnImg {nullptr};
+    SDL_Texture* settingsBtnHvrImg {nullptr};
+    SDL_Texture* exitBtnImg {nullptr};
+    SDL_Texture* exitBtnHvrImg {nullptr};
 
     
 

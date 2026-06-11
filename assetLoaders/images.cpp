@@ -11,6 +11,7 @@ Images::Images(SDL_Renderer* renderer) {
     std::string blockImgPath {"assets/images/blockImages"};
     std::string entityImgPath {"assets/images/entityImages"};
     std::string otherImgPath {"assets/images/otherImages"};
+    std::string menuImgPath {"assets/images/menuImages"};
 
     // block images
 
@@ -38,8 +39,27 @@ Images::Images(SDL_Renderer* renderer) {
 
     // other images
 
-    backgroundImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + otherImgPath + "/backgroundImg.png"}.data());
+    backgroundImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + otherImgPath + "/background.png"}.data());
     m_images.push_back(backgroundImg);
+    mouseImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + otherImgPath + "/mouse.png"}.data());
+
+
+    // menu images
+
+    mainMenuImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/mainMenu.png"}.data());
+    m_images.push_back(mainMenuImg);
+    playBtnImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/playBtn.png"}.data());
+    m_images.push_back(playBtnImg);
+    playBtnHvrImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/playBtnHvr.png"}.data());
+    m_images.push_back(playBtnHvrImg);
+    settingsBtnImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/settingsBtn.png"}.data());
+    m_images.push_back(settingsBtnImg);
+    settingsBtnHvrImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/settingsBtnHvr.png"}.data());
+    m_images.push_back(settingsBtnHvrImg);
+    exitBtnImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/exitBtn.png"}.data());
+    m_images.push_back(exitBtnImg);
+    exitBtnHvrImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/exitBtnHvr.png"}.data());
+    m_images.push_back(exitBtnHvrImg);
 };
 
 
