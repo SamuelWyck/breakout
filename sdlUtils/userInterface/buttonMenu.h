@@ -168,6 +168,27 @@ public:
     };
 
 
+    int runUpdate(SDL_Renderer* renderer, const SDL_FPoint& mousePos, bool mousePressed, bool mouseReleased) {
+        if (m_bgImage) {
+            SDL_RenderTexture(renderer, m_bgImage, nullptr, &m_bgImageRect.getSDLFRect());
+        }
+
+        int data {-1};
+        for (Button* btnPtr : m_buttons) {
+            btnPtr->update(renderer, mousePos, mousePressed, mouseReleased);
+            if (btnPtr->clicked()) {
+                btnPtr->unClick();
+                MenuCb& buttonCb {m_buttonCbMap[btnPtr->id()]};
+                MenuReturn returnVal {buttonCb(renderer, nullptr)};
+                data = returnVal->second;
+            }
+        }
+
+        return data;
+    };
+
+
+
 private:
     void positionButtons(std::vector<MenuCb> btnCallbacks) {
         int length {static_cast<int>(m_buttons.size())};
