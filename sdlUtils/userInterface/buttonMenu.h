@@ -31,6 +31,10 @@ class ButtonMenu {
     SDL_Texture* m_bgImage {nullptr};
     FRect m_bgImageRect{};
 
+    std::function<void()> m_musicStartCb{nullptr};
+    std::function<void()> m_musicEndCb{nullptr};
+
+
 
 public:
     ButtonMenu(
@@ -42,14 +46,18 @@ public:
         Mouse* mouseManager,
         SDL_Texture* bgImage=nullptr,
         float bgImageX=0,
-        float bgImageY=0
+        float bgImageY=0,
+        const std::function<void()>& musicStartCb=nullptr,
+        const std::function<void()>& musicEndCb=nullptr
     ) 
         : m_buttons{buttons}, 
         m_btnX{buttonX}, 
         m_btnY{buttonY}, 
         m_btnGap{buttonGap},
         m_mouseManger{mouseManager},
-        m_bgImage{bgImage}
+        m_bgImage{bgImage},
+        m_musicStartCb{musicStartCb},
+        m_musicEndCb{musicEndCb}
     {   
         if (m_buttons.size() != btnCallbacks.size()) {
             throw std::runtime_error("There must be the same number of callbacks and buttons.\n");
@@ -76,19 +84,25 @@ public:
 
 
     MenuReturn run(SDL_Renderer* renderer, SDL_Surface* currentCanvas=nullptr) {
-        bool running {true};
         m_mouseManger->setMouseHidden(false);
-
+        
         SDL_Texture* canvasTexture {nullptr};
         if (currentCanvas) {
             canvasTexture = SDL_CreateTextureFromSurface(renderer, currentCanvas);
         }
-
+        
         SDL_Surface* savedRender {nullptr};
-
+        
+        bool running {true};
         bool prepCanvas {false};
         bool enterCb {false};
         int clickedBtnId {};
+
+        if (m_musicStartCb) {
+            m_musicStartCb();
+        }
+
+        MenuReturn returnData{};
 
         while (running) {
             bool leftMousePressed {false};
@@ -114,17 +128,15 @@ public:
                 MenuCb& buttonCb {m_buttonCbMap[clickedBtnId]};
                 MenuReturn cbReturn{buttonCb(renderer, savedRender)};
                 if (!cbReturn) {
-                    SDL_DestroyTexture(canvasTexture);
-                    SDL_DestroySurface(savedRender);
-                    return MenuReturn{};
+                    returnData = {};
+                    running = false;
                 }
 
                 auto [menuLevels, data] = *cbReturn;
                 if (menuLevels != 0) {
                     cbReturn->first -= 1;
-                    SDL_DestroyTexture(canvasTexture);
-                    SDL_DestroySurface(savedRender);
-                    return cbReturn;
+                    returnData = cbReturn;
+                    running = false;
                 }
             }
 
@@ -164,7 +176,10 @@ public:
 
         SDL_DestroyTexture(canvasTexture);
         SDL_DestroySurface(savedRender);
-        return MenuReturn{};
+        if (m_musicEndCb) {
+            m_musicEndCb();
+        }
+        return returnData;
     };
 
 
