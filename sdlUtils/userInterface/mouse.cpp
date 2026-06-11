@@ -1,5 +1,6 @@
 #include <cmath>
 #include <fstream>
+#include <stdexcept>
 #include <string_view>
 #include <string>
 #include <SDL3/SDL_mouse.h>
@@ -16,6 +17,7 @@ Mouse::Mouse(
     float screenHeight, 
     float canvasWidth, 
     float canvasHeight,
+    SDL_Window* window,
     SDL_Texture* img, 
     float imgXOffset,
     float imgYOffset,
@@ -29,17 +31,21 @@ Mouse::Mouse(
     m_canvasWidth{canvasWidth}, 
     m_canvasHeight{canvasHeight},
     m_saveFilePath{saveFilePath}
-{
+{   
+    if (img == nullptr) {
+        throw std::runtime_error("Mouse img cannot be nullptr.\n");
+    }
+
     SDL_GetGlobalMouseState(&m_xPos, &m_yPos);
     remapCoords(&m_xPos, &m_yPos);
     roundCoords();
 
-    if (m_img != nullptr) {
-        m_rect.setSize(static_cast<float>(m_img->w), static_cast<float>(m_img->h));
-    }
+    m_rect.setSize(static_cast<float>(m_img->w), static_cast<float>(m_img->h));
     m_rect.setTopleft(m_xPos - m_imgXOffset, m_yPos - m_imgYOffset);
 
     loadSensitivitySetting();
+
+    SDL_SetWindowRelativeMouseMode(window, true);
 };
 
 
@@ -59,7 +65,7 @@ void Mouse::update(float relX, float relY) {
 
 
 void Mouse::draw(SDL_Renderer* renderer) {
-    if (m_img == nullptr || m_mouseHidden) {
+    if (m_mouseHidden) {
         return;
     }
     SDL_RenderTexture(renderer, m_img, nullptr, &m_rect.getSDLFRect());

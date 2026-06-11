@@ -36,7 +36,8 @@ public:
         float screenHeight, 
         float canvasWidth, 
         float canvasHeight,
-        SDL_Texture* img=nullptr, 
+        SDL_Window* window,
+        SDL_Texture* img, 
         float imgXOffset=0.0f,
         float imgYOffset=0.0f,
         std::string_view saveFilePath=""
