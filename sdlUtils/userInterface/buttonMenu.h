@@ -10,6 +10,7 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_surface.h>
 #include "./elements/button.h"
 #include "./menuTypes.h"
 #include "./mouse.h"
@@ -74,9 +75,20 @@ public:
     };
 
 
-    MenuReturn run(SDL_Renderer* renderer, SDL_Texture* currentCanvas) {
+    MenuReturn run(SDL_Renderer* renderer, SDL_Surface* currentCanvas=nullptr) {
         bool running {true};
         m_mouseManger->setMouseHidden(false);
+
+        SDL_Texture* canvasTexture {nullptr};
+        if (currentCanvas) {
+            canvasTexture = SDL_CreateTextureFromSurface(renderer, currentCanvas);
+        }
+
+        SDL_Surface* savedRender {nullptr};
+
+        bool prepCanvas {false};
+        bool enterCb {false};
+        int clickedBtnId {};
 
         while (running) {
             bool leftMousePressed {false};
@@ -96,12 +108,35 @@ public:
             }
 
 
+            if (enterCb) {
+                enterCb = false;
+
+                MenuCb& buttonCb {m_buttonCbMap[clickedBtnId]};
+                MenuReturn cbReturn{buttonCb(renderer, savedRender)};
+                if (!cbReturn) {
+                    SDL_DestroyTexture(canvasTexture);
+                    SDL_DestroySurface(savedRender);
+                    return MenuReturn{};
+                }
+
+                auto [menuLevels, data] = *cbReturn;
+                if (menuLevels != 0) {
+                    cbReturn->first -= 1;
+                    SDL_DestroyTexture(canvasTexture);
+                    SDL_DestroySurface(savedRender);
+                    return cbReturn;
+                }
+            }
+
+
             SDL_FPoint mousePos{m_mouseManger->getPos()};
 
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
 
-            SDL_RenderTexture(renderer, currentCanvas, nullptr, nullptr);
+            if (canvasTexture) {
+                SDL_RenderTexture(renderer, canvasTexture, nullptr, nullptr);
+            }
             if (m_bgImage) {
                 SDL_RenderTexture(renderer, m_bgImage, nullptr, &m_bgImageRect.getSDLFRect());
             }
@@ -110,27 +145,25 @@ public:
                 btnPtr->update(renderer, mousePos, leftMousePressed, leftMouseReleased);
                 if (btnPtr->clicked()) {
                     btnPtr->unClick();
-
-                    MenuCb& buttonCb {m_buttonCbMap[btnPtr->id()]};
-                    MenuReturn cbReturn{buttonCb(renderer, currentCanvas)};
-                    if (!cbReturn) {
-                        return MenuReturn{};
-                    }
-
-                    auto [menuLevels, data] = *cbReturn;
-                    if (menuLevels != 0) {
-                        cbReturn->first -= 1;
-                        return cbReturn;
-                    }
+                    clickedBtnId = btnPtr->id();
+                    prepCanvas = true;
                 }
             }
 
             m_mouseManger->draw(renderer);
 
+            if (prepCanvas) {
+                prepCanvas = false;
+                enterCb = true;
+                SDL_DestroySurface(savedRender);
+                savedRender = SDL_RenderReadPixels(renderer, nullptr);
+            }
+
             SDL_RenderPresent(renderer);
         }
 
-
+        SDL_DestroyTexture(canvasTexture);
+        SDL_DestroySurface(savedRender);
         return MenuReturn{};
     };
 
