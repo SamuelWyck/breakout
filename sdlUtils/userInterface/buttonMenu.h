@@ -101,7 +101,7 @@ public:
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
 
-            SDL_RenderTexture(renderer, currentCanvas, nullptr, &m_bgImageRect.getSDLFRect());
+            SDL_RenderTexture(renderer, currentCanvas, nullptr, nullptr);
             if (m_bgImage) {
                 SDL_RenderTexture(renderer, m_bgImage, nullptr, &m_bgImageRect.getSDLFRect());
             }
