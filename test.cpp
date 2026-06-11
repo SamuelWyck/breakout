@@ -18,6 +18,7 @@
 int main() {
 
     SDL_Texture* bgImg {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"audio_menu_bg.png"}}.data())};
+    SDL_Texture* bgImg2 {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"level_menu_bg.png"}}.data())};
     SDL_Texture* img {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"play_btn.png"}}.data())};
     SDL_Texture* imgHover {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"play_btn_hover.png"}}.data())};
     SDL_Texture* imgBar {IMG_LoadTexture(Framework::display.renderer(), std::string{SDL_GetBasePath() + std::string{"slider_bar.png"}}.data())};
@@ -61,18 +62,39 @@ int main() {
     LiveTextDisplay liveText{500, 100, &Framework::fonts.scoreFont, Color{0, 255, 0, 255}, liveTextCb};
 
 
+
+    std::vector<Button*> btns2{};
+    btns2.push_back(new Button{button});
+    btns2.push_back(new Button{button});
+
+    std::vector<MenuCb> cbs2{};
+    cbs2.push_back({
+        [](SDL_Renderer*, SDL_Surface*) -> MenuReturn {
+            return {{0, -1}};
+        }
+    });
+    cbs2.push_back({
+        [](SDL_Renderer*, SDL_Surface*) -> MenuReturn {
+            return {{1, -1}};
+        }
+    });
+
+    ButtonMenu menu2{btns2, cbs2, 400, 400, 200, &mouse, bgImg2, 300, 300};
+
+
+
     std::vector<Button*> btns{};
     btns.push_back(new Button{button});
     btns.push_back(new Button{button});
 
     std::vector<MenuCb> cbs{};
     cbs.push_back({
-        [](SDL_Renderer*, SDL_Texture*) -> MenuReturn {
-            return {{0, -1}};
+        [&menu2](SDL_Renderer* renderer, SDL_Surface* canvas) -> MenuReturn {
+            return menu2.run(renderer, canvas);
         }
     });
     cbs.push_back({
-        [](SDL_Renderer*, SDL_Texture*) -> MenuReturn {
+        [](SDL_Renderer*, SDL_Surface*) -> MenuReturn {
             return {{1, -1}};
         }
     });
@@ -86,6 +108,7 @@ int main() {
     bool running {true};
     bool prepMenuTexture {false};
     bool enterMenu {false};
+    SDL_Surface* currRender {nullptr};
 
 
     while (running) {
@@ -118,10 +141,7 @@ int main() {
 
         if (enterMenu) {
             enterMenu = false;
-            menu.run(Framework::display.renderer(), Framework::display.getScreenTexture());
-        }
-        if (prepMenuTexture) {
-            Framework::display.targetScreenTexture();
+            menu.run(Framework::display.renderer(), currRender);
         }
 
 
@@ -148,7 +168,7 @@ int main() {
         mouse.draw(Framework::display.renderer());
 
         if (prepMenuTexture) {
-            Framework::display.targetWindow();
+            currRender = SDL_RenderReadPixels(Framework::display.renderer(), nullptr);
             prepMenuTexture = false;
             enterMenu = true;
         }
@@ -161,6 +181,8 @@ int main() {
     SDL_DestroyTexture(imgBar);
     SDL_DestroyTexture(imgSlide);
     SDL_DestroyTexture(bgImg);
+    SDL_DestroyTexture(bgImg2);
+    SDL_DestroySurface(currRender);
 
     return 0;
 };
