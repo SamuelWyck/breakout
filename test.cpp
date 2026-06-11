@@ -99,7 +99,15 @@ int main() {
         }
     });
 
-    ButtonMenu menu{btns, cbs, 400, 400, 200, &mouse};
+
+    AudioManager& audio{Framework::audioManager};
+    ButtonMenu menu{
+        btns, cbs, 400, 400, 200, &mouse, nullptr, 0, 0,
+        [&audio]() -> void {
+            SoundEffect sound{audio.getSoundEffect("BALL", "BALL_SOUND")};
+            sound.playOnce();
+        }
+    };
 
 
     FRect rect{600, 400, 50, 50};
