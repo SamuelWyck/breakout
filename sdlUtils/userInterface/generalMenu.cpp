@@ -215,9 +215,10 @@ void GeneralMenu::positionElements(
     float currentY {eleStartY};
 
     for (IMenuElement* ele : elements) {
-        if (typeid(ele) == typeid(ElementGap)) {
+        if (typeid(*ele) == typeid(ElementGap)) {
             ElementGap* gap {static_cast<ElementGap*>(ele)};
             currentY += gap->gap();
+            delete ele;
             continue;
         }
 
