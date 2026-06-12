@@ -83,7 +83,7 @@ int main() {
     // LiveTextDisplay liveText{500, 100, &Framework::fonts.scoreFont, Color{0, 255, 0, 255}, liveTextCb};
     std::vector<IMenuElement*> elements{
         new TextDisplay{0, 0, "Audio", &Framework::fonts.scoreFont, Color{255, 255, 255, 255}},
-        new ElementGap{30},
+        new ElementGap{100},
         new TextDisplay{0, 0, "Music", &Framework::fonts.scoreFont, Color{255, 255, 255, 255}},
         new LiveTextDisplay{0, 0, &Framework::fonts.scoreFont, Color{255, 255, 255, 255}, musicTextCb},
         musicSlider,
