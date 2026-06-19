@@ -99,7 +99,7 @@ float TextDisplay::height() const {
     if (!isValid()) {
         return 0;
     }
-    return m_rect.width();
+    return m_rect.height();
 };
 
 
