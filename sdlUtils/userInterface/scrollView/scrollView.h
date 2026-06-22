@@ -74,7 +74,8 @@ private:
         const SDL_FPoint& mousePos, 
         bool mousePressed, 
         bool mouseReleased, 
-        float relMovement
+        float relMovement,
+        bool mouseInvalid
     );
 };
 

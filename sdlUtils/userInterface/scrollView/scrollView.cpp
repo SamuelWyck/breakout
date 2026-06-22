@@ -48,8 +48,10 @@ ScrollView::~ScrollView() {
 void ScrollView::update(SDL_Renderer* renderer, const SDL_FPoint& mousePos, bool mousePressed, bool mouseReleased) {
     bool mouseInScrollView {m_viewArea.pointInRect(&mousePos)};
     SDL_FPoint pos{-10, -10};
+    bool mouseInvalid {true};
     if (mouseInScrollView) {
         pos = mousePos;
+        mouseInvalid = false;
     }
 
     float relMovement {m_scrollBar.update(renderer, mousePos, mousePressed, mouseReleased)};
@@ -57,7 +59,7 @@ void ScrollView::update(SDL_Renderer* renderer, const SDL_FPoint& mousePos, bool
         relMovement = Math::remap(0.0f, m_scrollBar.maxRelMovement(), 0.0f, m_eleOverflowHeight, relMovement);
     }
 
-    updateElements(renderer, pos, mousePressed, mouseReleased, relMovement);
+    updateElements(renderer, pos, mousePressed, mouseReleased, relMovement, mouseInvalid);
 };
 
 
@@ -160,7 +162,8 @@ void ScrollView::updateElements(
     const SDL_FPoint& mousePos, 
     bool mousePressed, 
     bool mouseReleased,
-    float relMovement
+    float relMovement,
+    bool mouseInvalid
 ) {
     SDL_SetRenderClipRect(renderer, &m_clipRect);
 
@@ -176,7 +179,8 @@ void ScrollView::updateElements(
 
         } else if (typeid(*element) == typeid(Slider)) {
             Slider* sliderPtr {static_cast<Slider*>(element)};
-            sliderPtr->update(renderer, mousePos, mousePressed, mouseReleased);
+            bool mouseJustReleased {(mouseInvalid) ? true : mouseReleased};
+            sliderPtr->update(renderer, mousePos, mousePressed, mouseJustReleased);
 
         } else {
             element->update(renderer);
