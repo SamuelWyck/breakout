@@ -36,6 +36,7 @@ class ControlInput : public IMenuElement {
     bool m_useCenter {false};
 
     std::string m_inputName{};
+    std::string m_titleText{};
 
 
 public:
@@ -74,6 +75,12 @@ public:
 
 
     void setMaxTitleWidth(float maxTitleWidth);
+
+
+    const std::string& title() const;
+
+
+    float getTitleDisplayWidth() const;
     
 
 
@@ -100,6 +107,8 @@ private:
     void createInputBtnImgs(SDL_Renderer* renderer, std::string_view inputName);
 
     void positionBtn();
+
+    float titleWidth() const;
 };
 
 

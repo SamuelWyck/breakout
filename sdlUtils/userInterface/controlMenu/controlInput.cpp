@@ -26,7 +26,8 @@ ControlInput::ControlInput(
     m_font{font}, 
     m_title{x, y, title, font, color}, 
     m_color{color},
-    m_hvrColor{hvrColor}
+    m_hvrColor{hvrColor},
+    m_titleText{title}
 {
     updateInputBtn(renderer, inputName);
     positionBtn();
@@ -39,7 +40,8 @@ ControlInput::ControlInput(const ControlInput& other)
     m_title{other.m_title},
     m_color{other.m_color},
     m_hvrColor{other.m_hvrColor},
-    m_inputName{other.m_inputName}
+    m_inputName{other.m_inputName},
+    m_titleText{other.m_titleText}
 {
     m_backupSurface = m_font->renderSurface(m_inputName, m_color.getSDLColor());
 };
@@ -100,6 +102,16 @@ void ControlInput::setMaxTitleWidth(float maxTitleWidth) {
 };
 
 
+const std::string& ControlInput::title() const {
+    return m_titleText;
+};
+
+
+float ControlInput::getTitleDisplayWidth() const {
+    return m_title.width();
+};
+
+
 
 // interface methods
 
@@ -114,7 +126,7 @@ void ControlInput::setTopleft(float x, float y) {
     m_title.setTopleft(x, y);
 
     if (m_inputBtn) {
-        float btnX {x + m_maxTitleWidth + m_gap};
+        float btnX {x + titleWidth() + m_gap};
         m_inputBtn->setTopleft(btnX, y);
     }
 
@@ -123,8 +135,9 @@ void ControlInput::setTopleft(float x, float y) {
 
 std::pair<float, float> ControlInput::center() const {
     float btnWidth {(m_inputBtn) ? m_inputBtn->width() : static_cast<float>(m_backupSurface->w)};
-    float totalWidth {m_maxTitleWidth + m_gap + btnWidth};
+    float totalWidth {titleWidth() + m_gap + btnWidth};
     float totalHeight {m_title.height()};
+
     auto [x, y] {m_title.topleft()};
     return {x + (totalWidth / 2.0f), y + (totalHeight / 2.0f)};
 };
@@ -135,14 +148,14 @@ void ControlInput::setCenter(float x, float y) {
     m_useCenter = true;
 
     float btnWidth {(m_inputBtn) ? m_inputBtn->width() : static_cast<float>(m_backupSurface->w)};
-    float totalWidth {m_maxTitleWidth + m_gap + btnWidth};
+    float totalWidth {titleWidth() + m_gap + btnWidth};
     float totalHeight {m_title.height()};
 
     float titleX {x - (totalWidth / 2.0f)};
     float titleY {y - (totalHeight / 2.0f)};
     m_title.setTopleft(titleX, titleY);
     if (m_inputBtn) {
-        m_inputBtn->setTopleft(titleX + m_maxTitleWidth + m_gap, titleY);
+        m_inputBtn->setTopleft(titleX + titleWidth() + m_gap, titleY);
     }
 };
 
@@ -166,7 +179,7 @@ void ControlInput::setY(float y) {
 
 float ControlInput::width() const {
     float btnWidth {(m_inputBtn) ? m_inputBtn->width() : static_cast<float>(m_backupSurface->w)};
-    return m_maxTitleWidth + m_gap + btnWidth;
+    return titleWidth() + m_gap + btnWidth;
 };
 
 float ControlInput::height() const {
@@ -192,4 +205,8 @@ void ControlInput::positionBtn() {
     auto [titleX, titleY] {m_title.topleft()};
     float btnX {titleX + m_maxTitleWidth + m_gap};
     m_inputBtn->setTopleft(btnX, titleY);
+};
+
+float ControlInput::titleWidth() const {
+    return (m_maxTitleWidth > m_title.width()) ? m_maxTitleWidth : m_title.width();
 };
