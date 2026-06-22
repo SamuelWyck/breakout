@@ -127,7 +127,7 @@ MenuReturn ButtonMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) {
         for (Button* btnPtr : m_buttons) {
             btnPtr->update(renderer, mousePos, leftMousePressed, leftMouseReleased);
             if (btnPtr->clicked()) {
-                btnPtr->unClick();
+                btnPtr->unclick();
                 clickedBtnId = btnPtr->id();
                 prepCanvas = true;
             }
@@ -163,7 +163,7 @@ int ButtonMenu::runUpdate(SDL_Renderer* renderer, const SDL_FPoint& mousePos, bo
     for (Button* btnPtr : m_buttons) {
         btnPtr->update(renderer, mousePos, mousePressed, mouseReleased);
         if (btnPtr->clicked()) {
-            btnPtr->unClick();
+            btnPtr->unclick();
             MenuCb& buttonCb {m_buttonCbMap[btnPtr->id()]};
             MenuReturn returnVal {buttonCb(renderer, nullptr)};
             if (returnVal) {

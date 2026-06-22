@@ -39,7 +39,7 @@ public:
 
 
     bool clicked() const;
-    void unClick();
+    void unclick();
 
 
     int id() const;

@@ -21,6 +21,19 @@ TextDisplay::TextDisplay(float x, float y, std::string_view text, Font* font, co
 TextDisplay::TextDisplay() {
 };
 
+TextDisplay::TextDisplay(const TextDisplay& other)
+    : m_rect{other.m_rect},
+    m_useCenter{other.m_useCenter},
+    m_centerX{other.m_centerX},
+    m_centerY{other.m_centerY},
+    m_font{other.m_font},
+    m_color{other.m_color}
+{
+    if (isValid()) {
+        updateSurface(other.m_text);
+    }
+};
+
 TextDisplay::~TextDisplay() {
     SDL_DestroyTexture(m_img);
     SDL_DestroySurface(m_surface);

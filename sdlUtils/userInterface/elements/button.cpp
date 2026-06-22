@@ -52,7 +52,7 @@ bool Button::clicked() const {
 };
 
 
-void Button::unClick() {
+void Button::unclick() {
     m_clicked = false;
 };
 

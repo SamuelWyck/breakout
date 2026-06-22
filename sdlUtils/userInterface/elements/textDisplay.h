@@ -31,7 +31,7 @@ class TextDisplay : public IMenuElement {
 public:
     TextDisplay(float x, float y, std::string_view text, Font* font, const Color& color);
     TextDisplay();
-    TextDisplay(const TextDisplay&) = delete;
+    TextDisplay(const TextDisplay&);
     TextDisplay(TextDisplay&&) = delete;
     TextDisplay& operator=(const TextDisplay&) = delete;
     TextDisplay& operator=(TextDisplay&&) = delete;
