@@ -6,6 +6,7 @@
 #include "../elements/iMenuElement.h"
 #include "../elements/button.h"
 #include "../elements/slider.h"
+#include "../controlMenu/controlInput.h"
 #include "../elements/elementGap.h"
 #include "../../collision/fRect.h"
 #include "./scrollBar.h"
@@ -181,6 +182,10 @@ void ScrollView::updateElements(
             Slider* sliderPtr {static_cast<Slider*>(element)};
             bool mouseJustReleased {(mouseInvalid) ? true : mouseReleased};
             sliderPtr->update(renderer, mousePos, mousePressed, mouseJustReleased);
+
+        } else if (typeid(*element) == typeid(ControlInput)) {
+            ControlInput* input {static_cast<ControlInput*>(element)};
+            input->update(renderer, mousePos, mousePressed, mouseReleased);
 
         } else {
             element->update(renderer);
