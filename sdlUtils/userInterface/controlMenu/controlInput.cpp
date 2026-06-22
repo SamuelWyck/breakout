@@ -95,6 +95,11 @@ void ControlInput::updateInputBtn(SDL_Renderer* renderer, std::string_view input
 };
 
 
+void ControlInput::setMaxTitleWidth(float maxTitleWidth) {
+    m_maxTitleWidth = maxTitleWidth;
+};
+
+
 
 // interface methods
 

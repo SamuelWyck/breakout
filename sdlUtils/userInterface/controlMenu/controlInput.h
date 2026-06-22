@@ -71,6 +71,9 @@ public:
 
 
     void updateInputBtn(SDL_Renderer* renderer, std::string_view inputName);
+
+
+    void setMaxTitleWidth(float maxTitleWidth);
     
 
 
