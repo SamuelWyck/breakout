@@ -35,6 +35,7 @@
                 "${fileDirname}\\sdlUtils\\userInterface\\*.cpp",
                 "${fileDirname}\\sdlUtils\\userInterface\\elements\\*.cpp",
                 "${fileDirname}\\sdlUtils\\userInterface\\scrollView\\*.cpp",
+                "${fileDirname}\\sdlUtils\\userInterface\\controlMenu\\*.cpp",
                 // "${fileDirname}\\*.cpp", // all cpp files in curr dir
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
