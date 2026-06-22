@@ -14,8 +14,8 @@
 #include "./sdlUtils/color.h"
 #include "./sdlUtils/userInterface/buttonMenu.h"
 #include "./sdlUtils/userInterface/generalMenu.h"
-#include "./sdlUtils/color.h"
 #include "./sdlUtils/userInterface/scrollView/scrollView.h"
+#include "./sdlUtils/userInterface/controlMenu/controlInput.h"
 
 
 
@@ -152,6 +152,19 @@ int main() {
     // };
 
 
+    ControlInput input{
+        600, 600, 10, 200, 
+        "test", "w", 
+        &Framework::fonts.scoreFont, 
+        Color{0, 255, 0, 255}, 
+        Color{0, 0, 255, 255}, 
+        Framework::display.renderer()
+    };
+
+    ControlInput input2{input};
+    input2.setCenter(Framework::display.canvasWidth() / 2.0f, Framework::display.canvasHeight() / 2.0f);
+
+
     FRect rect{600, 400, 50, 50};
     bool toggle {false};
 
@@ -216,6 +229,7 @@ int main() {
         hardText.update(Framework::display.renderer());
         // liveText.update(Framework::display.renderer());
         scroll.update(Framework::display.renderer(), mousePos, mousePressed, mouseReleased);
+        input2.update(Framework::display.renderer(), mousePos, mousePressed, mouseReleased);
         mouse.draw(Framework::display.renderer());
 
         if (prepMenuTexture) {
