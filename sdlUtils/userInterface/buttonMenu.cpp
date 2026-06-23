@@ -88,9 +88,13 @@ MenuReturn ButtonMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) {
             } else if (event.type == SDL_EVENT_MOUSE_MOTION) {
                 m_mouseManger->update(event.motion.xrel, event.motion.yrel);
             } else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-                leftMousePressed = true;
+                if (event.button.button == SDL_BUTTON_LEFT) {
+                    leftMousePressed = true;
+                }
             } else if (event.type == SDL_EVENT_MOUSE_BUTTON_UP) {
-                leftMouseReleased = true;
+                if (event.button.button == SDL_BUTTON_LEFT) {
+                    leftMouseReleased = true;
+                }
             }
         }
 

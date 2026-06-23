@@ -92,9 +92,13 @@ MenuReturn GeneralMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) 
             } else if (event.type == SDL_EVENT_MOUSE_MOTION) {
                 m_mouse->update(event.motion.xrel, event.motion.yrel);
             } else if (event.type == SDL_EVENT_MOUSE_BUTTON_UP) {
-                mouseReleased = true;
+                if (event.button.button == SDL_BUTTON_LEFT) {
+                    mouseReleased = true;
+                }
             } else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-                mousePressed = true;
+                if (event.button.button == SDL_BUTTON_LEFT) {
+                    mousePressed = true;
+                }
             }
         }
 
