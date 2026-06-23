@@ -6,49 +6,290 @@
 #include <vector>
 #include <unordered_map>
 #include <SDL3/SDL_render.h>
+#include <SDL3/SDL_events.h>
 #include "../../../controller/userInput.h"
 #include "./controlInput.h"
 #include "../elements/iMenuElement.h"
 #include "../elements/button.h"
+#include "../../collision/fRect.h"
+#include "../elements/textDisplay.h"
 #include "../scrollView/scrollView.h"
 #include "../../font.h"
 #include "../../color.h"
+#include "../mouse.h"
+#include "../menuTypes.h"
 
 
 class ControlMenu {
     std::unordered_map<std::string, UserInput> m_controls{};
+    std::vector<ControlInput*> m_inputs{};
 
-    float m_eleGap {};
+    Mouse* m_mouse {nullptr};
 
     Font* m_font {nullptr};
-
     Color m_color{};
     Color m_hvrColor{};
 
     SDL_Texture* m_bgImage {nullptr};
+    ScrollView* m_scrollView {nullptr};
 
-    std::vector<ControlInput*> m_inputs{};
+    // menu banner
+    TextDisplay m_instructionBanner{};
+
+    // exit btn variables
+    SDL_Texture* m_exitBtnImg {nullptr};
+    SDL_Texture* m_exitBtnHvrImg {nullptr};
+    Button* m_exitBtn {nullptr};
+
+    // editing popup
+    TextDisplay m_editingMsg{};
+    FRect m_editingBorderRect{};
+    FRect m_editingBgImgRect{};
+    FRect m_editingBgImgClipArea{};
+
 
 
 public:
     ControlMenu(
         const std::unordered_map<std::string, UserInput>& controls, 
+        Mouse* mouse,
+        float scrollviewHeight,
         float eleGap,
         float inputGap,
         Font* font, 
         const Color& color, 
         const Color& hvrColor,
         SDL_Texture* bgImage,
-        SDL_Renderer* renderer
+        SDL_Renderer* renderer,
+        const Color& scrollColor,
+        const Color& scrollBgColor,
+        SDL_Texture* scrollImg=nullptr,
+        SDL_Texture* scrollBgImg=nullptr
     ) 
-        : m_controls{controls}, m_eleGap{eleGap}, m_font{font}, m_color{color}, m_hvrColor{hvrColor}, m_bgImage{bgImage} 
+        : m_controls{controls}, 
+        m_mouse{mouse}, 
+        m_font{font}, 
+        m_color{color}, 
+        m_hvrColor{hvrColor}, 
+        m_bgImage{bgImage},
+        m_instructionBanner{0, 0, "SELECT A KEYBIND TO EDIT", font, color},
+        m_editingMsg{0, 0, "ENTER INPUT\nESC TO CANCEL", font, color}
     {   
+        createScrollView(scrollviewHeight, inputGap, eleGap, scrollColor, scrollBgColor, scrollImg, scrollBgImg, renderer);
+
+        positionBanner();
+        createExitBtn(renderer);
+        createEditingPopup();
+    };
+
+    ControlMenu(const ControlMenu&) = delete;
+    ControlMenu(ControlMenu&&) = delete;
+    ControlMenu& operator=(const ControlMenu&) = delete;
+    ControlMenu& operator=(ControlMenu&&) = delete;
+    
+    ~ControlMenu() {
+        delete m_scrollView;
+
+        for (ControlInput* ele : m_inputs) {
+            delete ele;
+        }
+
+        delete m_exitBtn;
+        SDL_DestroyTexture(m_exitBtnImg);
+        SDL_DestroyTexture(m_exitBtnHvrImg);
+    };
+
+
+    MenuReturn run(SDL_Renderer* renderer, SDL_Surface*) {
+
+        bool running {true};
+        MenuReturn returnVal{};
+
+        ControlInput* inputToEdit {nullptr};
+        bool editingControl {false};
+
+        while (running) {
+            bool mousePressed {false};
+            bool mouseReleased {false};
+
+            SDL_Event event{};
+            while (SDL_PollEvent(&event)) {
+                if (event.type == SDL_EVENT_QUIT) {
+                    running = false;
+                    returnVal = {};
+                } else if (event.type == SDL_EVENT_MOUSE_MOTION) {
+                    m_mouse->update(event.motion.xrel, event.motion.yrel);
+                } else if (event.type == SDL_EVENT_MOUSE_BUTTON_UP) {
+                    if (event.button.button == SDL_BUTTON_LEFT) {
+                        mouseReleased = true;
+                    }
+                } else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+                    if (editingControl) {
+                        updateControls(renderer, UserInput{event.button.button}, inputToEdit);
+                        editingControl = false;
+
+                    } else if (event.button.button == SDL_BUTTON_LEFT) {
+                        mousePressed = true;
+                    }
+                } else if (event.type == SDL_EVENT_KEY_DOWN && !event.key.repeat) {
+                    if (editingControl && event.key.scancode != SDL_SCANCODE_ESCAPE) {
+                        updateControls(renderer, UserInput{event.key.scancode}, inputToEdit);
+                        editingControl = false;
+
+                    } else if (editingControl && event.key.scancode == SDL_SCANCODE_ESCAPE) {
+                        editingControl = false;
+                    }
+                }
+            }
+
+
+            if (m_exitBtn->clicked()) {
+                m_exitBtn->unclick();
+                running = false;
+                returnVal = {{0, -1}};
+            }
+
+
+            for (ControlInput* input : m_inputs) {
+                if (input->clicked() && !editingControl) {
+                    input->unclick();
+                    inputToEdit = input;
+                    editingControl = true;
+                }
+            }
+
+
+            SDL_FPoint mousePos{m_mouse->getPos()};
+
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderClear(renderer);
+
+            SDL_RenderTexture(renderer, m_bgImage, nullptr, nullptr);
+            m_instructionBanner.update(renderer);
+            m_exitBtn->update(renderer, mousePos, mousePressed, mouseReleased);
+
+            m_scrollView->update(renderer, mousePos, mousePressed, mouseReleased);
+            
+            if (editingControl) {
+                drawEditingPopup(renderer);
+            }
+            
+            m_mouse->draw(renderer);
+            SDL_RenderPresent(renderer);
+        }
+
+        m_scrollView->setScrollPos(0);
+        return returnVal;
+    };
+
+
+
+private:
+    void updateControls(SDL_Renderer* renderer, const UserInput& newControl, ControlInput* inputToChange) {
+        inputToChange->updateInputBtn(renderer, newControl.getInputName());
+        m_controls[inputToChange->title()] = newControl;
+
+        auto [maxTitleWidth, maxInputWidth] {calcMaxTitleAndInputWidth()};
+        setMaxTitleWidth(maxTitleWidth);
+
+        m_scrollView->setWidth(maxInputWidth);
+        auto [scrollViewX, scrollViewY] {m_scrollView->topleft()};
+        float newScrollViewX {(m_bgImage->w / 2.0f) - (m_scrollView->width() / 2.0f)};
+        m_scrollView->setTopleft(newScrollViewX, scrollViewY);
+    };
+
+
+    std::pair<float, float> calcMaxTitleAndInputWidth() {
+        float maxTitleWidth {0.0f};
+        float maxInputWidth {0.0f};
+
+        for (ControlInput* elePtr : m_inputs) {
+            if (elePtr->width() > maxInputWidth) {
+                maxInputWidth = elePtr->width();
+            }
+            if (elePtr->getTitleDisplayWidth() > maxTitleWidth) {
+                maxTitleWidth = elePtr->getTitleDisplayWidth();
+            }
+        }
+
+        return {maxTitleWidth, maxInputWidth};
+    };
+
+
+    void setMaxTitleWidth(float titleWidth) {
+        for (ControlInput* elePtr : m_inputs) {
+            elePtr->setMaxTitleWidth(titleWidth);
+        }
+    };
+
+
+    void createExitBtn(SDL_Renderer* renderer) {
+        m_exitBtnImg = m_font->renderTexture(renderer, "BACK", m_color.getSDLColor());
+        m_exitBtnHvrImg = m_font->renderTexture(renderer, "BACK", m_hvrColor.getSDLColor());
+
+        float btnX {m_bgImage->w * .03f};
+        float btnY {m_bgImage->h - m_exitBtnImg->h - btnX}; // btn will be ~3% spaced from bottomleft corner
+        m_exitBtn = new Button{btnX, btnY, m_exitBtnImg, m_exitBtnHvrImg};
+    };
+
+
+    void createEditingPopup() {
+        m_editingMsg.setCenter(m_bgImage->w / 2.0f, m_bgImage->h / 2.0f);
+        constexpr int wrapOnNewline {0};
+        m_editingMsg.setWrapLength(wrapOnNewline);
+
+        constexpr float msgPadding {20};
+        m_editingBgImgRect.setSize(
+            m_editingMsg.width() + (msgPadding * 2), 
+            m_editingMsg.height() + (msgPadding * 2)
+        );
+        m_editingBgImgRect.setCenter(m_editingMsg.center());
+        m_editingBgImgClipArea.setSize(m_editingBgImgRect.size());
+
+        constexpr float borderWidth {5};
+        m_editingBorderRect.setSize(
+            m_editingBgImgRect.width() + (borderWidth * 2),
+            m_editingBgImgRect.height() + (borderWidth * 2)
+        );
+        m_editingBorderRect.setCenter(m_editingBgImgRect.center());
+    };
+    
+
+    void drawEditingPopup(SDL_Renderer* renderer) {
+        SDL_SetRenderDrawColor(renderer, m_color.red(), m_color.green(), m_color.blue(), m_color.alpha());
+        SDL_RenderFillRect(renderer, &m_editingBorderRect.getSDLFRect());
+
+        SDL_RenderTexture(
+            renderer, m_bgImage, 
+            &m_editingBgImgClipArea.getSDLFRect(),
+            &m_editingBgImgRect.getSDLFRect()
+        );
+        m_editingMsg.update(renderer);
+    };
+
+
+    void positionBanner() {
+        float bannerHeight {m_instructionBanner.height()};
+        float bannerY {m_bgImage->h * .08f}; // make banner y 8% of bg img height
+        m_instructionBanner.setCenter(m_bgImage->w / 2.0f, (bannerY + (bannerHeight / 2.0f)));
+    };
+
+
+    void createScrollView(
+        float height, 
+        float inputGap, 
+        float eleGap, 
+        const Color& scrollColor,
+        const Color& scrollBgColor,
+        SDL_Texture* scrollImg,
+        SDL_Texture* scrollBgImg,
+        SDL_Renderer* renderer
+    ) {
         std::vector<IMenuElement*> scrollElements{};
         
         constexpr float x {0.0f};
         constexpr float y {x};
         constexpr float titleWidth {x};
-        float maxTitleWidth {};
         for (auto& [controlName, control] : m_controls) {
             ControlInput* input {new ControlInput{
                 x, y, inputGap, titleWidth, 
@@ -56,19 +297,36 @@ public:
                 m_font, m_color, m_hvrColor, renderer
             }};
 
-            if (input->getTitleDisplayWidth() > maxTitleWidth) {
-                maxTitleWidth = input->getTitleDisplayWidth();
-            }
-            
             scrollElements.push_back(input);
             m_inputs.push_back(input);
         }
+
+
+        auto [maxTitleWidth, maxInputWidth] {calcMaxTitleAndInputWidth()};
+        setMaxTitleWidth(maxTitleWidth);
+
+        float scrollViewX {(m_bgImage->w / 2.0f) - (maxInputWidth / 2.0f)};
+        float scrollViewY {(m_bgImage->h / 2.0f) - (height / 2.0f)};
+
+        constexpr float scrollWidth {20};
+        constexpr float scrollMinHeight {30};
+        constexpr float scrollBarGap {10};
+        m_scrollView = new ScrollView{
+            scrollViewX, 
+            scrollViewY, 
+            maxInputWidth, 
+            height, 
+            eleGap,
+            scrollBarGap,
+            scrollElements,
+            scrollWidth,
+            scrollMinHeight,
+            scrollColor.getSDLColor(),
+            scrollBgColor.getSDLColor(),
+            scrollImg,
+            scrollBgImg
+        };
     };
-
-
-
-private:
-    
 };
 
 
