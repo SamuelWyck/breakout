@@ -66,6 +66,16 @@ public:
 
     float width() const;
 
+    // Set scroll position in the relative range 0-100 where 0 is the top.
+    void setScrollPos(float scrollPos) {
+        float relativeMovement {m_scrollBar.setBarPos(scrollPos)};
+        float realMovementDelta {remapToRealRange(relativeMovement)};
+
+        for (IMenuElement* elePtr : m_elements) {
+            scrollElement(realMovementDelta, elePtr);
+        }
+    };
+
 
 
 private:
@@ -91,6 +101,8 @@ private:
         float relMovement,
         bool mouseInvalid
     );
+
+    float remapToRealRange(float relMovement);
 };
 
 

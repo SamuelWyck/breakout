@@ -52,9 +52,7 @@ void ScrollView::update(SDL_Renderer* renderer, const SDL_FPoint& mousePos, bool
     }
 
     float relMovement {m_scrollBar.update(renderer, mousePos, mousePressed, mouseReleased)};
-    if (relMovement != 0.0f) {
-        relMovement = Math::remap(0.0f, m_scrollBar.maxRelMovement(), 0.0f, m_eleOverflowHeight, relMovement);
-    }
+    relMovement = remapToRealRange(relMovement);
 
     updateElements(renderer, pos, mousePressed, mouseReleased, relMovement, mouseInvalid);
 };
@@ -224,4 +222,12 @@ void ScrollView::updateElements(
     }
 
     SDL_SetRenderClipRect(renderer, nullptr);
+};
+
+
+float ScrollView::remapToRealRange(float relMovement) {
+    if (relMovement == 0.0f) {
+        return 0.0f;
+    }
+    return Math::remap(0.0f, m_scrollBar.maxRelMovement(), 0.0f, m_eleOverflowHeight, relMovement);
 };
