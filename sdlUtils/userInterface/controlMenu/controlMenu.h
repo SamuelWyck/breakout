@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_events.h>
-#include "../../../controller/userInput.h"
+#include "../../playerController/userInput.h"
 #include "./controlInput.h"
 #include "../elements/iMenuElement.h"
 #include "../elements/button.h"

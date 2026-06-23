@@ -4,7 +4,7 @@
 
 #include <SDL3/SDL_render.h>
 #include "../sdlUtils/collision/fRect.h"
-#include "../controller/playerController.h"
+#include "../sdlUtils/playerController/playerController.h"
 #include "./ball.h"
 
 

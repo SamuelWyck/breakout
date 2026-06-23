@@ -4,7 +4,7 @@
 
 #include "./entities/player.h"
 #include "./sdlUtils/collision/fRect.h"
-#include "./controller/playerController.h"
+#include "./sdlUtils/playerController/playerController.h"
 #include "./gameFramework/collisionManager.h"
 #include "./gameFramework/levelManager.h"
 #include "./hud/hud.h"

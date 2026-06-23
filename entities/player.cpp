@@ -3,7 +3,7 @@
 #include "../sdlUtils/math.h"
 #include "./player.h"
 #include "./ball.h"
-#include "../controller/playerController.h"
+#include "../sdlUtils/playerController/playerController.h"
 #include "../utils/random.h"
 
 
