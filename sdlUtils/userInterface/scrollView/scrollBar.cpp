@@ -84,6 +84,15 @@ void ScrollBar::setY(float y) {
 };
 
 
+float ScrollBar::setBarPos(float relativePos) {
+    float dstMin {m_bgRect.y() + (m_rect.height() / 2.0f)};
+    float dstMax {m_bgRect.bottom() - (m_rect.height() / 2.0f)};
+    
+    float realPos {Math::remap(0.0f, m_maxDstValue, dstMin, dstMax, relativePos)};
+    return setBarCenterY(realPos);
+};
+
+
 
 float ScrollBar::setBarCenterY(float yPos) {
     float oldCenterY {m_rect.centerY()};

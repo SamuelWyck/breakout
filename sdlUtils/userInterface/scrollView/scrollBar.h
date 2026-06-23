@@ -68,6 +68,10 @@ public:
 
     void setY(float y);
 
+    // Set the scroll bar position anywhere in the 0-100 relative range, with 0 being the top.
+    // Returns the amount of movement caused by this function. (mapped to the range 0-100)
+    float setBarPos(float relativePos);
+
 
 
 private:
