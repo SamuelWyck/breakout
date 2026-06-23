@@ -1,4 +1,5 @@
 #include <string_view>
+#include <string>
 #include <stdexcept>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
@@ -25,26 +26,26 @@ Display::Display(
 
     bool initSucess {SDL_Init(SDL_INIT_VIDEO)};
     if (!initSucess) {
-        SDL_Log("Unable to init video system: %s", SDL_GetError());
+        std::string error{SDL_GetError()};
         SDL_Quit();
-        throw std::runtime_error(SDL_GetError());
+        throw std::runtime_error(error);
     }
 
 
     m_screen = SDL_CreateWindow(title.data(), m_screenWidth, m_screenHeight, windowFlags);
     if (!m_screen) {
-        SDL_Log("Unable to create window: %s", SDL_GetError());
+        std::string error{SDL_GetError()};
         SDL_Quit();
-        throw std::runtime_error(SDL_GetError());
+        throw std::runtime_error(error);
     }
     SDL_GetWindowSizeInPixels(m_screen, &m_screenWidth, &m_screenHeight);
 
 
     m_renderer = SDL_CreateRenderer(m_screen, nullptr);
     if (!m_renderer) {
-        SDL_Log("Unable to create renderer: %s", SDL_GetError());
+        std::string error{SDL_GetError()};
         SDL_Quit();
-        throw std::runtime_error(SDL_GetError());
+        throw std::runtime_error(error);
     }
     SDL_SetRenderLogicalPresentation(m_renderer, m_canvasWidth, m_canvasHeight, rendererPresentationFlag);
     SDL_SetRenderVSync(m_renderer, vsyncRate);
