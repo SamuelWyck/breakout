@@ -99,6 +99,7 @@ void ControlInput::updateInputBtn(SDL_Renderer* renderer, std::string_view input
 
 void ControlInput::setMaxTitleWidth(float maxTitleWidth) {
     m_maxTitleWidth = maxTitleWidth;
+    positionBtn();
 };
 
 
@@ -203,7 +204,7 @@ void ControlInput::createInputBtnImgs(SDL_Renderer* renderer, std::string_view i
 
 void ControlInput::positionBtn() {
     auto [titleX, titleY] {m_title.topleft()};
-    float btnX {titleX + m_maxTitleWidth + m_gap};
+    float btnX {titleX + titleWidth() + m_gap};
     m_inputBtn->setTopleft(btnX, titleY);
 };
 
