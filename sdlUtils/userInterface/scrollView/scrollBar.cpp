@@ -71,6 +71,19 @@ float ScrollBar::maxRelMovement() const {
 };
 
 
+void ScrollBar::setX(float x) {
+    m_rect.setX(x);
+    m_bgRect.setX(x);
+};
+
+
+void ScrollBar::setY(float y) {
+    float yDelta {y - m_bgRect.y()};
+    m_bgRect.setY(y);
+    m_rect.setY(m_rect.y() + yDelta);
+};
+
+
 
 float ScrollBar::setBarCenterY(float yPos) {
     float oldCenterY {m_rect.centerY()};

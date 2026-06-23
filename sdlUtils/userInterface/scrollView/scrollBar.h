@@ -63,6 +63,12 @@ public:
     float maxRelMovement() const;
 
 
+    void setX(float x);
+
+
+    void setY(float y);
+
+
 
 private:
     float setBarCenterY(float yPos);
