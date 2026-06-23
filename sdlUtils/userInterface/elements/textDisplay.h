@@ -25,11 +25,13 @@ class TextDisplay : public IMenuElement {
     Font* m_font {nullptr};
     Color m_color{};
 
+    int m_wrapLength {};
+
     std::string m_text{};
 
 
 public:
-    TextDisplay(float x, float y, std::string_view text, Font* font, const Color& color);
+    TextDisplay(float x, float y, std::string_view text, Font* font, const Color& color, int wrapLength=-1);
     TextDisplay();
     TextDisplay(const TextDisplay&);
     TextDisplay(TextDisplay&&) = delete;
@@ -43,6 +45,10 @@ public:
     void setFont(Font* font);
 
     void changeText(std::string_view text);
+
+    void setWrapLength(int wrapLength);
+
+    int wrapLength() const;
 
     void update(SDL_Renderer* renderer) override;
 

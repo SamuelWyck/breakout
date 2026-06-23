@@ -9,8 +9,8 @@
 
 
 
-TextDisplay::TextDisplay(float x, float y, std::string_view text, Font* font, const Color& color) 
-    : m_font{font}, m_color{color} 
+TextDisplay::TextDisplay(float x, float y, std::string_view text, Font* font, const Color& color, int wrapLength) 
+    : m_font{font}, m_color{color}, m_wrapLength{wrapLength} 
 {
     m_rect.setTopleft(x, y);
     if (isValid()) {
@@ -75,6 +75,20 @@ void TextDisplay::changeText(std::string_view text) {
 };
 
 
+void TextDisplay::setWrapLength(int wrapLength) {
+    m_wrapLength = wrapLength;
+    if (m_wrapLength < -1) {
+        m_wrapLength = -1; // SDL uses -1 as a signal to disable wrapping
+    }
+
+    changeText(m_text);
+};
+
+
+int TextDisplay::wrapLength() const {
+    return m_wrapLength;
+};
+
 
 std::pair<float, float> TextDisplay::center() const {
     return m_rect.center();
@@ -132,7 +146,7 @@ void TextDisplay::setY(float y) {
 void TextDisplay::updateSurface(std::string_view text) {
     m_text = text;
     SDL_DestroySurface(m_surface);
-    m_surface = m_font->renderSurface(text, m_color.getSDLColor());
+    m_surface = m_font->renderSurface(text, m_color.getSDLColor(), m_wrapLength);
 
     m_rect.setSize(static_cast<float>(m_surface->w), static_cast<float>(m_surface->h));
     if (m_useCenter) {
