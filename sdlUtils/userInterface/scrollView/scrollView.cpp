@@ -39,13 +39,6 @@ ScrollView::ScrollView(
 };
 
 
-ScrollView::~ScrollView() {
-    for (IMenuElement* ele : m_elements) {
-        delete ele;
-    }
-};
-
-
 void ScrollView::update(SDL_Renderer* renderer, const SDL_FPoint& mousePos, bool mousePressed, bool mouseReleased) {
     bool mouseInScrollView {m_viewArea.pointInRect(&mousePos)};
     SDL_FPoint pos{-10, -10};

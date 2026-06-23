@@ -44,8 +44,7 @@ public:
     ScrollView(ScrollView&&) = delete;
     ScrollView& operator=(const ScrollView&) = delete;
     ScrollView& operator=(ScrollView&&) = delete;
-
-    ~ScrollView();
+    ~ScrollView() = default;
 
     void update(SDL_Renderer* renderer, const SDL_FPoint& mousePos, bool mousePressed, bool mouseReleased);
 
