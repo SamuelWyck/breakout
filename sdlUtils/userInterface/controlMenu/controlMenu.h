@@ -4,6 +4,8 @@
 
 #include <string>
 #include <vector>
+#include <unordered_set>
+#include <functional>
 #include <unordered_map>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_events.h>
@@ -26,6 +28,8 @@ class ControlMenu {
 
     Mouse* m_mouse {nullptr};
 
+    std::function<void(const std::unordered_map<std::string, UserInput>&)> m_saveCb{};
+
     Font* m_font {nullptr};
     Color m_color{};
     Color m_hvrColor{};
@@ -41,11 +45,21 @@ class ControlMenu {
     SDL_Texture* m_exitBtnHvrImg {nullptr};
     Button* m_exitBtn {nullptr};
 
-    // editing popup
+    // general popup variables 
+    float m_popupPadding {20};
+    float m_popupBorderWidth {8};
+
+    // editing popup variables
     TextDisplay m_editingMsg{};
     FRect m_editingBorderRect{};
     FRect m_editingBgImgRect{};
     FRect m_editingBgImgClipArea{};
+
+    // error popup variables
+    TextDisplay m_errorMsg{};
+    FRect m_errorBgImgRect{};
+    FRect m_errorBgImgClipArea{};
+    FRect m_errorBorderRect{};
 
 
 
@@ -53,9 +67,12 @@ public:
     ControlMenu(
         const std::unordered_map<std::string, UserInput>& controls, 
         Mouse* mouse,
+        const std::function<void(const std::unordered_map<std::string, UserInput>&)>& saveCb,
         float scrollviewHeight,
         float eleGap,
         float inputGap,
+        float scrollGap,
+        float scrollWidth,
         Font* font, 
         const Color& color, 
         const Color& hvrColor,
@@ -68,18 +85,32 @@ public:
     ) 
         : m_controls{controls}, 
         m_mouse{mouse}, 
+        m_saveCb{saveCb},
         m_font{font}, 
         m_color{color}, 
         m_hvrColor{hvrColor}, 
         m_bgImage{bgImage},
         m_instructionBanner{0, 0, "SELECT A KEYBIND TO EDIT", font, color},
-        m_editingMsg{0, 0, "ENTER INPUT\nESC TO CANCEL", font, color}
+        m_editingMsg{0, 0, "ENTER INPUT\nESC TO CANCEL", font, color},
+        m_errorMsg{0, 0, "DUPLICATE\nKEYBINDS\n\nCONTINUE", font, color}
     {   
-        createScrollView(scrollviewHeight, inputGap, eleGap, scrollColor, scrollBgColor, scrollImg, scrollBgImg, renderer);
+        createScrollView(
+            scrollviewHeight, 
+            inputGap, 
+            eleGap, 
+            scrollGap,
+            scrollWidth,
+            scrollColor, 
+            scrollBgColor, 
+            scrollImg, 
+            scrollBgImg, 
+            renderer
+        );
 
         positionBanner();
         createExitBtn(renderer);
         createEditingPopup();
+        createErrorPopup();
     };
 
     ControlMenu(const ControlMenu&) = delete;
@@ -103,10 +134,13 @@ public:
     MenuReturn run(SDL_Renderer* renderer, SDL_Surface*) {
 
         bool running {true};
+        bool forceExit {false};
         MenuReturn returnVal{};
 
         ControlInput* inputToEdit {nullptr};
         bool editingControl {false};
+        bool duplicatesError {false};
+        bool controlsChanged {false};
 
         while (running) {
             bool mousePressed {false};
@@ -116,6 +150,7 @@ public:
             while (SDL_PollEvent(&event)) {
                 if (event.type == SDL_EVENT_QUIT) {
                     running = false;
+                    forceExit = true;
                     returnVal = {};
                 } else if (event.type == SDL_EVENT_MOUSE_MOTION) {
                     m_mouse->update(event.motion.xrel, event.motion.yrel);
@@ -127,14 +162,20 @@ public:
                     if (editingControl) {
                         updateControls(renderer, UserInput{event.button.button}, inputToEdit);
                         editingControl = false;
+                        controlsChanged = true;
 
                     } else if (event.button.button == SDL_BUTTON_LEFT) {
-                        mousePressed = true;
+                        if (duplicatesError) {
+                            duplicatesError = false;
+                        } else {
+                            mousePressed = true;
+                        }
                     }
                 } else if (event.type == SDL_EVENT_KEY_DOWN && !event.key.repeat) {
                     if (editingControl && event.key.scancode != SDL_SCANCODE_ESCAPE) {
                         updateControls(renderer, UserInput{event.key.scancode}, inputToEdit);
                         editingControl = false;
+                        controlsChanged = true;
 
                     } else if (editingControl && event.key.scancode == SDL_SCANCODE_ESCAPE) {
                         editingControl = false;
@@ -145,16 +186,22 @@ public:
 
             if (m_exitBtn->clicked()) {
                 m_exitBtn->unclick();
-                running = false;
-                returnVal = {{0, -1}};
+                if (noDuplicates()) {
+                    running = false;
+                    returnVal = {{0, -1}};
+                } else {
+                    duplicatesError = true;
+                }
             }
 
 
             for (ControlInput* input : m_inputs) {
-                if (input->clicked() && !editingControl) {
+                if (input->clicked()) {
                     input->unclick();
-                    inputToEdit = input;
-                    editingControl = true;
+                    if (!editingControl && !duplicatesError) {
+                        inputToEdit = input;
+                        editingControl = true;
+                    }
                 }
             }
 
@@ -172,19 +219,39 @@ public:
             
             if (editingControl) {
                 drawEditingPopup(renderer);
+            } else if (duplicatesError) {
+                drawErrorPopup(renderer);
             }
             
             m_mouse->draw(renderer);
             SDL_RenderPresent(renderer);
         }
 
-        m_scrollView->setScrollPos(0);
+        constexpr float scrollViewTop {0};
+        m_scrollView->setScrollPos(scrollViewTop);
+        if (!forceExit && m_saveCb && controlsChanged) {
+            m_saveCb(m_controls);
+        }
         return returnVal;
     };
 
 
 
 private:
+    bool noDuplicates() {
+        std::unordered_set<UserInput> seenControls{};
+        for (auto& entry : m_controls) {
+            UserInput& control{entry.second};
+            if (seenControls.contains(control)) {
+                return false;
+            }
+            seenControls.insert(control);
+        }
+
+        return true;
+    };
+
+
     void updateControls(SDL_Renderer* renderer, const UserInput& newControl, ControlInput* inputToChange) {
         inputToChange->updateInputBtn(renderer, newControl.getInputName());
         m_controls[inputToChange->title()] = newControl;
@@ -223,6 +290,39 @@ private:
     };
 
 
+    void createErrorPopup() {
+        m_errorMsg.setCenter(m_bgImage->w / 2.0f, m_bgImage->h / 2.0f);
+        m_errorMsg.setWrapLength(0); // wrap on newlines
+
+        m_errorBgImgRect.setSize(
+            m_errorMsg.width() + (2 * m_popupPadding),
+            m_errorMsg.height() + (2 * m_popupPadding)
+        );
+        m_errorBgImgRect.setCenter(m_errorMsg.center());
+        m_errorBgImgClipArea.setSize(m_errorBgImgRect.size());
+
+        m_errorBorderRect.setSize(
+            m_errorBgImgRect.width() + (2 * m_popupBorderWidth),
+            m_errorBgImgRect.height() + (2 * m_popupBorderWidth)
+        );
+        m_errorBorderRect.setCenter(m_errorBgImgRect.center());
+    };
+
+
+    void drawErrorPopup(SDL_Renderer* renderer) {
+        SDL_SetRenderDrawColor(renderer, m_color.red(), m_color.green(), m_color.blue(), m_color.alpha());
+        SDL_RenderFillRect(renderer, &m_errorBorderRect.getSDLFRect());
+
+        SDL_RenderTexture(
+            renderer, m_bgImage, 
+            &m_errorBgImgClipArea.getSDLFRect(), 
+            &m_errorBgImgRect.getSDLFRect()
+        );
+
+        m_errorMsg.update(renderer);
+    };
+
+
     void createExitBtn(SDL_Renderer* renderer) {
         m_exitBtnImg = m_font->renderTexture(renderer, "BACK", m_color.getSDLColor());
         m_exitBtnHvrImg = m_font->renderTexture(renderer, "BACK", m_hvrColor.getSDLColor());
@@ -238,18 +338,16 @@ private:
         constexpr int wrapOnNewline {0};
         m_editingMsg.setWrapLength(wrapOnNewline);
 
-        constexpr float msgPadding {20};
         m_editingBgImgRect.setSize(
-            m_editingMsg.width() + (msgPadding * 2), 
-            m_editingMsg.height() + (msgPadding * 2)
+            m_editingMsg.width() + (m_popupPadding * 2), 
+            m_editingMsg.height() + (m_popupPadding * 2)
         );
         m_editingBgImgRect.setCenter(m_editingMsg.center());
         m_editingBgImgClipArea.setSize(m_editingBgImgRect.size());
 
-        constexpr float borderWidth {5};
         m_editingBorderRect.setSize(
-            m_editingBgImgRect.width() + (borderWidth * 2),
-            m_editingBgImgRect.height() + (borderWidth * 2)
+            m_editingBgImgRect.width() + (m_popupBorderWidth * 2),
+            m_editingBgImgRect.height() + (m_popupBorderWidth * 2)
         );
         m_editingBorderRect.setCenter(m_editingBgImgRect.center());
     };
@@ -279,6 +377,8 @@ private:
         float height, 
         float inputGap, 
         float eleGap, 
+        float scrollGap,
+        float scrollWidth,
         const Color& scrollColor,
         const Color& scrollBgColor,
         SDL_Texture* scrollImg,
@@ -308,16 +408,14 @@ private:
         float scrollViewX {(m_bgImage->w / 2.0f) - (maxInputWidth / 2.0f)};
         float scrollViewY {(m_bgImage->h / 2.0f) - (height / 2.0f)};
 
-        constexpr float scrollWidth {20};
         constexpr float scrollMinHeight {30};
-        constexpr float scrollBarGap {10};
         m_scrollView = new ScrollView{
             scrollViewX, 
             scrollViewY, 
             maxInputWidth, 
             height, 
             eleGap,
-            scrollBarGap,
+            scrollGap,
             scrollElements,
             scrollWidth,
             scrollMinHeight,
