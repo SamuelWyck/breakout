@@ -18,6 +18,7 @@ namespace Framework {
         "Breakout",
         0, 0, // screen size
         1536, 864, // canvas size
+        1, // vsync rate
         SDL_WINDOW_FULLSCREEN | SDL_WINDOW_MOUSE_GRABBED | SDL_WINDOW_MOUSE_RELATIVE_MODE, // window flags 
         SDL_LOGICAL_PRESENTATION_STRETCH // renderer presentation flag
     };
