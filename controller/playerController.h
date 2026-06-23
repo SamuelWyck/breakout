@@ -12,6 +12,8 @@
 
 
 class PlayerController {
+    std::unordered_map<std::string, UserInput> m_controls{};
+
     std::unordered_map<UserInput, std::string> m_codeToControlName{};
     std::unordered_map<std::string, bool> m_pressedInputs{};
 
@@ -29,6 +31,10 @@ public:
 
     // A method to update the input linked to each control i.e. on user changing controls.
     void updateControls(const std::unordered_map<std::string, UserInput>& controls);
+
+
+    // A method to get a hash map of the current controls. Keys are control names and values are input codes.
+    const std::unordered_map<std::string, UserInput>& getControls() const;
 
 
     // A method to get control names mapped to bools indicating if that control was triggered via user input.

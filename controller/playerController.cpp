@@ -19,6 +19,7 @@ PlayerController::PlayerController() {
 
 
 void PlayerController::updateControls(const std::unordered_map<std::string, UserInput>& controls) {
+    m_controls = controls;
     m_codeToControlName.clear();
     m_pressedInputs.clear();
     m_inputsToReset.clear();
@@ -30,6 +31,11 @@ void PlayerController::updateControls(const std::unordered_map<std::string, User
         m_pressedInputs[controlName] = false;
         m_codeToControlName[controlCode] = controlName;
     }
+};
+
+
+const std::unordered_map<std::string, UserInput>& PlayerController::getControls() const {
+    return m_controls;
 };
 
 
