@@ -18,7 +18,13 @@ Display::Display(
     int vsyncRate,
     SDL_WindowFlags windowFlags,
     SDL_RendererLogicalPresentation rendererPresentationFlag
-) : m_screenWidth{screenWidth}, m_screenHeight{screenHeight}, m_canvasWidth{canvasWidth}, m_canvasHeight{canvasHeight} {
+) 
+    : m_screenWidth{screenWidth}, 
+    m_screenHeight{screenHeight}, 
+    m_canvasWidth{canvasWidth}, 
+    m_canvasHeight{canvasHeight},
+    m_vsyncRate{vsyncRate}
+{
     if (Display::created) {
         SDL_Log("Display already initialized\n");
         throw std::runtime_error("Display already initialized\n");
@@ -48,7 +54,10 @@ Display::Display(
         throw std::runtime_error(error);
     }
     SDL_SetRenderLogicalPresentation(m_renderer, m_canvasWidth, m_canvasHeight, rendererPresentationFlag);
-    SDL_SetRenderVSync(m_renderer, vsyncRate);
+    if (!SDL_SetRenderVSync(m_renderer, m_vsyncRate)) {
+        m_vsyncRate = 0;
+    }
+
 
     Display::created = true;
 };
@@ -66,10 +75,6 @@ SDL_Renderer* Display::renderer() {
     return m_renderer;
 };
 
-SDL_Window* Display::window() {
-    return m_screen;
-};
-
 int Display::canvasWidth() {
     return m_canvasWidth;
 };
@@ -79,7 +84,21 @@ int Display::canvasHeight() {
 };
 
 
-SDL_Window* Display::screen() {
+int Display::getVsync() const {
+    return m_vsyncRate;
+};
+
+bool Display::setVsync(int vsyncRate) {
+    m_vsyncRate = vsyncRate;
+    bool success {SDL_SetRenderVSync(m_renderer, vsyncRate)};
+    if (!success) {
+        m_vsyncRate = 0;
+    }
+    return success;
+};
+
+
+SDL_Window* Display::window() {
     return m_screen;
 };
 

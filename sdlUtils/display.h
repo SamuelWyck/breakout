@@ -16,6 +16,8 @@ class Display {
     int m_canvasWidth {};
     int m_canvasHeight {};
 
+    int m_vsyncRate {};
+
     inline static bool created {false};
 
 
@@ -41,15 +43,18 @@ public:
 
 
     SDL_Renderer* renderer();
-
-    SDL_Window* window();
-
+    
     int canvasWidth();
-
+    
     int canvasHeight();
-
-
-    SDL_Window* screen();
+    
+    
+    int getVsync() const;
+    
+    bool setVsync(int vsyncRate);
+    
+    
+    SDL_Window* window();
 
     int screenWidth();
 
