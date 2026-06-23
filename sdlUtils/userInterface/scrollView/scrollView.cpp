@@ -1,5 +1,6 @@
 #include <vector>
 #include <typeinfo>
+#include <utility>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_pixels.h>
@@ -21,6 +22,7 @@ ScrollView::ScrollView(
     float width, 
     float height, 
     float eleGap, 
+    float scrollGap,
     const std::vector<IMenuElement*>& elements,
     float scrollWidth, 
     float scrollMinHeight,
@@ -31,6 +33,7 @@ ScrollView::ScrollView(
 ) 
     : m_clipRect{static_cast<int>(x), static_cast<int>(y), static_cast<int>(width), static_cast<int>(height)}, 
     m_viewArea{x, y, width, height},
+    m_scrollBarGap{scrollGap},
     m_minScrollBarHeight{scrollMinHeight}
 {    
     m_totalElementsHeight = positionElements(elements, eleGap);
@@ -62,6 +65,41 @@ std::vector<IMenuElement*>& ScrollView::elements() {
 };
 
 
+void ScrollView::setTopleft(float x, float y) {
+    m_clipRect.x = static_cast<int>(x);
+    m_clipRect.y = static_cast<int>(y);
+
+    float deltaX {x - m_viewArea.x()};
+    float deltaY {y - m_viewArea.y()};
+    for (IMenuElement* elePtr : m_elements) {
+        auto [eleX, eleY] {elePtr->topleft()};
+        elePtr->setTopleft(eleX + deltaX, eleY + deltaY);
+    }
+
+    m_viewArea.setTopleft(x, y);
+    m_scrollBar.setX(x + m_viewArea.width() + m_scrollBarGap);
+    m_scrollBar.setY(y);
+};
+
+
+std::pair<float, float> ScrollView::topleft() const {
+    return m_viewArea.topleft();
+};
+
+
+void ScrollView::setWidth(float newWidth) {
+    m_clipRect.w = static_cast<int>(newWidth);
+    m_viewArea.setWidth(newWidth);
+    m_scrollBar.setX(m_viewArea.x() + m_viewArea.width());
+};
+
+
+float ScrollView::width() const {
+    return m_viewArea.width();
+};
+
+
+
 
 float ScrollView::positionElements(const std::vector<IMenuElement*>& eles, float eleGap) {
     float xPos {m_viewArea.x()};
@@ -91,7 +129,7 @@ void ScrollView::calcScrollBar(
     SDL_Texture* scrollImg,
     SDL_Texture* scrollBgImg
 ) {
-    float scrollX {m_viewArea.right()};
+    float scrollX {m_viewArea.right() + m_scrollBarGap};
     float scrollY {m_viewArea.y()};
     float scrollUpperBound {m_viewArea.y()};
     float scrollLowerBound {m_viewArea.bottom()};

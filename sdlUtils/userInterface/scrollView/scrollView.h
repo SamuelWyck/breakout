@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include <utility>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_pixels.h>
@@ -17,6 +18,7 @@ class ScrollView {
 
     ScrollBar m_scrollBar{};
 
+    float m_scrollBarGap {};
     float m_totalElementsHeight {};
     float m_eleOverflowHeight {};
     float m_minScrollBarHeight {20};
@@ -31,6 +33,7 @@ public:
         float width, 
         float height, 
         float eleGap, 
+        float scrollGap,
         const std::vector<IMenuElement*>& elements,
         float scrollWidth, 
         float scrollMinHeight,
@@ -50,6 +53,18 @@ public:
 
 
     std::vector<IMenuElement*>& elements();
+
+
+    void setTopleft(float x, float y);
+
+
+    std::pair<float, float> topleft() const;
+
+
+    void setWidth(float newWidth);
+
+
+    float width() const;
 
 
 
