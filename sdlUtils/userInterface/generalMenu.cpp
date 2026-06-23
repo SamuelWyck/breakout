@@ -150,6 +150,7 @@ MenuReturn GeneralMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) 
         if (prepCbCanvas) {
             prepCbCanvas = false;
             enterCb = true;
+            SDL_DestroySurface(savedRender);
             savedRender = SDL_RenderReadPixels(renderer, nullptr);
         }
 
