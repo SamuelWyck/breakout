@@ -26,6 +26,7 @@ public:
         int screenHeight,
         int canvasWidth, 
         int canvasHeight,
+        int vsyncRate,
         SDL_WindowFlags windowFlags=0,
         SDL_RendererLogicalPresentation rendererPresentationFlag=SDL_LOGICAL_PRESENTATION_DISABLED
     );
