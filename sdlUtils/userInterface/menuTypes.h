@@ -10,7 +10,7 @@
 
 
 using MenuReturn = std::optional<std::pair<int, int>>;
-using MenuCb = std::function<MenuReturn(SDL_Renderer*, SDL_Surface*)>;
+using MenuCb = std::function<MenuReturn(SDL_Renderer*, int, SDL_Surface*)>;
 
 
 #endif
