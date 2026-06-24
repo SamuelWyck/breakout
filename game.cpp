@@ -6,6 +6,7 @@
 #include "./game.h"
 #include "./framework/framework.h"
 #include "./sdlUtils/clock.h"
+#include "./sdlUtils/frameCap.h"
 #include "./entities/player.h"
 #include "./sdlUtils/playerController/playerController.h"
 #include "./gameFramework/collisionManager.h"
@@ -88,7 +89,7 @@ Game::~Game() {
 
 void Game::startGame() {
     while (true) {
-        MenuReturn menuData{m_ui->mainMenu->run(Framework::display.renderer(), nullptr)};
+        MenuReturn menuData{m_ui->mainMenu->run(Framework::display.renderer(), m_framerate, nullptr)};
         if (!menuData || menuData->first > 0) {
             break;
         }
@@ -102,6 +103,7 @@ void Game::startGame() {
 void Game::gameLoop() {
     bool running {true};
     Clock clock{};
+    FrameCap frameCap{};
 
     constexpr int firstLevel {0};
     constexpr int levelCleared {1};
@@ -181,5 +183,7 @@ void Game::gameLoop() {
         
         SDL_RenderPresent(Framework::display.renderer());
         m_playerController.resetPressedInputs();
+
+        frameCap.capFrames(m_framerate);
     }
 };

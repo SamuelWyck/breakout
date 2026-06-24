@@ -28,6 +28,8 @@ class Game {
 
     Ui* m_ui {nullptr};
 
+    int m_framerate{300};
+
 
 public:
     Game();
