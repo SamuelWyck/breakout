@@ -12,6 +12,7 @@
 #include "./menuTypes.h"
 #include "./mouse.h"
 #include "../collision/fRect.h"
+#include "../frameCap.h"
 
 
 
@@ -56,7 +57,7 @@ ButtonMenu::~ButtonMenu() {
 };
 
 
-MenuReturn ButtonMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) {
+MenuReturn ButtonMenu::run(SDL_Renderer* renderer, int framerate, SDL_Surface* currentCanvas) {
     m_mouseManger->setMouseHidden(false);
     
     SDL_Texture* canvasTexture {nullptr};
@@ -76,6 +77,7 @@ MenuReturn ButtonMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) {
     }
 
     MenuReturn returnData{};
+    FrameCap frameCap{};
 
     while (running) {
         bool leftMousePressed {false};
@@ -103,7 +105,7 @@ MenuReturn ButtonMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) {
             enterCb = false;
 
             MenuCb& buttonCb {m_buttonCbMap[clickedBtnId]};
-            MenuReturn cbReturn{buttonCb(renderer, savedRender)};
+            MenuReturn cbReturn{buttonCb(renderer, framerate, savedRender)};
             if (!cbReturn) {
                 returnData = {};
                 running = false;
@@ -147,6 +149,7 @@ MenuReturn ButtonMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) {
         }
 
         SDL_RenderPresent(renderer);
+        frameCap.capFrames(framerate);
     }
 
     SDL_DestroyTexture(canvasTexture);
@@ -158,7 +161,13 @@ MenuReturn ButtonMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) {
 };
 
 
-int ButtonMenu::runUpdate(SDL_Renderer* renderer, const SDL_FPoint& mousePos, bool mousePressed, bool mouseReleased) {
+int ButtonMenu::runUpdate(
+    SDL_Renderer* renderer, 
+    int framerate,
+    const SDL_FPoint& mousePos, 
+    bool mousePressed, 
+    bool mouseReleased
+) {
     if (m_bgImage) {
         SDL_RenderTexture(renderer, m_bgImage, nullptr, &m_bgImageRect.getSDLFRect());
     }
@@ -169,7 +178,7 @@ int ButtonMenu::runUpdate(SDL_Renderer* renderer, const SDL_FPoint& mousePos, bo
         if (btnPtr->clicked()) {
             btnPtr->unclick();
             MenuCb& buttonCb {m_buttonCbMap[btnPtr->id()]};
-            MenuReturn returnVal {buttonCb(renderer, nullptr)};
+            MenuReturn returnVal {buttonCb(renderer, framerate, nullptr)};
             if (returnVal) {
                 data = returnVal->second;
             }

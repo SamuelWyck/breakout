@@ -56,9 +56,9 @@ public:
     ~GeneralMenu();
 
 
-    MenuReturn run(SDL_Renderer* renderer, SDL_Surface* currentCanvas=nullptr);
+    MenuReturn run(SDL_Renderer* renderer, int framerate, SDL_Surface* currentCanvas=nullptr);
 
-    int runUpdate(SDL_Renderer* renderer, const SDL_FPoint& mousePos, bool mousePressed, bool mouseReleased);
+    int runUpdate(SDL_Renderer* renderer, int framerate, const SDL_FPoint& mousePos, bool mousePressed, bool mouseReleased);
 
 
 private:

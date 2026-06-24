@@ -13,6 +13,7 @@
 #include "./menuTypes.h"
 #include "../collision/fRect.h"
 #include "./mouse.h"
+#include "../frameCap.h"
 
 
 
@@ -60,7 +61,7 @@ GeneralMenu::~GeneralMenu() {
 };
 
 
-MenuReturn GeneralMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) {
+MenuReturn GeneralMenu::run(SDL_Renderer* renderer, int framerate, SDL_Surface* currentCanvas) {
     m_mouse->setMouseHidden(false);
 
     if (m_musicStartCb) {
@@ -79,6 +80,7 @@ MenuReturn GeneralMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) 
     
     MenuReturn returnData{};
     bool running {true};
+    FrameCap frameCap{};
 
     while (running) {
         bool mousePressed {false};
@@ -105,7 +107,7 @@ MenuReturn GeneralMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) 
 
         if (enterCb) {
             MenuCb& buttonCb{m_btnCallbackMap[clickedBtnId]};
-            MenuReturn cbData {buttonCb(renderer, savedRender)};
+            MenuReturn cbData {buttonCb(renderer, framerate, savedRender)};
             if (!cbData) {
                 running = false;
                 returnData = {};
@@ -159,6 +161,7 @@ MenuReturn GeneralMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) 
         }
 
         SDL_RenderPresent(renderer);
+        frameCap.capFrames(framerate);
     }
 
 
@@ -176,7 +179,13 @@ MenuReturn GeneralMenu::run(SDL_Renderer* renderer, SDL_Surface* currentCanvas) 
 };
 
 
-int GeneralMenu::runUpdate(SDL_Renderer* renderer, const SDL_FPoint& mousePos, bool mousePressed, bool mouseReleased) {
+int GeneralMenu::runUpdate(
+    SDL_Renderer* renderer, 
+    int framerate,
+    const SDL_FPoint& mousePos, 
+    bool mousePressed, 
+    bool mouseReleased
+) {
     if (m_bgImage) {
         SDL_RenderTexture(renderer, m_bgImage, nullptr, &m_bgImageRect.getSDLFRect());
     }
@@ -197,7 +206,7 @@ int GeneralMenu::runUpdate(SDL_Renderer* renderer, const SDL_FPoint& mousePos, b
         if (btnPtr->clicked()) {
             btnPtr->unclick();
             MenuCb& buttonCb{m_btnCallbackMap[btnPtr->id()]};
-            MenuReturn cbReturn{buttonCb(renderer, nullptr)};
+            MenuReturn cbReturn{buttonCb(renderer, framerate, nullptr)};
             if (cbReturn) {
                 callbackData = cbReturn->second;
             }

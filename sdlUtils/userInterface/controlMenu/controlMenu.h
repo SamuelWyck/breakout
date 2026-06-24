@@ -92,7 +92,7 @@ public:
     ~ControlMenu();
 
 
-    MenuReturn run(SDL_Renderer* renderer, SDL_Surface*);
+    MenuReturn run(SDL_Renderer* renderer, int framerate, SDL_Surface*);
 
 
 

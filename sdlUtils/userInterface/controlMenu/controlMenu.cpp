@@ -17,6 +17,7 @@
 #include "../mouse.h"
 #include "../menuTypes.h"
 #include "./controlMenu.h"
+#include "../../frameCap.h"
 
 
 
@@ -82,7 +83,7 @@ ControlMenu::~ControlMenu() {
 };
 
 
-MenuReturn ControlMenu::run(SDL_Renderer* renderer, SDL_Surface*) {
+MenuReturn ControlMenu::run(SDL_Renderer* renderer, int framerate, SDL_Surface*) {
 
     bool running {true};
     bool forceExit {false};
@@ -92,6 +93,8 @@ MenuReturn ControlMenu::run(SDL_Renderer* renderer, SDL_Surface*) {
     bool editingControl {false};
     bool duplicatesError {false};
     bool controlsChanged {false};
+
+    FrameCap frameCap{};
 
     while (running) {
         bool mousePressed {false};
@@ -176,6 +179,7 @@ MenuReturn ControlMenu::run(SDL_Renderer* renderer, SDL_Surface*) {
         
         m_mouse->draw(renderer);
         SDL_RenderPresent(renderer);
+        frameCap.capFrames(framerate);
     }
 
     constexpr float scrollViewTop {0};
