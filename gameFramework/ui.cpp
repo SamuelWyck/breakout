@@ -28,13 +28,13 @@ ButtonMenu* Ui::createMainMenu(Mouse* mouse) {
     };
 
     std::vector<MenuCb> menuBtnCallbacks{
-        [](SDL_Renderer*, SDL_Surface*) -> MenuReturn {
+        [](SDL_Renderer*, int, SDL_Surface*) -> MenuReturn {
             return {{1, -1}};
         },
-        [](SDL_Renderer*, SDL_Surface*) -> MenuReturn {
+        [](SDL_Renderer*, int, SDL_Surface*) -> MenuReturn {
             return {{0, -1}};
         },
-        [](SDL_Renderer*, SDL_Surface*) -> MenuReturn {
+        [](SDL_Renderer*, int, SDL_Surface*) -> MenuReturn {
             return {{2, -1}};
         }
     };
