@@ -35,7 +35,7 @@ class SelectMenu {
 
     int m_minBtnIdx {};
     int m_maxBtnIdx {};
-    int m_idxChange {};
+    int m_btnIdxChange {};
 
 
 public:
@@ -75,6 +75,9 @@ public:
     int highestUnlockedBtnId() const;
 
 
+    void pageToTop();
+
+    
 
 private:
     void loadHighestUnlockedId();

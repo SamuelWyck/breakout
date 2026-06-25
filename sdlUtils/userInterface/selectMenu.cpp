@@ -148,7 +148,7 @@ MenuReturn SelectMenu::run(SDL_Renderer* renderer, int framerate, SDL_Surface* b
         frameCap.capFrames(framerate);
     }
 
-
+    pageToTop();
     SDL_DestroyTexture(bgTexture);
     return returnVal;
 };
@@ -206,6 +206,12 @@ void SelectMenu::setHighestUnlockedBtnId(int highestUnlockedId) {
 
 int SelectMenu::highestUnlockedBtnId() const {
     return m_highestUnlockedId;
+};
+
+
+void SelectMenu::pageToTop() {
+    m_minBtnIdx = 0;
+    m_maxBtnIdx = m_btnIdxChange;
 };
 
 
@@ -273,7 +279,7 @@ void SelectMenu::pageButtons(bool pageUp) {
         return;
     }
 
-    int idxChange {(pageUp) ? -m_idxChange : m_idxChange};
+    int idxChange {(pageUp) ? -m_btnIdxChange : m_btnIdxChange};
     m_minBtnIdx += idxChange;
     m_maxBtnIdx += idxChange;
 };
@@ -347,7 +353,7 @@ float SelectMenu::positionBtns(int numRows, int numCols, float centerX, float ce
     }
 
     m_maxBtnIdx = numRows * numCols;
-    m_idxChange = m_maxBtnIdx;
+    m_btnIdxChange = m_maxBtnIdx;
     return colHeight;
 };
 
