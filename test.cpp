@@ -75,6 +75,7 @@
 
 //     SelectMenu selectM{
 //         &mouse, 
+//         0,
 //         Framework::display.canvasWidth() / 2.0f,
 //         Framework::display.canvasHeight() / 2.0f,
 //         3, 4, 20, btns, exitBtn, upBtn, downBtn,
@@ -125,7 +126,7 @@
 //             enterMenu = false;
 //             MenuReturn val {selectM.run(Framework::display.renderer(), 240, currRender)};
 //             if (val) {
-//                 std::cout << val->second;
+//                 std::cout << val->first << " " << val->second << "\n";
 //             }
 //         }
 
