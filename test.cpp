@@ -78,7 +78,7 @@
 //         Framework::display.canvasWidth() / 2.0f,
 //         Framework::display.canvasHeight() / 2.0f,
 //         3, 4, 20, btns, exitBtn, upBtn, downBtn,
-//         nullptr, nullptr, SDL_GetBasePath() + std::string{"/savedId.txt"}
+//         bgImg, nullptr, SDL_GetBasePath() + std::string{"/savedId.txt"}
 //     };
 //     selectM.setHighestUnlockedBtnId(17);
 
