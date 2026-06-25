@@ -78,6 +78,12 @@ Images::Images(SDL_Renderer* renderer) {
     m_images.push_back(backBtnImg);
     backBtnHvrImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/backBtnHvr.png"}.data());
     m_images.push_back(backBtnHvrImg);
+    slideBarImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/slideBar.png"}.data());
+    m_images.push_back(slideBarImg);
+    slideImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/slide.png"}.data());
+    m_images.push_back(slideImg);
+    audioMenuImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/audioMenu.png"}.data());
+    m_images.push_back(audioMenuImg);
 };
 
 

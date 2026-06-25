@@ -41,6 +41,9 @@ public:
     SDL_Texture* controlsBtnHvrImg {nullptr};
     SDL_Texture* backBtnImg {nullptr};
     SDL_Texture* backBtnHvrImg {nullptr};
+    SDL_Texture* slideBarImg {nullptr};
+    SDL_Texture* slideImg {nullptr};
+    SDL_Texture* audioMenuImg {nullptr};
 
     
 
