@@ -74,7 +74,7 @@ m_mouseManager{
 
     // set up ui
     m_mouseManager.clampMouseToCanvas(true);
-    m_ui = new Ui{&m_mouseManager};
+    m_ui = new Ui{&m_mouseManager, &Framework::audioManager};
 };
 
 
