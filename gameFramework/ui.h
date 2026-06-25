@@ -9,6 +9,7 @@
 class Ui {
 public:
     ButtonMenu* mainMenu{nullptr};
+    ButtonMenu* settingsMenu{nullptr};
 
 
     Ui(Mouse* mouse);
@@ -23,6 +24,8 @@ public:
 
 private:
     ButtonMenu* createMainMenu(Mouse* mouse);
+
+    ButtonMenu* createSettingsMenu(Mouse* mouse);
 };
 
 
