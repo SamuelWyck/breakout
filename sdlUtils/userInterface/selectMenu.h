@@ -4,6 +4,9 @@
 
 #include <vector>
 #include <utility>
+#include <string>
+#include <string_view>
+#include <fstream>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_rect.h>
@@ -31,6 +34,8 @@ class SelectMenu {
     FRect m_lockedImgRect{};
     int m_highestUnlockedId {0};
 
+    std::string m_saveFilePath{};
+
     int m_minBtnIdx {};
     int m_maxBtnIdx {};
     int m_idxChange {};
@@ -49,12 +54,14 @@ public:
         Button* pageUpButton,
         Button* pageDownButton,
         SDL_Texture* bgImage=nullptr,
-        SDL_Texture* choiceLockedImg=nullptr
+        SDL_Texture* choiceLockedImg=nullptr,
+        std::string_view saveFilePath=""
     ) 
         : m_mouse{mouse}, 
         m_buttons{buttons}, 
         m_bgImage{bgImage}, 
-        m_btnLockedImg{choiceLockedImg}
+        m_btnLockedImg{choiceLockedImg},
+        m_saveFilePath{saveFilePath}
     {
         float colHeight {positionBtns(numRows, numCols, centerX, centerY, btnGap)};
         positionPageAndExitBtns(exitButton, pageUpButton, pageDownButton, colHeight, btnGap, centerX, centerY);
@@ -65,6 +72,9 @@ public:
         }
         if (choiceLockedImg) {
             m_lockedImgRect.setSize(static_cast<float>(choiceLockedImg->w), static_cast<float>(choiceLockedImg->h));
+        }
+        if (choiceLockedImg && saveFilePath.size() != 0) {
+            loadHighestUnlockedId();
         }
     };
 
@@ -219,6 +229,10 @@ public:
 
     void setHighestUnlockedBtnId(int highestUnlockedId) {
         m_highestUnlockedId = highestUnlockedId;
+
+        if (m_saveFilePath.size() != 0) {
+            saveHighestUnlockedId();
+        }
     };
 
 
@@ -229,6 +243,41 @@ public:
 
 
 private:
+    void loadHighestUnlockedId() {
+        std::ifstream file{m_saveFilePath};
+        if (file.fail()) {
+            file.close();
+            return;
+        }
+
+        try {
+            std::string savedId{};
+            std::getline(file, savedId);
+            m_highestUnlockedId = std::stoi(savedId);
+            file.close();
+        } catch (...) {
+            file.close();
+            m_highestUnlockedId = 0;
+        }
+    };
+
+
+    void saveHighestUnlockedId() {
+        std::ofstream file{m_saveFilePath};
+        if (file.fail()) {
+            file.close();
+            return;
+        }
+
+        try {
+            file << std::to_string(m_highestUnlockedId);
+            file.close();
+        } catch (...) {
+            file.close();
+        }
+    };
+
+
     void drawLockedImg(SDL_Renderer* renderer, Button* btnPtr) {
         if (btnUnlocked(btnPtr->id())) {
             return;
