@@ -32,7 +32,10 @@ namespace Framework {
         {"BALL"}, 
         {
             {"BALL_SOUND", SDL_GetBasePath() + std::string{"assets/sounds/ballBounce.wav"}}
-        }
+        },
+        {},
+        "",
+        SDL_GetBasePath() + std::string{"saves/volume.txt"}
     };
 
     Sounds sounds{audioManager};
