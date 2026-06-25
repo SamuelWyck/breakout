@@ -13,6 +13,8 @@ class Fonts {
 
 public:
     Font scoreFont{SDL_GetBasePath() + fontsDirPath + "/forge.ttf", 40};
+    Font menuFont{SDL_GetBasePath() + fontsDirPath + "/menu.ttf", 40};
+    Font menuSmallFont{SDL_GetBasePath() + fontsDirPath + "/menu.ttf", 30};
 };
 
 
