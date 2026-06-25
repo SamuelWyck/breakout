@@ -32,6 +32,15 @@ public:
     SDL_Texture* settingsBtnHvrImg {nullptr};
     SDL_Texture* exitBtnImg {nullptr};
     SDL_Texture* exitBtnHvrImg {nullptr};
+    SDL_Texture* settingsMenuImg {nullptr};
+    SDL_Texture* audioBtnImg {nullptr};
+    SDL_Texture* audioBtnHvrImg {nullptr};
+    SDL_Texture* mouseBtnImg {nullptr};
+    SDL_Texture* mouseBtnHvrImg {nullptr};
+    SDL_Texture* controlsBtnImg {nullptr};
+    SDL_Texture* controlsBtnHvrImg {nullptr};
+    SDL_Texture* backBtnImg {nullptr};
+    SDL_Texture* backBtnHvrImg {nullptr};
 
     
 

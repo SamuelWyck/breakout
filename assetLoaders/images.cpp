@@ -60,6 +60,24 @@ Images::Images(SDL_Renderer* renderer) {
     m_images.push_back(exitBtnImg);
     exitBtnHvrImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/exitBtnHvr.png"}.data());
     m_images.push_back(exitBtnHvrImg);
+    settingsMenuImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/settingsMenu.png"}.data());
+    m_images.push_back(settingsMenuImg);
+    audioBtnImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/audioBtn.png"}.data());
+    m_images.push_back(audioBtnImg);
+    audioBtnHvrImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/audioBtnHvr.png"}.data());
+    m_images.push_back(audioBtnHvrImg);
+    mouseBtnImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/mouseBtn.png"}.data());
+    m_images.push_back(mouseBtnImg);
+    mouseBtnHvrImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/mouseBtnHvr.png"}.data());
+    m_images.push_back(mouseBtnHvrImg);
+    controlsBtnImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/controlsBtn.png"}.data());
+    m_images.push_back(controlsBtnImg);
+    controlsBtnHvrImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/controlsBtnHvr.png"}.data());
+    m_images.push_back(controlsBtnHvrImg);
+    backBtnImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/backBtn.png"}.data());
+    m_images.push_back(backBtnImg);
+    backBtnHvrImg = IMG_LoadTexture(renderer, std::string{SDL_GetBasePath() + menuImgPath + "/backBtnHvr.png"}.data());
+    m_images.push_back(backBtnHvrImg);
 };
 
 
