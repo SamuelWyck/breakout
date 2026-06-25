@@ -17,6 +17,7 @@
 
 SelectMenu::SelectMenu(
     Mouse* mouse,
+    int menuDepth,
     float centerX, 
     float centerY, 
     int numRows, 
@@ -31,6 +32,7 @@ SelectMenu::SelectMenu(
     std::string_view saveFilePath
 ) 
     : m_mouse{mouse}, 
+    m_menuDepth{menuDepth},
     m_buttons{buttons}, 
     m_bgImage{bgImage}, 
     m_btnLockedImg{choiceLockedImg},
@@ -136,7 +138,7 @@ MenuReturn SelectMenu::run(SDL_Renderer* renderer, int framerate, SDL_Surface* b
                 btnPtr->unclick();
 
                 if (btnUnlocked(btnPtr->id())) {
-                    returnVal = {{0, btnPtr->id()}};
+                    returnVal = {{m_menuDepth, btnPtr->id()}};
                     running = false;
                 }
             }
@@ -206,6 +208,16 @@ void SelectMenu::setHighestUnlockedBtnId(int highestUnlockedId) {
 
 int SelectMenu::highestUnlockedBtnId() const {
     return m_highestUnlockedId;
+};
+
+
+void SelectMenu::setMenuDepth(int newDepth) {
+    m_menuDepth = newDepth;
+};
+
+
+int SelectMenu::menuDepth() {
+    return m_menuDepth;
 };
 
 

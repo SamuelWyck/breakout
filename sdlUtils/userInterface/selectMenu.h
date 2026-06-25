@@ -16,7 +16,9 @@
 
 class SelectMenu {
     Mouse* m_mouse {nullptr};
-
+    
+    int m_menuDepth {};
+    
     std::vector<Button*> m_buttons{};
     std::vector<Button*> m_interfaceBtns{};
 
@@ -41,6 +43,7 @@ class SelectMenu {
 public:
     SelectMenu(
         Mouse* mouse,
+        int menuDepth,
         float centerX, 
         float centerY, 
         int numRows, 
@@ -65,19 +68,22 @@ public:
 
     MenuReturn run(SDL_Renderer* renderer, int framerate, SDL_Surface* bgCanvas=nullptr);
 
-
     int runUpdate(SDL_Renderer* renderer, const SDL_FPoint& mousePos, bool mousePressed, bool mouseReleased);
 
 
     void setHighestUnlockedBtnId(int highestUnlockedId);
 
-
     int highestUnlockedBtnId() const;
+
+
+    void setMenuDepth(int newDepth);
+
+    int menuDepth();
 
 
     void pageToTop();
 
-    
+
 
 private:
     void loadHighestUnlockedId();
