@@ -119,6 +119,13 @@ bool FCircle::hasRectIntersection(const FRect* rect) const {
         return true;
     }
 
+    float rectEdgeDisX {rectEdgeX - m_centerX};
+    float rectEdgeDisY {rectEdgeY - m_centerY};
+    float rectEdgeDistance = sqrtf((rectEdgeDisX * rectEdgeDisX) + (rectEdgeDisY * rectEdgeDisY));
+    if (rectEdgeDistance <= m_radius) {
+        return true;
+    }
+
     return false;
 };
 
